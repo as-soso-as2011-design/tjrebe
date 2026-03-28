@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>اختبار ربط بنك الرياضيات</title>
+  <style>
+    body{font-family:Tahoma,Arial,sans-serif;background:#0b2a66;margin:0;padding:24px;color:#fff}
+    .box{max-width:680px;margin:40px auto;background:#fff;color:#123;border-radius:20px;padding:20px;box-shadow:0 16px 40px rgba(0,0,0,.25)}
+    h1{margin:0 0 10px;font-size:28px;color:#0b2a66}
+    p{line-height:1.8}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media(max-width:700px){.row{grid-template-columns:1fr}}
+    input,select,textarea,button{width:100%;box-sizing:border-box;border-radius:14px;padding:14px;font-size:16px;border:1px solid #cdd8ea}
+    textarea{min-height:100px;resize:vertical}
+    button{background:#0b5bb5;color:#fff;border:none;font-weight:700;cursor:pointer}
+    .muted{color:#5f6b7a;font-size:14px}
+    .ok,.err{margin-top:12px;padding:12px;border-radius:14px;display:none}
+    .ok{background:#e8f7ee;color:#126a38}
+    .err{background:#fdeaea;color:#9a1f1f}
+    code{background:#eef3fb;padding:2px 6px;border-radius:8px}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>صفحة اختبار الإرسال</h1>
+    <p>هذه الصفحة منفصلة عن بنك الرياضيات. هدفها فقط التأكد أن الطلب يصل إلى السيرفر في Render.</p>
+    <p class="muted">بعد الضغط على <b>إرسال الاختبار</b> افتحي Render &gt; Logs. إذا ظهر طلب جديد فالمشكلة من ملف بنك الرياضيات، وليس من السيرفر.</p>
+
+    <div class="row">
+      <input id="student" placeholder="اسم الطالب/ة" value="طالبة تجريبية">
+      <input id="phone" placeholder="رقم ولي الأمر" value="0500000000">
+    </div>
+    <div class="row" style="margin-top:12px">
+      <select id="action">
+        <option>إيداع</option>
+        <option>سحب</option>
+        <option>ملاحظة</option>
+        <option>غياب</option>
+      </select>
+      <input id="amount" type="number" placeholder="القيمة" value="10">
+    </div>
+    <textarea id="reason" placeholder="السبب" style="margin-top:12px">اختبار الربط من صفحة مستقلة</textarea>
+    <button style="margin-top:12px" onclick="sendTest()">إرسال الاختبار</button>
+
+    <div id="ok" class="ok"></div>
+    <div id="err" class="err"></div>
+
+    <p class="muted" style="margin-top:16px">السيرفر المستهدف: <code>https://math-bank-webhook.onrender.com/send</code></p>
+  </div>
+
+<script>
+async function sendTest(){
+  const ok = document.getElementById('ok');
+  const err = document.getElementById('err');
+  ok.style.display = 'none';
+  err.style.display = 'none';
+
+  const payload = {
+    student: document.getElementById('student').value.trim(),
+    action: document.getElementById('action').value,
+    amount: Number(document.getElementById('amount').value || 0),
+    reason: document.getElementById('reason').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    channel: 'whatsapp'
+  };
+
+  try{
+    const res = await fetch('https://math-bank-webhook.onrender.com/send',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
+
+    let txt = '';
+    try{ txt = await res.text(); }catch(e){}
+
+    ok.innerHTML = 'تم إرسال الطلب من الصفحة ✅<br>حالة الاستجابة: <b>' + res.status + '</b><br>الخطوة التالية: افتحي Render &gt; Logs وتأكدي من ظهور الطلب.';
+    ok.style.display = 'block';
+  }catch(e){
+    err.textContent = 'فشل إرسال الطلب من الصفحة: ' + e;
+    err.style.display = 'block';
+  }
+}
+</script>
+</body>
+</html>
