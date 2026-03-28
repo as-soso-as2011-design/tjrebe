@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>مصرف التعليم | دخول المعلمة</title>
+  <style>
+    :root{
+      --bg1:#f6fcff;
+      --bg2:#e7f7ff;
+      --bg3:#d8f1ff;
+      --primary:#38bdf8;
+      --primary2:#0ea5e9;
+      --primary3:#7dd3fc;
+      --deep:#075985;
+      --text:#0f172a;
+      --muted:#577286;
+      --white:#ffffff;
+      --glass:rgba(255,255,255,.80);
+      --border:rgba(56,189,248,.20);
+      --shadow:0 24px 60px rgba(14,165,233,.16);
+      --shadow-soft:0 12px 28px rgba(14,165,233,.10);
+      --radius:34px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"SF Pro Display","Segoe UI","Tahoma","Arial",sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(125,211,252,.65), transparent 24%),
+        radial-gradient(circle at bottom left, rgba(56,189,248,.24), transparent 28%),
+        linear-gradient(145deg, var(--bg1), var(--bg2) 45%, var(--bg3));
+      overflow:hidden;
+    }
+
+    .app{
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:20px;
+      position:relative;
+      overflow:hidden;
+      isolation:isolate;
+    }
+
+    .orb{
+      position:absolute;
+      border-radius:50%;
+      filter:blur(60px);
+      opacity:.55;
+      z-index:-1;
+    }
+    .orb.one{width:290px;height:290px;background:rgba(56,189,248,.20);top:2%;right:3%}
+    .orb.two{width:220px;height:220px;background:rgba(14,165,233,.18);bottom:5%;left:4%}
+    .orb.three{width:180px;height:180px;background:rgba(125,211,252,.28);top:44%;left:12%}
+
+    .grid{
+      position:absolute; inset:0;
+      background-image:
+        linear-gradient(rgba(56,189,248,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56,189,248,.05) 1px, transparent 1px);
+      background-size:34px 34px;
+      mask-image:linear-gradient(to bottom, rgba(0,0,0,.24), transparent 82%);
+      z-index:-1;
+    }
+
+    .shell{
+      width:min(1260px,100%);
+      min-height:min(760px, calc(100vh - 40px));
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      border-radius:40px;
+      overflow:hidden;
+      background:var(--glass);
+      border:1px solid rgba(255,255,255,.65);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      position:relative;
+    }
+    .shell:before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(135deg, rgba(255,255,255,.52), transparent 42%);
+      pointer-events:none;
+    }
+
+    .hero{
+      padding:clamp(28px,4vw,52px);
+      background:
+        linear-gradient(160deg, rgba(255,255,255,.55), rgba(255,255,255,.10)),
+        linear-gradient(150deg, rgba(125,211,252,.18), rgba(14,165,233,.06));
+      border-inline-start:1px solid rgba(56,189,248,.14);
+      display:grid;
+      align-content:space-between;
+      gap:28px;
+      position:relative;
+    }
+
+    .hero-top{
+      display:grid;
+      gap:20px;
+      align-content:start;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .logo{
+      width:78px;height:78px;border-radius:24px;
+      display:grid;place-items:center;
+      background:
+        linear-gradient(160deg, rgba(255,255,255,.95), rgba(255,255,255,.48)),
+        linear-gradient(145deg,#7dd3fc,#38bdf8 38%,#0ea5e9);
+      color:#fff;
+      font-weight:900;
+      font-size:28px;
+      letter-spacing:.08em;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.96), 0 14px 34px rgba(14,165,233,.18);
+      position:relative;
+      overflow:hidden;
+    }
+    .logo:after{
+      content:"";
+      position:absolute;
+      width:180%;
+      height:56%;
+      top:-12%;
+      left:-35%;
+      transform:rotate(-20deg);
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.60), transparent);
+      animation:shine 4s linear infinite;
+    }
+
+    .brand-text h1{
+      margin:0 0 6px 0;
+      font-size:clamp(30px,4vw,48px);
+      color:#082f49;
+    }
+    .brand-text p{
+      margin:0;
+      color:var(--deep);
+      font-weight:800;
+      font-size:clamp(14px,1.8vw,19px);
+    }
+
+    .hero-copy h2{
+      margin:0 0 12px 0;
+      font-size:clamp(26px,3vw,38px);
+      color:#0c4a6e;
+      line-height:1.25;
+    }
+    .hero-copy p{
+      margin:0;
+      color:var(--muted);
+      line-height:2;
+      font-size:16px;
+      max-width:560px;
+    }
+
+    .chips{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .chip{
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,.78);
+      border:1px solid rgba(56,189,248,.16);
+      color:#075985;
+      font-size:13px;
+      font-weight:800;
+      box-shadow:var(--shadow-soft);
+    }
+
+    .feature-panel{
+      display:grid;
+      gap:14px;
+    }
+    .feature-card{
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      padding:18px;
+      border-radius:24px;
+      background:rgba(255,255,255,.68);
+      border:1px solid rgba(56,189,248,.14);
+      box-shadow:var(--shadow-soft);
+    }
+    .feature-icon{
+      width:56px;height:56px;border-radius:18px;
+      display:grid;place-items:center;
+      font-size:24px;
+      background:linear-gradient(145deg,#e0f2fe,#bae6fd);
+      color:#075985;
+      flex:0 0 auto;
+    }
+    .feature-card h3{
+      margin:0 0 6px 0;
+      font-size:18px;
+      color:#083344;
+    }
+    .feature-card p{
+      margin:0;
+      color:#567387;
+      font-size:14px;
+      line-height:1.8;
+    }
+
+    .login-side{
+      padding:clamp(26px,3vw,42px);
+      display:grid;
+      align-content:center;
+      background:rgba(255,255,255,.45);
+    }
+
+    .login-card{
+      width:min(520px,100%);
+      margin-inline:auto;
+      border-radius:32px;
+      padding:30px;
+      background:rgba(255,255,255,.80);
+      border:1px solid rgba(56,189,248,.18);
+      box-shadow:var(--shadow-soft);
+      display:grid;
+      gap:22px;
+    }
+
+    .login-head{
+      text-align:center;
+      display:grid;
+      gap:8px;
+    }
+    .login-head h2{
+      margin:0;
+      font-size:clamp(26px,3vw,34px);
+      color:#082f49;
+    }
+    .login-head p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.9;
+      font-size:15px;
+    }
+
+    .small-badges{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+    .small-badge{
+      padding:8px 12px;
+      border-radius:999px;
+      background:#f0f9ff;
+      border:1px solid rgba(56,189,248,.18);
+      color:#0369a1;
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .form{
+      display:grid;
+      gap:16px;
+    }
+
+    .field{
+      display:grid;
+      gap:8px;
+    }
+    .field label{
+      color:#0c4a6e;
+      font-size:14px;
+      font-weight:800;
+    }
+    .input-wrap{
+      position:relative;
+    }
+    .input, .select{
+      width:100%;
+      border:none;
+      outline:none;
+      background:#fff;
+      min-height:56px;
+      border-radius:18px;
+      padding:0 18px;
+      padding-inline-end:52px;
+      color:#0f172a;
+      font-size:15px;
+      border:1px solid rgba(56,189,248,.18);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.9);
+    }
+    .input::placeholder{
+      color:#8aa3b6;
+    }
+    .input-icon{
+      position:absolute;
+      inset-inline-start:16px;
+      top:50%;
+      transform:translateY(-50%);
+      color:#38bdf8;
+      font-size:18px;
+      pointer-events:none;
+    }
+
+    .password-toggle{
+      position:absolute;
+      inset-inline-start:12px;
+      top:50%;
+      transform:translateY(-50%);
+      border:none;
+      background:#eff8ff;
+      border:1px solid rgba(56,189,248,.16);
+      width:34px;height:34px;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:16px;
+      color:#0369a1;
+    }
+
+    .row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+
+    .checks{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .check{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      color:#4f6d81;
+      font-size:14px;
+    }
+    .check input{
+      width:18px;height:18px;
+      accent-color:#0ea5e9;
+    }
+    .link-btn{
+      border:none;
+      background:none;
+      color:#0284c7;
+      font-size:14px;
+      font-weight:800;
+      cursor:pointer;
+      padding:0;
+    }
+
+    .main-btn{
+      border:none;
+      border-radius:18px;
+      min-height:58px;
+      color:#fff;
+      font-size:17px;
+      font-weight:900;
+      cursor:pointer;
+      background:linear-gradient(135deg,#38bdf8,#0ea5e9);
+      box-shadow:0 16px 30px rgba(14,165,233,.18);
+    }
+
+    .secondary-actions{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:10px;
+    }
+    .action-btn{
+      border:none;
+      min-height:48px;
+      border-radius:16px;
+      cursor:pointer;
+      font-size:14px;
+      font-weight:800;
+      color:#075985;
+      background:#f0f9ff;
+      border:1px solid rgba(56,189,248,.18);
+    }
+
+    .status{
+      display:none;
+      padding:14px 16px;
+      border-radius:18px;
+      font-size:14px;
+      line-height:1.8;
+      font-weight:700;
+    }
+    .status.show{display:block}
+    .status.success{
+      background:#ecfeff;
+      color:#0f766e;
+      border:1px solid rgba(20,184,166,.22);
+    }
+    .status.error{
+      background:#fff7ed;
+      color:#c2410c;
+      border:1px solid rgba(251,146,60,.22);
+    }
+
+    .footer-note{
+      text-align:center;
+      color:#678398;
+      font-size:13px;
+      line-height:1.8;
+    }
+
+    @keyframes shine{
+      from{transform:translateX(-80%) rotate(-20deg)}
+      to{transform:translateX(80%) rotate(-20deg)}
+    }
+
+    @media (max-width: 1060px){
+      body{overflow:auto}
+      .app{overflow:auto}
+      .shell{
+        min-height:auto;
+        grid-template-columns:1fr;
+      }
+      .hero{
+        border-inline-start:none;
+        border-bottom:1px solid rgba(56,189,248,.14);
+      }
+    }
+
+    @media (max-width: 680px){
+      .row,
+      .secondary-actions{
+        grid-template-columns:1fr;
+      }
+      .login-card{
+        padding:22px;
+        border-radius:26px;
+      }
+      .shell{
+        border-radius:28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <script>
+    if(localStorage.getItem('teacherLoggedIn') === 'true' && sessionStorage.getItem('teacherStayOnLogin') !== 'yes'){
+      window.location.href = 'dashboard.html';
+    }
+    sessionStorage.removeItem('teacherStayOnLogin');
+  </script>
+  <div class="app">
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+    <div class="orb three"></div>
+    <div class="grid"></div>
+
+    <main class="shell">
+      <section class="hero">
+        <div class="hero-top">
+          <div class="brand">
+            <div class="logo">BN</div>
+            <div class="brand-text">
+              <h1>مصرف التعليم</h1>
+              <p>تعليم ذكي • تواصل متكامل • نتائج متميزة</p>
+            </div>
+          </div>
+
+          <div class="hero-copy">
+            <h2>بوابة دخول المعلمة</h2>
+            <p>
+              صفحة دخول فعلية بتصميم احترافي وواجهة فخمة مناسبة للمعلمات،
+              مع حقول مرتبة، خيارات واضحة، وأسلوب راقٍ يليق بمنصة تعليمية حديثة.
+            </p>
+          </div>
+
+          <div class="chips">
+            <div class="chip">متوافق مع الآيباد</div>
+            <div class="chip">متوافق مع الكمبيوتر</div>
+            <div class="chip">متوافق مع الجوال</div>
+          </div>
+        </div>
+
+        <div class="feature-panel">
+          <div class="feature-card">
+            <div class="feature-icon">🏫</div>
+            <div>
+              <h3>لوحة تعليمية منظمة</h3>
+              <p>دخول واضح للمعلمة للوصول إلى المتابعة والإشراف والتقارير والفصول بطريقة سهلة ومرتبة.</p>
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">🔐</div>
+            <div>
+              <h3>تجربة دخول راقية</h3>
+              <p>واجهة هادئة وفخمة مع تذكّر بيانات الدخول، وإظهار أو إخفاء كلمة المرور، ورسائل تنبيه أنيقة.</p>
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">✨</div>
+            <div>
+              <h3>جاهزة للتطوير</h3>
+              <p>يمكن لاحقًا ربط هذه الصفحة بصفحة الاشتراك، وإعادة الاشتراك، ولوحة المعلمة الفعلية داخل المشروع.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="login-side">
+        <div class="login-card">
+          <div class="login-head">
+            <h2>دخول المعلمة</h2>
+            <p>أدخلي بياناتك للوصول إلى لوحة التحكم التعليمية</p>
+          </div>
+
+          <div class="small-badges">
+            <div class="small-badge">اشتراك جديد</div>
+            <div class="small-badge">إعادة اشتراك</div>
+            <div class="small-badge">دعم فني</div>
+          </div>
+
+          <form class="form" id="loginForm">
+            <div class="row">
+              <div class="field">
+                <label for="teacherName">اسم المستخدم</label>
+                <div class="input-wrap">
+                  <input id="teacherName" class="input" type="text" placeholder="أدخلي اسم المستخدم" required />
+                  <span class="input-icon">👩🏻‍🏫</span>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="teacherRole">نوع الدخول</label>
+                <div class="input-wrap">
+                  <select id="teacherRole" class="select">
+                    <option>دخول المعلمة</option>
+                    <option>دخول للاشتراك</option>
+                    <option>دخول إعادة الاشتراك</option>
+                  </select>
+                  <span class="input-icon">▾</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="teacherPassword">كلمة المرور</label>
+              <div class="input-wrap">
+                <input id="teacherPassword" class="input" type="password" placeholder="أدخلي كلمة المرور" required />
+                <span class="input-icon">🔒</span>
+                <button class="password-toggle" type="button" id="togglePassword">👁️</button>
+              </div>
+            </div>
+
+            <div class="checks">
+              <label class="check">
+                <input type="checkbox" id="rememberMe" />
+                <span>تذكّر بياناتي</span>
+              </label>
+
+              <button class="link-btn" type="button" id="forgotBtn">نسيت كلمة المرور؟</button>
+            </div>
+
+            <button class="main-btn" type="submit">دخول</button>
+
+            <div class="secondary-actions">
+              <button class="action-btn" type="button" id="subscribeBtn">الاشتراك</button>
+              <button class="action-btn" type="button" id="renewBtn">إعادة الاشتراك</button>
+              <button class="action-btn" type="button" id="supportBtn">الدعم الفني</button>
+            </div>
+
+            <div class="status" id="statusBox"></div>
+          </form>
+
+          <div class="footer-note">
+            هذه صفحة دخول فعلية كنموذج جاهز للربط لاحقًا مع لوحة المعلمة أو صفحات الاشتراك
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const togglePassword = document.getElementById('togglePassword');
+    const teacherPassword = document.getElementById('teacherPassword');
+    const loginForm = document.getElementById('loginForm');
+    const statusBox = document.getElementById('statusBox');
+    const teacherName = document.getElementById('teacherName');
+    const teacherRole = document.getElementById('teacherRole');
+    const rememberMe = document.getElementById('rememberMe');
+
+    const subscribeBtn = document.getElementById('subscribeBtn');
+    const renewBtn = document.getElementById('renewBtn');
+    const supportBtn = document.getElementById('supportBtn');
+    const forgotBtn = document.getElementById('forgotBtn');
+
+    function showStatus(type, message){
+      statusBox.className = 'status show ' + type;
+      statusBox.textContent = message;
+    }
+
+    togglePassword.addEventListener('click', () => {
+      const isPassword = teacherPassword.type === 'password';
+      teacherPassword.type = isPassword ? 'text' : 'password';
+      togglePassword.textContent = isPassword ? '🙈' : '👁️';
+    });
+
+    // حفظ بسيط محلي
+    const savedUser = localStorage.getItem('teacherUser');
+    const savedRole = localStorage.getItem('teacherRole');
+    const savedRemember = localStorage.getItem('rememberTeacher');
+
+    if(savedRemember === 'yes'){
+      rememberMe.checked = true;
+      if(savedUser) teacherName.value = savedUser;
+      if(savedRole) teacherRole.value = savedRole;
+    }
+
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const name = teacherName.value.trim();
+      const password = teacherPassword.value.trim();
+      const role = teacherRole.value;
+
+      if(!name || !password){
+        showStatus('error', 'يرجى تعبئة اسم المستخدم وكلمة المرور قبل المتابعة.');
+        return;
+      }
+
+      if(rememberMe.checked){
+        localStorage.setItem('teacherUser', name);
+        localStorage.setItem('teacherRole', role);
+        localStorage.setItem('rememberTeacher', 'yes');
+      }else{
+        localStorage.removeItem('teacherUser');
+        localStorage.removeItem('teacherRole');
+        localStorage.removeItem('rememberTeacher');
+      }
+
+      localStorage.setItem('teacherLoggedIn', 'true');
+      localStorage.setItem('teacherDisplayName', name);
+      localStorage.setItem('teacherDisplayRole', role);
+      showStatus('success', 'تم تسجيل الدخول بنجاح، وجارٍ فتح لوحة المعلمة...');
+      setTimeout(() => {
+        window.location.href = 'dashboard.html';
+      }, 700);
+    });
+
+    subscribeBtn.addEventListener('click', () => {
+      teacherRole.value = 'دخول للاشتراك';
+      showStatus('success', 'تم اختيار واجهة الاشتراك. يمكن ربط هذا الزر لاحقًا بصفحة الاشتراك الجديدة.');
+    });
+
+    renewBtn.addEventListener('click', () => {
+      teacherRole.value = 'دخول إعادة الاشتراك';
+      showStatus('success', 'تم اختيار واجهة إعادة الاشتراك. يمكن ربط هذا الزر لاحقًا بصفحة تجديد الاشتراك.');
+    });
+
+    supportBtn.addEventListener('click', () => {
+      showStatus('success', 'يمكن تخصيص هذا الزر لاحقًا لفتح الدعم الفني أو نموذج المساعدة للمعلمات.');
+    });
+
+    forgotBtn.addEventListener('click', () => {
+      showStatus('success', 'يمكن ربط هذا الخيار لاحقًا بواجهة استعادة كلمة المرور أو إرسال رمز تحقق.');
+    });
+  </script>
+</body>
+</html>
