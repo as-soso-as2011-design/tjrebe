@@ -483,7 +483,11 @@
     body{top:0 !important}
     @media (max-width:680px){.help-grid{grid-template-columns:1fr}}
 
-  </style>
+  
+    .action-btn:active,.main-btn:active,.small-badge.action:active{transform:scale(.98)}
+    .action-btn[disabled]{opacity:.6;cursor:not-allowed}
+
+</style>
 </head>
 <body>
   <div class="app">
@@ -499,7 +503,7 @@
             <div class="logo">BN</div>
             <div class="brand-text">
               <h1>مصرف التعليم</h1>
-              <p>تعليم ذكي • تواصل متكامل • نتائج متميزة</p>
+              <p id="brandTagline">تعليم ذكي • تواصل متكامل • نتائج متميزة</p>
             </div>
           </div>
 
@@ -511,9 +515,9 @@
           </div>
 
           <div class="chips">
-            <div class="chip">متوافق مع الآيباد</div>
-            <div class="chip">متوافق مع الكمبيوتر</div>
-            <div class="chip">متوافق مع الجوال</div>
+            <div class="chip" id="chipIpad">متوافق مع الآيباد</div>
+            <div class="chip" id="chipComputer">متوافق مع الكمبيوتر</div>
+            <div class="chip" id="chipMobile">متوافق مع الجوال</div>
           </div>
         </div>
 
@@ -521,24 +525,24 @@
           <div class="feature-card">
             <div class="feature-icon">🏫</div>
             <div>
-              <h3>لوحة تعليمية منظمة</h3>
-              <p>دخول واضح للمعلمة للوصول إلى المتابعة والإشراف والتقارير والفصول بطريقة سهلة ومرتبة.</p>
+              <h3 id="feature1Title">لوحة تعليمية منظمة</h3>
+              <p id="feature1Desc">دخول واضح للمعلمة للوصول إلى المتابعة والإشراف والتقارير والفصول بطريقة سهلة ومرتبة.</p>
             </div>
           </div>
 
           <div class="feature-card">
             <div class="feature-icon">🔐</div>
             <div>
-              <h3>تجربة دخول راقية</h3>
-              <p>واجهة هادئة وفخمة مع تذكّر بيانات الدخول، وإظهار أو إخفاء كلمة المرور، ورسائل تنبيه أنيقة.</p>
+              <h3 id="feature2Title">تجربة دخول راقية</h3>
+              <p id="feature2Desc">واجهة هادئة وفخمة مع تذكّر بيانات الدخول، وإظهار أو إخفاء كلمة المرور، ورسائل تنبيه أنيقة.</p>
             </div>
           </div>
 
           <div class="feature-card">
             <div class="feature-icon">✨</div>
             <div>
-              <h3>جاهزة للتطوير</h3>
-              <p>واجهة ترحيبية موحدة تتيح الوصول المنظم إلى خدمات مصرف التعليم للمعلمين والمعلمات والإداريين والزوار.</p>
+              <h3 id="feature3Title">جاهزة للتطوير</h3>
+              <p id="feature3Desc">واجهة ترحيبية موحدة تتيح الوصول المنظم إلى خدمات مصرف التعليم للمعلمين والمعلمات والإداريين والزوار.</p>
             </div>
           </div>
         </div>
@@ -660,7 +664,7 @@
                   <button class="action-btn" type="button" id="sendSupportWhatsAppBtn">إرسال واتساب</button>
                   <button class="action-btn" type="button" id="copySupportBtn">نسخ البلاغ</button>
                 </div>
-                <div class="tiny-note">يمكنك اختيار طريقة الإرسال المناسبة، وسيتم تجهيز البلاغ مباشرة من داخل البوابة.</div>
+                <div class="tiny-note" id="supportTinyNote">يمكنك اختيار طريقة الإرسال المناسبة، وسيتم تجهيز البلاغ مباشرة من داخل البوابة.</div>
                 <div class="status" id="supportStatusBox"></div>
               </div>
             </div>
@@ -728,6 +732,7 @@
 
   <div id="google_translate_element"></div>
   
+  
   <script>
     const togglePassword = document.getElementById('togglePassword');
     const teacherPassword = document.getElementById('teacherPassword');
@@ -760,8 +765,18 @@
     const translations = {
       ar: {
         title: 'مصرف التعليم | دخول المعلم/ة',
+        brandTagline: 'تعليم ذكي • تواصل متكامل • نتائج متميزة',
         heroPortalTitle: 'بوابة دخول المعلم/ة',
         heroPortalDesc: 'واجهة دخول احترافية مناسبة للمعلمين والمعلمات والإداريين والزوار، مع حقول مرتبة وخيارات واضحة وتجربة استخدام أنيقة داخل مصرف التعليم.',
+        chipIpad: 'متوافق مع الآيباد',
+        chipComputer: 'متوافق مع الكمبيوتر',
+        chipMobile: 'متوافق مع الجوال',
+        feature1Title: 'لوحة تعليمية منظمة',
+        feature1Desc: 'دخول واضح للوصول إلى المتابعة والإشراف والتقارير والفصول بطريقة سهلة ومرتبة.',
+        feature2Title: 'تجربة دخول راقية',
+        feature2Desc: 'واجهة هادئة وفخمة مع تذكّر بيانات الدخول، وإظهار أو إخفاء كلمة المرور، ورسائل تنبيه أنيقة.',
+        feature3Title: 'جاهزة للتطوير',
+        feature3Desc: 'واجهة ترحيبية موحدة تتيح الوصول المنظم إلى خدمات مصرف التعليم للمعلمين والمعلمات والإداريين والزوار.',
         loginCardTitle: 'دخول المعلم/ة',
         loginSubtitle: 'أدخل/ي بياناتك للوصول إلى لوحة التحكم التعليمية',
         teacherNameLabel: 'اسم المستخدم',
@@ -805,7 +820,7 @@
         sendEmail: 'إرسال بالبريد',
         sendWhatsApp: 'إرسال واتساب',
         copyTicket: 'نسخ البلاغ',
-        tinyNote: 'يمكنك اختيار طريقة الإرسال المناسبة، وسيتم تجهيز البلاغ مباشرة من داخل البوابة.',
+        supportTinyNote: 'يمكنك اختيار طريقة الإرسال المناسبة، وسيتم تجهيز البلاغ مباشرة من داخل البوابة.',
         statusHelp: 'تم فتح قسم المساعدة.',
         statusSupport: 'تم فتح نافذة الدعم الفني.',
         statusCopied: 'تم نسخ نص البلاغ بنجاح.',
@@ -816,9 +831,19 @@
         statusLoginSuccess: 'تم تسجيل الدخول بنجاح، وجارٍ فتح لوحة المعلم/ة...'
       },
       en: {
-        title: 'Education Bank | Teacher Portal',
-        heroPortalTitle: 'Teacher Portal',
-        heroPortalDesc: 'A professional access page for teachers, administrators, and visitors, with organized fields, clear options, and a polished experience inside Education Bank.',
+        title: 'Education Bank | Teacher Login',
+        brandTagline: 'Smart Education • Integrated Communication • Excellent Results',
+        heroPortalTitle: 'Teacher Login Portal',
+        heroPortalDesc: 'A professional login interface for teachers, administrators, and visitors, with organized fields, clear options, and an elegant user experience inside Education Bank.',
+        chipIpad: 'iPad Compatible',
+        chipComputer: 'Computer Compatible',
+        chipMobile: 'Mobile Compatible',
+        feature1Title: 'Organized Educational Dashboard',
+        feature1Desc: 'Clear access to follow-up, supervision, reports, and classes in an easy and organized way.',
+        feature2Title: 'Premium Login Experience',
+        feature2Desc: 'A calm, polished interface with remembered login details, password show/hide, and elegant status alerts.',
+        feature3Title: 'Ready for Expansion',
+        feature3Desc: 'A unified welcome interface that gives structured access to Education Bank services for teachers, administrators, and visitors.',
         loginCardTitle: 'Teacher Login',
         loginSubtitle: 'Enter your details to access the educational control panel',
         teacherNameLabel: 'Username',
@@ -837,68 +862,84 @@
         subscribe: 'Subscription',
         renew: 'Renew Subscription',
         support: 'Technical Support',
-        footer: 'A unified login gateway that provides quick and secure access for teachers, administrators, and visitors inside Education Bank.',
+        footer: 'A unified gateway that provides quick and secure access for teachers, administrators, and visitors inside Education Bank.',
         helpPanelTitle: 'Need Help',
-        helpPanelDesc: 'Choose the type of help you need and the instructions will appear directly on the page.',
-        helpItem1Title: 'Login issue',
-        helpItem1Desc: 'Make sure the username and password are entered correctly, then try again. You can also refresh the page.',
-        helpItem2Title: 'Forgot password',
+        helpPanelDesc: 'Choose the type of help you need and instructions will appear directly on the page.',
+        helpItem1Title: 'Login Problem',
+        helpItem1Desc: 'Make sure the username and password are entered correctly, then try again. You can also reload the page.',
+        helpItem2Title: 'Forgot Password',
         helpItem2Desc: 'Use the technical support button to send a password recovery request with the username and login type.',
-        helpItem3Title: 'Access for teachers, administrators, and visitors',
-        helpItem3Desc: 'This gateway can be used to access the educational dashboard or other services depending on permission.',
-        helpItem4Title: 'Change language',
+        helpItem3Title: 'Access for Teachers, Administrators, and Visitors',
+        helpItem3Desc: 'This portal can be used to access the educational dashboard or other services based on permissions.',
+        helpItem4Title: 'Change Language',
         helpItem4Desc: 'Choose a language from the top list to translate the page automatically.',
         supportPanelTitle: 'Technical Support',
-        supportPanelDesc: 'You can send a technical support request directly from داخل the portal via email or WhatsApp.',
+        supportPanelDesc: 'You can send a technical support ticket directly from the portal through email or WhatsApp.',
         supportNameLabel: 'Name',
-        supportTypeLabel: 'Request type',
-        supportMessageLabel: 'Problem details',
+        supportTypeLabel: 'Request Type',
+        supportMessageLabel: 'Problem Description',
         supportNamePlaceholder: 'Type your name',
-        supportMessagePlaceholder: 'Describe the issue or request',
-        supportType0: 'Login issue',
-        supportType1: 'Password recovery',
-        supportType2: 'Technical issue in the system',
-        supportType3: 'General inquiry',
-        sendEmail: 'Send by email',
-        sendWhatsApp: 'Send by WhatsApp',
-        copyTicket: 'Copy message',
-        tinyNote: 'Choose the sending method and the ticket will be prepared directly from the portal.',
-        statusHelp: 'Help section is open.',
-        statusSupport: 'Technical support is open.',
-        statusCopied: 'The support ticket was copied successfully.',
-        statusEmail: 'Your support email has been prepared.',
-        statusWhats: 'Your WhatsApp message has been prepared.',
+        supportMessagePlaceholder: 'Write the issue details or request',
+        supportType0: 'Login Problem',
+        supportType1: 'Password Recovery',
+        supportType2: 'Technical Issue in the System',
+        supportType3: 'General Inquiry',
+        sendEmail: 'Send by Email',
+        sendWhatsApp: 'Send via WhatsApp',
+        copyTicket: 'Copy Ticket',
+        supportTinyNote: 'Choose the sending method and the ticket will be prepared directly from the portal.',
+        statusHelp: 'Help section opened.',
+        statusSupport: 'Technical support panel opened.',
+        statusCopied: 'Ticket text copied successfully.',
+        statusEmail: 'Support email prepared successfully.',
+        statusWhats: 'WhatsApp support message prepared successfully.',
         statusSupportMissing: 'Please enter your name and problem details first.',
         statusLoginMissing: 'Please enter username and password before continuing.',
         statusLoginSuccess: 'Login successful. Opening the teacher dashboard...'
       }
     };
 
-    const GoogleLangs = new Set([
-      'fr','es','de','it','pt','ru','tr','fa','ur','hi','bn','id','ms',
-      'zh-CN','zh-TW','ja','ko','th','vi','nl','pl','uk','sv','no','da','fi',
-      'he','cs','ro','hu','el'
+    const googleLangs = new Set([
+      'fr','es','de','it','pt','ru','tr','fa','ur','hi','bn','id','ms','zh-CN','zh-TW',
+      'ja','ko','th','vi','nl','pl','uk','sv','no','da','fi','el','he','cs','hu','ro',
+      'bg','sr','hr','sk','sl','et','lv','lt','sw','tl','ta','te','ml','kn','mr','gu','pa'
     ]);
 
+    function setText(id, value){
+      const el = document.getElementById(id);
+      if(el) el.textContent = value;
+    }
+    function setPlaceholder(id, value){
+      const el = document.getElementById(id);
+      if(el) el.placeholder = value;
+    }
     function showStatus(type, message){
-      if (!statusBox) return;
+      if(!statusBox) return;
       statusBox.className = 'status show ' + type;
       statusBox.textContent = message;
     }
-
     function showSupportStatus(type, message){
-      if (!supportStatusBox) return;
+      if(!supportStatusBox) return;
       supportStatusBox.className = 'status show ' + type;
       supportStatusBox.textContent = message;
     }
-
+    function togglePanel(panel){
+      [helpPanel, supportPanel].forEach(p => {
+        if(!p) return;
+        if(p === panel){
+          p.classList.toggle('show');
+        } else {
+          p.classList.remove('show');
+        }
+      });
+    }
     function buildSupportMessage(){
       const lang = localStorage.getItem('teacherPortalLang') || 'ar';
       const isAr = lang === 'ar';
       const name = (supportName?.value || teacherName?.value || '').trim();
       const type = (supportType?.value || '').trim();
       const msg = (supportMessage?.value || '').trim();
-      if(!name || !msg){ return null; }
+      if(!name || !msg) return null;
       return isAr
         ? `طلب دعم فني - مصرف التعليم
 الاسم: ${name}
@@ -910,108 +951,88 @@ Request Type: ${type}
 Issue Details: ${msg}`;
     }
 
-    function togglePanel(panelToShow){
-      [helpPanel, supportPanel].forEach(panel => {
-        if (!panel) return;
-        panel.style.display = panel === panelToShow ? (panel.style.display === 'block' ? 'none' : 'block') : 'none';
-      });
-    }
-
-    function setText(id, value){
-      const el = document.getElementById(id);
-      if (el) el.textContent = value;
-    }
-
-    function setPlaceholder(id, value){
-      const el = document.getElementById(id);
-      if (el) el.placeholder = value;
-    }
-
-    function setDir(lang){
+    function applyLanguage(lang){
+      const t = translations[lang] || translations.en;
+      const actual = lang === 'ar' ? translations.ar : t;
       document.documentElement.lang = lang === 'ar' ? 'ar' : lang;
       document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-    }
-
-    function applyLanguage(lang){
-      const t = translations[lang] || translations.en || translations.ar;
-      const use = lang === 'ar' ? translations.ar : t;
-      setDir(lang);
-      document.title = use.title;
-
-      setText('heroPortalTitle', use.heroPortalTitle);
-      setText('heroPortalDesc', use.heroPortalDesc);
-      setText('loginCardTitle', use.loginCardTitle);
-      setText('loginSubtitle', use.loginSubtitle);
-      setText('teacherNameLabel', use.teacherNameLabel);
-      setText('teacherRoleLabel', use.teacherRoleLabel);
-      setText('teacherPasswordLabel', use.teacherPasswordLabel);
-      setPlaceholder('teacherName', use.teacherNamePlaceholder);
-      setPlaceholder('teacherPassword', use.teacherPasswordPlaceholder);
-
-      if (teacherRole && teacherRole.options.length >= 3){
-        teacherRole.options[0].text = use.role0;
-        teacherRole.options[1].text = use.role1;
-        teacherRole.options[2].text = use.role2;
+      document.title = actual.title;
+      setText('brandTagline', actual.brandTagline);
+      setText('heroPortalTitle', actual.heroPortalTitle);
+      setText('heroPortalDesc', actual.heroPortalDesc);
+      setText('chipIpad', actual.chipIpad);
+      setText('chipComputer', actual.chipComputer);
+      setText('chipMobile', actual.chipMobile);
+      setText('feature1Title', actual.feature1Title);
+      setText('feature1Desc', actual.feature1Desc);
+      setText('feature2Title', actual.feature2Title);
+      setText('feature2Desc', actual.feature2Desc);
+      setText('feature3Title', actual.feature3Title);
+      setText('feature3Desc', actual.feature3Desc);
+      setText('loginCardTitle', actual.loginCardTitle);
+      setText('loginSubtitle', actual.loginSubtitle);
+      setText('teacherNameLabel', actual.teacherNameLabel);
+      setText('teacherRoleLabel', actual.teacherRoleLabel);
+      setText('teacherPasswordLabel', actual.teacherPasswordLabel);
+      setPlaceholder('teacherName', actual.teacherNamePlaceholder);
+      setPlaceholder('teacherPassword', actual.teacherPasswordPlaceholder);
+      if(teacherRole && teacherRole.options.length >= 3){
+        teacherRole.options[0].text = actual.role0;
+        teacherRole.options[1].text = actual.role1;
+        teacherRole.options[2].text = actual.role2;
       }
-
-      if (helpBtnTop) helpBtnTop.textContent = use.helpTop;
-      if (supportTopBtn) supportTopBtn.textContent = use.supportTop;
-      const rememberSpan = document.querySelector('label.check span');
-      if (rememberSpan) rememberSpan.textContent = use.remember;
-      if (forgotBtn) forgotBtn.textContent = use.forgot;
+      if(helpBtnTop) helpBtnTop.textContent = actual.helpTop;
+      if(supportTopBtn) supportTopBtn.textContent = actual.supportTop;
+      const rememberSpan = document.querySelector('.check span');
+      if(rememberSpan) rememberSpan.textContent = actual.remember;
+      if(forgotBtn) forgotBtn.textContent = actual.forgot;
       const mainBtn = document.querySelector('.main-btn');
-      if (mainBtn) mainBtn.textContent = use.loginBtn;
-      if (subscribeBtn) subscribeBtn.textContent = use.subscribe;
-      if (renewBtn) renewBtn.textContent = use.renew;
-      if (supportBtn) supportBtn.textContent = use.support;
-      setText('footerNote', use.footer);
-
-      setText('helpPanelTitle', use.helpPanelTitle);
-      setText('helpPanelDesc', use.helpPanelDesc);
-      setText('helpItem1Title', use.helpItem1Title);
-      setText('helpItem1Desc', use.helpItem1Desc);
-      setText('helpItem2Title', use.helpItem2Title);
-      setText('helpItem2Desc', use.helpItem2Desc);
-      setText('helpItem3Title', use.helpItem3Title);
-      setText('helpItem3Desc', use.helpItem3Desc);
-      setText('helpItem4Title', use.helpItem4Title);
-      setText('helpItem4Desc', use.helpItem4Desc);
-
-      setText('supportPanelTitle', use.supportPanelTitle);
-      setText('supportPanelDesc', use.supportPanelDesc);
-      setText('supportNameLabel', use.supportNameLabel);
-      setText('supportTypeLabel', use.supportTypeLabel);
-      setText('supportMessageLabel', use.supportMessageLabel);
-      setPlaceholder('supportName', use.supportNamePlaceholder);
-      setPlaceholder('supportMessage', use.supportMessagePlaceholder);
-      if (supportType && supportType.options.length >= 4){
-        supportType.options[0].text = use.supportType0;
-        supportType.options[1].text = use.supportType1;
-        supportType.options[2].text = use.supportType2;
-        supportType.options[3].text = use.supportType3;
+      if(mainBtn) mainBtn.textContent = actual.loginBtn;
+      if(subscribeBtn) subscribeBtn.textContent = actual.subscribe;
+      if(renewBtn) renewBtn.textContent = actual.renew;
+      if(supportBtn) supportBtn.textContent = actual.support;
+      setText('footerNote', actual.footer);
+      setText('helpPanelTitle', actual.helpPanelTitle);
+      setText('helpPanelDesc', actual.helpPanelDesc);
+      setText('helpItem1Title', actual.helpItem1Title);
+      setText('helpItem1Desc', actual.helpItem1Desc);
+      setText('helpItem2Title', actual.helpItem2Title);
+      setText('helpItem2Desc', actual.helpItem2Desc);
+      setText('helpItem3Title', actual.helpItem3Title);
+      setText('helpItem3Desc', actual.helpItem3Desc);
+      setText('helpItem4Title', actual.helpItem4Title);
+      setText('helpItem4Desc', actual.helpItem4Desc);
+      setText('supportPanelTitle', actual.supportPanelTitle);
+      setText('supportPanelDesc', actual.supportPanelDesc);
+      setText('supportNameLabel', actual.supportNameLabel);
+      setText('supportTypeLabel', actual.supportTypeLabel);
+      setText('supportMessageLabel', actual.supportMessageLabel);
+      setPlaceholder('supportName', actual.supportNamePlaceholder);
+      setPlaceholder('supportMessage', actual.supportMessagePlaceholder);
+      if(supportType && supportType.options.length >= 4){
+        supportType.options[0].text = actual.supportType0;
+        supportType.options[1].text = actual.supportType1;
+        supportType.options[2].text = actual.supportType2;
+        supportType.options[3].text = actual.supportType3;
       }
-      if (sendSupportEmailBtn) sendSupportEmailBtn.textContent = use.sendEmail;
-      if (sendSupportWhatsAppBtn) sendSupportWhatsAppBtn.textContent = use.sendWhatsApp;
-      if (copySupportBtn) copySupportBtn.textContent = use.copyTicket;
-      const tinyNote = document.querySelector('.tiny-note');
-      if (tinyNote) tinyNote.textContent = use.tinyNote;
+      if(sendSupportEmailBtn) sendSupportEmailBtn.textContent = actual.sendEmail;
+      if(sendSupportWhatsAppBtn) sendSupportWhatsAppBtn.textContent = actual.sendWhatsApp;
+      if(copySupportBtn) copySupportBtn.textContent = actual.copyTicket;
+      setText('supportTinyNote', actual.supportTinyNote);
     }
 
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({
         pageLanguage: 'ar',
         autoDisplay: false,
-        includedLanguages: 'ar,en,fr,es,de,it,pt,ru,tr,fa,ur,hi,bn,id,ms,zh-CN,zh-TW,ja,ko,th,vi,nl,pl,uk,sv,no,da,fi,he,cs,ro,hu,el'
+        includedLanguages: Array.from(googleLangs).join(',')
       }, 'google_translate_element');
     }
 
     function waitForGoogleCombo(callback, retries = 30){
       const combo = document.querySelector('.goog-te-combo');
-      if (combo){
-        callback(combo);
-      } else if (retries > 0){
-        setTimeout(() => waitForGoogleCombo(callback, retries - 1), 300);
-      }
+      if(combo) callback(combo);
+      else if(retries > 0) setTimeout(() => waitForGoogleCombo(callback, retries - 1), 300);
     }
 
     function applyGoogleTranslation(lang){
@@ -1030,9 +1051,8 @@ Issue Details: ${msg}`;
     const savedUser = localStorage.getItem('teacherUser');
     const savedRole = localStorage.getItem('teacherRole');
     const savedRemember = localStorage.getItem('rememberTeacher');
-
     if(savedRemember === 'yes'){
-      if (rememberMe) rememberMe.checked = true;
+      if(rememberMe) rememberMe.checked = true;
       if(savedUser && teacherName) teacherName.value = savedUser;
       if(savedRole && teacherRole) teacherRole.value = savedRole;
     }
@@ -1044,12 +1064,10 @@ Issue Details: ${msg}`;
       const name = teacherName.value.trim();
       const password = teacherPassword.value.trim();
       const role = teacherRole.value;
-
       if(!name || !password){
         showStatus('error', t.statusLoginMissing);
         return;
       }
-
       if(rememberMe?.checked){
         localStorage.setItem('teacherUser', name);
         localStorage.setItem('teacherRole', role);
@@ -1059,8 +1077,11 @@ Issue Details: ${msg}`;
         localStorage.removeItem('teacherRole');
         localStorage.removeItem('rememberTeacher');
       }
-
+      localStorage.setItem('teacherLoggedIn','true');
+      localStorage.setItem('teacherDisplayName', name);
+      localStorage.setItem('teacherDisplayRole', role);
       showStatus('success', t.statusLoginSuccess);
+      setTimeout(() => { window.location.href = 'dashboard.html'; }, 700);
     });
 
     helpBtnTop?.addEventListener('click', () => {
@@ -1068,35 +1089,28 @@ Issue Details: ${msg}`;
       const lang = localStorage.getItem('teacherPortalLang') || 'ar';
       showStatus('success', (translations[lang] || translations.en).statusHelp);
     });
-
     supportTopBtn?.addEventListener('click', () => {
       togglePanel(supportPanel);
       const lang = localStorage.getItem('teacherPortalLang') || 'ar';
       showStatus('success', (translations[lang] || translations.en).statusSupport);
     });
-
     supportBtn?.addEventListener('click', () => {
-      if (supportPanel){
-        helpPanel.style.display = 'none';
-        supportPanel.style.display = 'block';
-      }
+      if(helpPanel) helpPanel.classList.remove('show');
+      if(supportPanel) supportPanel.classList.add('show');
       const lang = localStorage.getItem('teacherPortalLang') || 'ar';
       showStatus('success', (translations[lang] || translations.en).statusSupport);
     });
-
     subscribeBtn?.addEventListener('click', () => {
-      if (teacherRole?.options[1]) teacherRole.value = teacherRole.options[1].text;
+      if(teacherRole?.options[1]) teacherRole.value = teacherRole.options[1].text;
       showStatus('success', 'تم اختيار مسار الاشتراك.');
     });
-
     renewBtn?.addEventListener('click', () => {
-      if (teacherRole?.options[2]) teacherRole.value = teacherRole.options[2].text;
+      if(teacherRole?.options[2]) teacherRole.value = teacherRole.options[2].text;
       showStatus('success', 'تم اختيار مسار إعادة الاشتراك.');
     });
-
     forgotBtn?.addEventListener('click', () => {
-      helpPanel.style.display = 'block';
-      supportPanel.style.display = 'none';
+      if(helpPanel) helpPanel.classList.add('show');
+      if(supportPanel) supportPanel.classList.remove('show');
       const lang = localStorage.getItem('teacherPortalLang') || 'ar';
       showStatus('success', (translations[lang] || translations.en).statusHelp);
     });
@@ -1105,31 +1119,29 @@ Issue Details: ${msg}`;
       const lang = localStorage.getItem('teacherPortalLang') || 'ar';
       const t = translations[lang] || translations.en;
       const body = buildSupportMessage();
-      if (!body){
+      if(!body){
         showSupportStatus('error', t.statusSupportMissing);
         return;
       }
-      window.location.href = `mailto:support@education-bank.local?subject=${encodeURIComponent(lang === 'ar' ? 'طلب دعم فني - مصرف التعليم' : 'Technical Support Request - Education Bank')}&body=${encodeURIComponent(body)}`;
+      window.location.href = `mailto:support@masraf-taalem.com?subject=${encodeURIComponent(lang === 'ar' ? 'طلب دعم فني - مصرف التعليم' : 'Technical Support Request - Education Bank')}&body=${encodeURIComponent(body)}`;
       showSupportStatus('success', t.statusEmail);
     });
-
     sendSupportWhatsAppBtn?.addEventListener('click', () => {
       const lang = localStorage.getItem('teacherPortalLang') || 'ar';
       const t = translations[lang] || translations.en;
       const body = buildSupportMessage();
-      if (!body){
+      if(!body){
         showSupportStatus('error', t.statusSupportMissing);
         return;
       }
-      window.open(`https://wa.me/966500000000?text=${encodeURIComponent(body)}`, '_blank');
+      window.open(`https://wa.me/966502234335?text=${encodeURIComponent(body)}`, '_blank');
       showSupportStatus('success', t.statusWhats);
     });
-
     copySupportBtn?.addEventListener('click', async () => {
       const lang = localStorage.getItem('teacherPortalLang') || 'ar';
       const t = translations[lang] || translations.en;
       const body = buildSupportMessage();
-      if (!body){
+      if(!body){
         showSupportStatus('error', t.statusSupportMissing);
         return;
       }
@@ -1144,26 +1156,25 @@ Issue Details: ${msg}`;
     languageSelect?.addEventListener('change', (e) => {
       const lang = e.target.value;
       localStorage.setItem('teacherPortalLang', lang);
-
-      if (lang === 'ar' || lang === 'en'){
+      if(lang === 'ar' || lang === 'en'){
         applyLanguage(lang);
       } else {
-        applyLanguage('ar');
-        setDir('rtl');
-        setTimeout(() => applyGoogleTranslation(lang), 500);
+        applyLanguage('en');
+        setTimeout(() => applyGoogleTranslation(lang), 400);
       }
     });
 
     const initialLang = localStorage.getItem('teacherPortalLang') || 'ar';
-    if (languageSelect) languageSelect.value = initialLang;
-    if (initialLang === 'ar' || initialLang === 'en'){
+    if(languageSelect) languageSelect.value = initialLang;
+    if(initialLang === 'ar' || initialLang === 'en'){
       applyLanguage(initialLang);
     } else {
-      applyLanguage('ar');
+      applyLanguage('en');
       setTimeout(() => applyGoogleTranslation(initialLang), 700);
     }
   </script>
   <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 
 </body>
 </html>

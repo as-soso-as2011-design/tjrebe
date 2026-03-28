@@ -705,6 +705,16 @@ function logoutTeacherDashboard(){
   sessionStorage.setItem('teacherStayOnLogin','yes');
   window.location.href = 'index.html';
 }
+
+document.addEventListener('DOMContentLoaded', function(){
+  const teacherName = localStorage.getItem('teacherDisplayName');
+  const teacherRole = localStorage.getItem('teacherDisplayRole');
+  const nameEl = document.getElementById('teacherDashboardName');
+  const roleEl = document.getElementById('teacherDashboardRoleText');
+  if(nameEl && teacherName) nameEl.textContent = teacherName;
+  if(roleEl && teacherRole) roleEl.textContent = teacherRole + ' • لوحة التحكم التعليمية';
+});
+
 </script>
 <div class="page">
   <div class="shell">
@@ -781,8 +791,8 @@ function logoutTeacherDashboard(){
       <aside class="sidebar">
         <div class="side-card profile">
           <div class="profile-pic">👩🏻</div>
-          <h3>أ. سارة</h3>
-          <p>لوحة المعلمة الفعلية • تطويرات جديدة للبطاقات والعمليات</p>
+          <h3 id="teacherDashboardName">أ. سارة</h3>
+          <p><span id="teacherDashboardRoleText">لوحة المعلمة الفعلية • تطويرات جديدة للبطاقات والعمليات</span></p>
         </div>
 
         <div class="side-card">
