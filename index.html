@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>مصرف التعليم | دخول المعلمة</title>
+  <title>مصرف التعليم | دخول المعلم/ة</title>
   <style>
     :root{
       --bg1:#f6fcff;
@@ -266,6 +266,25 @@
       font-size:12px;
       font-weight:800;
     }
+    .small-badge.action{
+      cursor:pointer;
+      border:none;
+      min-height:38px;
+      font-family:inherit;
+    }
+    .small-badge-control{
+      min-height:38px;
+      padding:0 12px;
+      border-radius:999px;
+      background:#f0f9ff;
+      border:1px solid rgba(56,189,248,.18);
+      color:#0369a1;
+      font-size:12px;
+      font-weight:800;
+      font-family:inherit;
+      outline:none;
+      cursor:pointer;
+    }
 
     .form{
       display:grid;
@@ -292,7 +311,7 @@
       min-height:56px;
       border-radius:18px;
       padding:0 18px;
-      padding-inline-end:52px;
+      padding-left:52px;
       color:#0f172a;
       font-size:15px;
       border:1px solid rgba(56,189,248,.18);
@@ -303,7 +322,7 @@
     }
     .input-icon{
       position:absolute;
-      inset-inline-start:16px;
+      left:16px;
       top:50%;
       transform:translateY(-50%);
       color:#38bdf8;
@@ -313,7 +332,7 @@
 
     .password-toggle{
       position:absolute;
-      inset-inline-start:12px;
+      left:12px;
       top:50%;
       transform:translateY(-50%);
       border:none;
@@ -447,15 +466,26 @@
         border-radius:28px;
       }
     }
+  
+    .quick-panels{display:grid;gap:12px;margin-top:6px}
+    .quick-panel{display:none;padding:16px;border-radius:22px;background:linear-gradient(180deg,#ffffff,#f8fdff);border:1px solid rgba(56,189,248,.16);box-shadow:var(--shadow-soft)}
+    .quick-panel.show{display:grid;gap:12px}
+    .quick-panel h3{margin:0;color:#083344;font-size:18px}
+    .quick-panel p{margin:0;color:#567387;line-height:1.9;font-size:14px}
+    .help-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .help-item{padding:14px;border-radius:18px;background:#fff;border:1px solid rgba(56,189,248,.14)}
+    .help-item strong{display:block;margin-bottom:6px;color:#0c4a6e}
+    .support-form{display:grid;gap:12px}
+    .support-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .tiny-note{font-size:12px;color:#678398;line-height:1.8}
+    #google_translate_element{position:absolute;left:-9999px;top:-9999px;height:0;overflow:hidden}
+    .goog-te-banner-frame,.skiptranslate{display:none !important}
+    body{top:0 !important}
+    @media (max-width:680px){.help-grid{grid-template-columns:1fr}}
+
   </style>
 </head>
 <body>
-  <script>
-    if(localStorage.getItem('teacherLoggedIn') === 'true' && sessionStorage.getItem('teacherStayOnLogin') !== 'yes'){
-      window.location.href = 'dashboard.html';
-    }
-    sessionStorage.removeItem('teacherStayOnLogin');
-  </script>
   <div class="app">
     <div class="orb one"></div>
     <div class="orb two"></div>
@@ -474,10 +504,9 @@
           </div>
 
           <div class="hero-copy">
-            <h2>بوابة دخول المعلمة</h2>
-            <p>
-              صفحة دخول فعلية بتصميم احترافي وواجهة فخمة مناسبة للمعلمات،
-              مع حقول مرتبة، خيارات واضحة، وأسلوب راقٍ يليق بمنصة تعليمية حديثة.
+            <h2 id="heroPortalTitle">بوابة دخول المعلم/ة</h2>
+            <p id="heroPortalDesc">
+              واجهة دخول احترافية مناسبة للمعلمين والمعلمات والإداريين والزوار، مع حقول مرتبة وخيارات واضحة وتجربة استخدام أنيقة داخل مصرف التعليم.
             </p>
           </div>
 
@@ -509,7 +538,7 @@
             <div class="feature-icon">✨</div>
             <div>
               <h3>جاهزة للتطوير</h3>
-              <p>يمكن لاحقًا ربط هذه الصفحة بصفحة الاشتراك، وإعادة الاشتراك، ولوحة المعلمة الفعلية داخل المشروع.</p>
+              <p>واجهة ترحيبية موحدة تتيح الوصول المنظم إلى خدمات مصرف التعليم للمعلمين والمعلمات والإداريين والزوار.</p>
             </div>
           </div>
         </div>
@@ -518,31 +547,140 @@
       <section class="login-side">
         <div class="login-card">
           <div class="login-head">
-            <h2>دخول المعلمة</h2>
-            <p>أدخلي بياناتك للوصول إلى لوحة التحكم التعليمية</p>
+            <h2 id="loginCardTitle">دخول المعلم/ة</h2>
+            <p id="loginSubtitle">أدخل/ي بياناتك للوصول إلى لوحة التحكم التعليمية</p>
           </div>
 
           <div class="small-badges">
-            <div class="small-badge">اشتراك جديد</div>
-            <div class="small-badge">إعادة اشتراك</div>
-            <div class="small-badge">دعم فني</div>
+            <select class="small-badge-control" id="languageSelect">
+              <option value="ar">🌐 العربية</option>
+              <option value="en">🇺🇸 English</option>
+              <option value="fr">🇫🇷 Français</option>
+              <option value="es">🇪🇸 Español</option>
+              <option value="de">🇩🇪 Deutsch</option>
+              <option value="it">🇮🇹 Italiano</option>
+              <option value="pt">🇵🇹 Português</option>
+              <option value="ru">🇷🇺 Русский</option>
+              <option value="tr">🇹🇷 Türkçe</option>
+              <option value="fa">🇮🇷 فارسی</option>
+              <option value="ur">🇵🇰 اردو</option>
+              <option value="hi">🇮🇳 हिन्दी</option>
+              <option value="bn">🇧🇩 বাংলা</option>
+              <option value="id">🇮🇩 Bahasa Indonesia</option>
+              <option value="ms">🇲🇾 Bahasa Melayu</option>
+              <option value="zh-CN">🇨🇳 中文(简体)</option>
+              <option value="zh-TW">🇹🇼 中文(繁體)</option>
+              <option value="ja">🇯🇵 日本語</option>
+              <option value="ko">🇰🇷 한국어</option>
+              <option value="th">🇹🇭 ไทย</option>
+              <option value="vi">🇻🇳 Tiếng Việt</option>
+              <option value="nl">🇳🇱 Nederlands</option>
+              <option value="pl">🇵🇱 Polski</option>
+              <option value="uk">🇺🇦 Українська</option>
+              <option value="sv">🇸🇪 Svenska</option>
+              <option value="no">🇳🇴 Norsk</option>
+              <option value="da">🇩🇰 Dansk</option>
+              <option value="fi">🇫🇮 Suomi</option>
+              <option value="el">🇬🇷 Ελληνικά</option>
+              <option value="he">🇮🇱 עברית</option>
+              <option value="cs">🇨🇿 Čeština</option>
+              <option value="hu">🇭🇺 Magyar</option>
+              <option value="ro">🇷🇴 Română</option>
+              <option value="bg">🇧🇬 Български</option>
+              <option value="sr">🇷🇸 Српски</option>
+              <option value="hr">🇭🇷 Hrvatski</option>
+              <option value="sk">🇸🇰 Slovenčina</option>
+              <option value="sl">🇸🇮 Slovenščina</option>
+              <option value="et">🇪🇪 Eesti</option>
+              <option value="lv">🇱🇻 Latviešu</option>
+              <option value="lt">🇱🇹 Lietuvių</option>
+              <option value="sw">🇰🇪 Kiswahili</option>
+              <option value="tl">🇵🇭 Filipino</option>
+              <option value="ta">🇱🇰 தமிழ்</option>
+              <option value="te">🇮🇳 తెలుగు</option>
+              <option value="ml">🇮🇳 മലയാളം</option>
+              <option value="kn">🇮🇳 ಕನ್ನಡ</option>
+              <option value="mr">🇮🇳 मराठी</option>
+              <option value="gu">🇮🇳 ગુજરાતી</option>
+              <option value="pa">🇮🇳 ਪੰਜਾਬੀ</option>
+            </select>
+            <button class="small-badge action" type="button" id="helpBtnTop">أحتاج مساعدة</button>
+            <button class="small-badge action" type="button" id="supportTopBtn">دعم فني</button>
+          </div>
+
+          <div class="quick-panels">
+            <div class="quick-panel" id="helpPanel">
+              <h3 id="helpPanelTitle">أحتاج مساعدة</h3>
+              <p id="helpPanelDesc">اختر نوع المساعدة المناسبة لك، وستظهر لك الإرشادات مباشرة داخل الصفحة.</p>
+              <div class="help-grid">
+                <div class="help-item">
+                  <strong id="helpItem1Title">مشكلة في تسجيل الدخول</strong>
+                  <p><span id="helpItem1Desc">تأكد/ي من كتابة اسم المستخدم وكلمة المرور بشكل صحيح، ثم أعد/ي المحاولة. ويمكنك أيضًا تجربة إعادة تحميل الصفحة.</span></p>
+                </div>
+                <div class="help-item">
+                  <strong id="helpItem2Title">نسيت كلمة المرور</strong>
+                  <p><span id="helpItem2Desc">استخدم/ي زر الدعم الفني لإرسال طلب استعادة كلمة المرور مع اسم المستخدم ونوع الدخول.</span></p>
+                </div>
+                <div class="help-item">
+                  <strong id="helpItem3Title">الدخول للمعلمين والمعلمات والإداريين والزوار</strong>
+                  <p><span id="helpItem3Desc">يمكن استخدام هذه البوابة للدخول إلى لوحة التحكم التعليمية أو الوصول للخدمات المخصصة حسب الصلاحية.</span></p>
+                </div>
+                <div class="help-item">
+                  <strong id="helpItem4Title">تغيير اللغة</strong>
+                  <p><span id="helpItem4Desc">اختر/ي اللغة من القائمة العلوية ليتم ترجمة الصفحة إلى اللغة المناسبة تلقائيًا.</span></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="quick-panel" id="supportPanel">
+              <h3 id="supportPanelTitle">الدعم الفني</h3>
+              <p id="supportPanelDesc">يمكنك إرسال بلاغ دعم فني مباشرة من داخل البوابة عبر البريد أو واتساب.</p>
+              <div class="support-form">
+                <div class="row">
+                  <div class="field">
+                    <label for="supportName" id="supportNameLabel">الاسم</label>
+                    <input id="supportName" class="input" type="text" placeholder="اكتب/ي الاسم">
+                  </div>
+                  <div class="field">
+                    <label for="supportType" id="supportTypeLabel">نوع الطلب</label>
+                    <select id="supportType" class="select">
+                      <option>مشكلة تسجيل دخول</option>
+                      <option>استعادة كلمة المرور</option>
+                      <option>مشكلة تقنية داخل النظام</option>
+                      <option>استفسار عام</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="supportMessage" id="supportMessageLabel">وصف المشكلة</label>
+                  <textarea id="supportMessage" placeholder="اكتب/ي تفاصيل المشكلة أو الطلب"></textarea>
+                </div>
+                <div class="support-actions">
+                  <button class="action-btn" type="button" id="sendSupportEmailBtn">إرسال بالبريد</button>
+                  <button class="action-btn" type="button" id="sendSupportWhatsAppBtn">إرسال واتساب</button>
+                  <button class="action-btn" type="button" id="copySupportBtn">نسخ البلاغ</button>
+                </div>
+                <div class="tiny-note">يمكنك اختيار طريقة الإرسال المناسبة، وسيتم تجهيز البلاغ مباشرة من داخل البوابة.</div>
+                <div class="status" id="supportStatusBox"></div>
+              </div>
+            </div>
           </div>
 
           <form class="form" id="loginForm">
             <div class="row">
               <div class="field">
-                <label for="teacherName">اسم المستخدم</label>
+                <label for="teacherName" id="teacherNameLabel">اسم المستخدم</label>
                 <div class="input-wrap">
-                  <input id="teacherName" class="input" type="text" placeholder="أدخلي اسم المستخدم" required />
-                  <span class="input-icon">👩🏻‍🏫</span>
+                  <input id="teacherName" class="input" type="text" placeholder="ادخل/ي اسم المستخدم" required />
+                  <span class="input-icon">👤</span>
                 </div>
               </div>
 
               <div class="field">
-                <label for="teacherRole">نوع الدخول</label>
+                <label for="teacherRole" id="teacherRoleLabel">نوع الدخول</label>
                 <div class="input-wrap">
                   <select id="teacherRole" class="select">
-                    <option>دخول المعلمة</option>
+                    <option>دخول المعلم/ة</option>
                     <option>دخول للاشتراك</option>
                     <option>دخول إعادة الاشتراك</option>
                   </select>
@@ -552,7 +690,7 @@
             </div>
 
             <div class="field">
-              <label for="teacherPassword">كلمة المرور</label>
+              <label for="teacherPassword" id="teacherPasswordLabel">كلمة المرور</label>
               <div class="input-wrap">
                 <input id="teacherPassword" class="input" type="password" placeholder="أدخلي كلمة المرور" required />
                 <span class="input-icon">🔒</span>
@@ -580,14 +718,16 @@
             <div class="status" id="statusBox"></div>
           </form>
 
-          <div class="footer-note">
-            هذه صفحة دخول فعلية كنموذج جاهز للربط لاحقًا مع لوحة المعلمة أو صفحات الاشتراك
+          <div class="footer-note" id="footerNote">
+            بوابة دخول موحدة تتيح الوصول السريع والآمن للمعلمين والمعلمات والإداريين والزوار داخل مصرف التعليم.
           </div>
         </div>
       </section>
     </main>
   </div>
 
+  <div id="google_translate_element"></div>
+  
   <script>
     const togglePassword = document.getElementById('togglePassword');
     const teacherPassword = document.getElementById('teacherPassword');
@@ -602,41 +742,315 @@
     const supportBtn = document.getElementById('supportBtn');
     const forgotBtn = document.getElementById('forgotBtn');
 
+    const helpPanel = document.getElementById('helpPanel');
+    const supportPanel = document.getElementById('supportPanel');
+    const helpBtnTop = document.getElementById('helpBtnTop');
+    const supportTopBtn = document.getElementById('supportTopBtn');
+
+    const supportName = document.getElementById('supportName');
+    const supportType = document.getElementById('supportType');
+    const supportMessage = document.getElementById('supportMessage');
+    const supportStatusBox = document.getElementById('supportStatusBox');
+    const sendSupportEmailBtn = document.getElementById('sendSupportEmailBtn');
+    const sendSupportWhatsAppBtn = document.getElementById('sendSupportWhatsAppBtn');
+    const copySupportBtn = document.getElementById('copySupportBtn');
+
+    const languageSelect = document.getElementById('languageSelect');
+
+    const translations = {
+      ar: {
+        title: 'مصرف التعليم | دخول المعلم/ة',
+        heroPortalTitle: 'بوابة دخول المعلم/ة',
+        heroPortalDesc: 'واجهة دخول احترافية مناسبة للمعلمين والمعلمات والإداريين والزوار، مع حقول مرتبة وخيارات واضحة وتجربة استخدام أنيقة داخل مصرف التعليم.',
+        loginCardTitle: 'دخول المعلم/ة',
+        loginSubtitle: 'أدخل/ي بياناتك للوصول إلى لوحة التحكم التعليمية',
+        teacherNameLabel: 'اسم المستخدم',
+        teacherRoleLabel: 'نوع الدخول',
+        teacherPasswordLabel: 'كلمة المرور',
+        teacherNamePlaceholder: 'ادخل/ي اسم المستخدم',
+        teacherPasswordPlaceholder: 'أدخل/ي كلمة المرور',
+        role0: 'دخول المعلم/ة',
+        role1: 'دخول للاشتراك',
+        role2: 'دخول إعادة الاشتراك',
+        helpTop: 'أحتاج مساعدة',
+        supportTop: 'دعم فني',
+        remember: 'تذكّر بياناتي',
+        forgot: 'نسيت كلمة المرور؟',
+        loginBtn: 'دخول',
+        subscribe: 'الاشتراك',
+        renew: 'إعادة الاشتراك',
+        support: 'الدعم الفني',
+        footer: 'بوابة دخول موحدة تتيح الوصول السريع والآمن للمعلمين والمعلمات والإداريين والزوار داخل مصرف التعليم.',
+        helpPanelTitle: 'أحتاج مساعدة',
+        helpPanelDesc: 'اختر نوع المساعدة المناسبة لك، وستظهر لك الإرشادات مباشرة داخل الصفحة.',
+        helpItem1Title: 'مشكلة في تسجيل الدخول',
+        helpItem1Desc: 'تأكد/ي من كتابة اسم المستخدم وكلمة المرور بشكل صحيح، ثم أعد/ي المحاولة. ويمكنك أيضًا تجربة إعادة تحميل الصفحة.',
+        helpItem2Title: 'نسيت كلمة المرور',
+        helpItem2Desc: 'استخدم/ي زر الدعم الفني لإرسال طلب استعادة كلمة المرور مع اسم المستخدم ونوع الدخول.',
+        helpItem3Title: 'الدخول للمعلمين والمعلمات والإداريين والزوار',
+        helpItem3Desc: 'يمكن استخدام هذه البوابة للدخول إلى لوحة التحكم التعليمية أو الوصول للخدمات المخصصة حسب الصلاحية.',
+        helpItem4Title: 'تغيير اللغة',
+        helpItem4Desc: 'اختر/ي اللغة من القائمة العلوية ليتم ترجمة الصفحة إلى اللغة المناسبة تلقائيًا.',
+        supportPanelTitle: 'الدعم الفني',
+        supportPanelDesc: 'يمكنك إرسال بلاغ دعم فني مباشرة من داخل البوابة عبر البريد أو واتساب.',
+        supportNameLabel: 'الاسم',
+        supportTypeLabel: 'نوع الطلب',
+        supportMessageLabel: 'وصف المشكلة',
+        supportNamePlaceholder: 'اكتب/ي الاسم',
+        supportMessagePlaceholder: 'اكتب/ي تفاصيل المشكلة أو الطلب',
+        supportType0: 'مشكلة تسجيل دخول',
+        supportType1: 'استعادة كلمة المرور',
+        supportType2: 'مشكلة تقنية داخل النظام',
+        supportType3: 'استفسار عام',
+        sendEmail: 'إرسال بالبريد',
+        sendWhatsApp: 'إرسال واتساب',
+        copyTicket: 'نسخ البلاغ',
+        tinyNote: 'يمكنك اختيار طريقة الإرسال المناسبة، وسيتم تجهيز البلاغ مباشرة من داخل البوابة.',
+        statusHelp: 'تم فتح قسم المساعدة.',
+        statusSupport: 'تم فتح نافذة الدعم الفني.',
+        statusCopied: 'تم نسخ نص البلاغ بنجاح.',
+        statusEmail: 'تم تجهيز رسالة البريد الإلكتروني للدعم الفني.',
+        statusWhats: 'تم تجهيز رسالة واتساب للدعم الفني.',
+        statusSupportMissing: 'يرجى تعبئة الاسم ووصف المشكلة أولًا.',
+        statusLoginMissing: 'يرجى تعبئة اسم المستخدم وكلمة المرور قبل المتابعة.',
+        statusLoginSuccess: 'تم تسجيل الدخول بنجاح، وجارٍ فتح لوحة المعلم/ة...'
+      },
+      en: {
+        title: 'Education Bank | Teacher Portal',
+        heroPortalTitle: 'Teacher Portal',
+        heroPortalDesc: 'A professional access page for teachers, administrators, and visitors, with organized fields, clear options, and a polished experience inside Education Bank.',
+        loginCardTitle: 'Teacher Login',
+        loginSubtitle: 'Enter your details to access the educational control panel',
+        teacherNameLabel: 'Username',
+        teacherRoleLabel: 'Login Type',
+        teacherPasswordLabel: 'Password',
+        teacherNamePlaceholder: 'Enter username',
+        teacherPasswordPlaceholder: 'Enter password',
+        role0: 'Teacher Login',
+        role1: 'Subscription Access',
+        role2: 'Renewal Access',
+        helpTop: 'Need Help',
+        supportTop: 'Technical Support',
+        remember: 'Remember me',
+        forgot: 'Forgot password?',
+        loginBtn: 'Login',
+        subscribe: 'Subscription',
+        renew: 'Renew Subscription',
+        support: 'Technical Support',
+        footer: 'A unified login gateway that provides quick and secure access for teachers, administrators, and visitors inside Education Bank.',
+        helpPanelTitle: 'Need Help',
+        helpPanelDesc: 'Choose the type of help you need and the instructions will appear directly on the page.',
+        helpItem1Title: 'Login issue',
+        helpItem1Desc: 'Make sure the username and password are entered correctly, then try again. You can also refresh the page.',
+        helpItem2Title: 'Forgot password',
+        helpItem2Desc: 'Use the technical support button to send a password recovery request with the username and login type.',
+        helpItem3Title: 'Access for teachers, administrators, and visitors',
+        helpItem3Desc: 'This gateway can be used to access the educational dashboard or other services depending on permission.',
+        helpItem4Title: 'Change language',
+        helpItem4Desc: 'Choose a language from the top list to translate the page automatically.',
+        supportPanelTitle: 'Technical Support',
+        supportPanelDesc: 'You can send a technical support request directly from داخل the portal via email or WhatsApp.',
+        supportNameLabel: 'Name',
+        supportTypeLabel: 'Request type',
+        supportMessageLabel: 'Problem details',
+        supportNamePlaceholder: 'Type your name',
+        supportMessagePlaceholder: 'Describe the issue or request',
+        supportType0: 'Login issue',
+        supportType1: 'Password recovery',
+        supportType2: 'Technical issue in the system',
+        supportType3: 'General inquiry',
+        sendEmail: 'Send by email',
+        sendWhatsApp: 'Send by WhatsApp',
+        copyTicket: 'Copy message',
+        tinyNote: 'Choose the sending method and the ticket will be prepared directly from the portal.',
+        statusHelp: 'Help section is open.',
+        statusSupport: 'Technical support is open.',
+        statusCopied: 'The support ticket was copied successfully.',
+        statusEmail: 'Your support email has been prepared.',
+        statusWhats: 'Your WhatsApp message has been prepared.',
+        statusSupportMissing: 'Please enter your name and problem details first.',
+        statusLoginMissing: 'Please enter username and password before continuing.',
+        statusLoginSuccess: 'Login successful. Opening the teacher dashboard...'
+      }
+    };
+
+    const GoogleLangs = new Set([
+      'fr','es','de','it','pt','ru','tr','fa','ur','hi','bn','id','ms',
+      'zh-CN','zh-TW','ja','ko','th','vi','nl','pl','uk','sv','no','da','fi',
+      'he','cs','ro','hu','el'
+    ]);
+
     function showStatus(type, message){
+      if (!statusBox) return;
       statusBox.className = 'status show ' + type;
       statusBox.textContent = message;
     }
 
-    togglePassword.addEventListener('click', () => {
+    function showSupportStatus(type, message){
+      if (!supportStatusBox) return;
+      supportStatusBox.className = 'status show ' + type;
+      supportStatusBox.textContent = message;
+    }
+
+    function buildSupportMessage(){
+      const lang = localStorage.getItem('teacherPortalLang') || 'ar';
+      const isAr = lang === 'ar';
+      const name = (supportName?.value || teacherName?.value || '').trim();
+      const type = (supportType?.value || '').trim();
+      const msg = (supportMessage?.value || '').trim();
+      if(!name || !msg){ return null; }
+      return isAr
+        ? `طلب دعم فني - مصرف التعليم
+الاسم: ${name}
+نوع الطلب: ${type}
+وصف المشكلة: ${msg}`
+        : `Technical Support Request - Education Bank
+Name: ${name}
+Request Type: ${type}
+Issue Details: ${msg}`;
+    }
+
+    function togglePanel(panelToShow){
+      [helpPanel, supportPanel].forEach(panel => {
+        if (!panel) return;
+        panel.style.display = panel === panelToShow ? (panel.style.display === 'block' ? 'none' : 'block') : 'none';
+      });
+    }
+
+    function setText(id, value){
+      const el = document.getElementById(id);
+      if (el) el.textContent = value;
+    }
+
+    function setPlaceholder(id, value){
+      const el = document.getElementById(id);
+      if (el) el.placeholder = value;
+    }
+
+    function setDir(lang){
+      document.documentElement.lang = lang === 'ar' ? 'ar' : lang;
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    }
+
+    function applyLanguage(lang){
+      const t = translations[lang] || translations.en || translations.ar;
+      const use = lang === 'ar' ? translations.ar : t;
+      setDir(lang);
+      document.title = use.title;
+
+      setText('heroPortalTitle', use.heroPortalTitle);
+      setText('heroPortalDesc', use.heroPortalDesc);
+      setText('loginCardTitle', use.loginCardTitle);
+      setText('loginSubtitle', use.loginSubtitle);
+      setText('teacherNameLabel', use.teacherNameLabel);
+      setText('teacherRoleLabel', use.teacherRoleLabel);
+      setText('teacherPasswordLabel', use.teacherPasswordLabel);
+      setPlaceholder('teacherName', use.teacherNamePlaceholder);
+      setPlaceholder('teacherPassword', use.teacherPasswordPlaceholder);
+
+      if (teacherRole && teacherRole.options.length >= 3){
+        teacherRole.options[0].text = use.role0;
+        teacherRole.options[1].text = use.role1;
+        teacherRole.options[2].text = use.role2;
+      }
+
+      if (helpBtnTop) helpBtnTop.textContent = use.helpTop;
+      if (supportTopBtn) supportTopBtn.textContent = use.supportTop;
+      const rememberSpan = document.querySelector('label.check span');
+      if (rememberSpan) rememberSpan.textContent = use.remember;
+      if (forgotBtn) forgotBtn.textContent = use.forgot;
+      const mainBtn = document.querySelector('.main-btn');
+      if (mainBtn) mainBtn.textContent = use.loginBtn;
+      if (subscribeBtn) subscribeBtn.textContent = use.subscribe;
+      if (renewBtn) renewBtn.textContent = use.renew;
+      if (supportBtn) supportBtn.textContent = use.support;
+      setText('footerNote', use.footer);
+
+      setText('helpPanelTitle', use.helpPanelTitle);
+      setText('helpPanelDesc', use.helpPanelDesc);
+      setText('helpItem1Title', use.helpItem1Title);
+      setText('helpItem1Desc', use.helpItem1Desc);
+      setText('helpItem2Title', use.helpItem2Title);
+      setText('helpItem2Desc', use.helpItem2Desc);
+      setText('helpItem3Title', use.helpItem3Title);
+      setText('helpItem3Desc', use.helpItem3Desc);
+      setText('helpItem4Title', use.helpItem4Title);
+      setText('helpItem4Desc', use.helpItem4Desc);
+
+      setText('supportPanelTitle', use.supportPanelTitle);
+      setText('supportPanelDesc', use.supportPanelDesc);
+      setText('supportNameLabel', use.supportNameLabel);
+      setText('supportTypeLabel', use.supportTypeLabel);
+      setText('supportMessageLabel', use.supportMessageLabel);
+      setPlaceholder('supportName', use.supportNamePlaceholder);
+      setPlaceholder('supportMessage', use.supportMessagePlaceholder);
+      if (supportType && supportType.options.length >= 4){
+        supportType.options[0].text = use.supportType0;
+        supportType.options[1].text = use.supportType1;
+        supportType.options[2].text = use.supportType2;
+        supportType.options[3].text = use.supportType3;
+      }
+      if (sendSupportEmailBtn) sendSupportEmailBtn.textContent = use.sendEmail;
+      if (sendSupportWhatsAppBtn) sendSupportWhatsAppBtn.textContent = use.sendWhatsApp;
+      if (copySupportBtn) copySupportBtn.textContent = use.copyTicket;
+      const tinyNote = document.querySelector('.tiny-note');
+      if (tinyNote) tinyNote.textContent = use.tinyNote;
+    }
+
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'ar',
+        autoDisplay: false,
+        includedLanguages: 'ar,en,fr,es,de,it,pt,ru,tr,fa,ur,hi,bn,id,ms,zh-CN,zh-TW,ja,ko,th,vi,nl,pl,uk,sv,no,da,fi,he,cs,ro,hu,el'
+      }, 'google_translate_element');
+    }
+
+    function waitForGoogleCombo(callback, retries = 30){
+      const combo = document.querySelector('.goog-te-combo');
+      if (combo){
+        callback(combo);
+      } else if (retries > 0){
+        setTimeout(() => waitForGoogleCombo(callback, retries - 1), 300);
+      }
+    }
+
+    function applyGoogleTranslation(lang){
+      waitForGoogleCombo((combo) => {
+        combo.value = lang;
+        combo.dispatchEvent(new Event('change'));
+      });
+    }
+
+    togglePassword?.addEventListener('click', () => {
       const isPassword = teacherPassword.type === 'password';
       teacherPassword.type = isPassword ? 'text' : 'password';
       togglePassword.textContent = isPassword ? '🙈' : '👁️';
     });
 
-    // حفظ بسيط محلي
     const savedUser = localStorage.getItem('teacherUser');
     const savedRole = localStorage.getItem('teacherRole');
     const savedRemember = localStorage.getItem('rememberTeacher');
 
     if(savedRemember === 'yes'){
-      rememberMe.checked = true;
-      if(savedUser) teacherName.value = savedUser;
-      if(savedRole) teacherRole.value = savedRole;
+      if (rememberMe) rememberMe.checked = true;
+      if(savedUser && teacherName) teacherName.value = savedUser;
+      if(savedRole && teacherRole) teacherRole.value = savedRole;
     }
 
-    loginForm.addEventListener('submit', (e) => {
+    loginForm?.addEventListener('submit', (e) => {
       e.preventDefault();
-
+      const lang = localStorage.getItem('teacherPortalLang') || 'ar';
+      const t = translations[lang] || translations.en;
       const name = teacherName.value.trim();
       const password = teacherPassword.value.trim();
       const role = teacherRole.value;
 
       if(!name || !password){
-        showStatus('error', 'يرجى تعبئة اسم المستخدم وكلمة المرور قبل المتابعة.');
+        showStatus('error', t.statusLoginMissing);
         return;
       }
 
-      if(rememberMe.checked){
+      if(rememberMe?.checked){
         localStorage.setItem('teacherUser', name);
         localStorage.setItem('teacherRole', role);
         localStorage.setItem('rememberTeacher', 'yes');
@@ -646,32 +1060,110 @@
         localStorage.removeItem('rememberTeacher');
       }
 
-      localStorage.setItem('teacherLoggedIn', 'true');
-      localStorage.setItem('teacherDisplayName', name);
-      localStorage.setItem('teacherDisplayRole', role);
-      showStatus('success', 'تم تسجيل الدخول بنجاح، وجارٍ فتح لوحة المعلمة...');
-      setTimeout(() => {
-        window.location.href = 'dashboard.html';
-      }, 700);
+      showStatus('success', t.statusLoginSuccess);
     });
 
-    subscribeBtn.addEventListener('click', () => {
-      teacherRole.value = 'دخول للاشتراك';
-      showStatus('success', 'تم اختيار واجهة الاشتراك. يمكن ربط هذا الزر لاحقًا بصفحة الاشتراك الجديدة.');
+    helpBtnTop?.addEventListener('click', () => {
+      togglePanel(helpPanel);
+      const lang = localStorage.getItem('teacherPortalLang') || 'ar';
+      showStatus('success', (translations[lang] || translations.en).statusHelp);
     });
 
-    renewBtn.addEventListener('click', () => {
-      teacherRole.value = 'دخول إعادة الاشتراك';
-      showStatus('success', 'تم اختيار واجهة إعادة الاشتراك. يمكن ربط هذا الزر لاحقًا بصفحة تجديد الاشتراك.');
+    supportTopBtn?.addEventListener('click', () => {
+      togglePanel(supportPanel);
+      const lang = localStorage.getItem('teacherPortalLang') || 'ar';
+      showStatus('success', (translations[lang] || translations.en).statusSupport);
     });
 
-    supportBtn.addEventListener('click', () => {
-      showStatus('success', 'يمكن تخصيص هذا الزر لاحقًا لفتح الدعم الفني أو نموذج المساعدة للمعلمات.');
+    supportBtn?.addEventListener('click', () => {
+      if (supportPanel){
+        helpPanel.style.display = 'none';
+        supportPanel.style.display = 'block';
+      }
+      const lang = localStorage.getItem('teacherPortalLang') || 'ar';
+      showStatus('success', (translations[lang] || translations.en).statusSupport);
     });
 
-    forgotBtn.addEventListener('click', () => {
-      showStatus('success', 'يمكن ربط هذا الخيار لاحقًا بواجهة استعادة كلمة المرور أو إرسال رمز تحقق.');
+    subscribeBtn?.addEventListener('click', () => {
+      if (teacherRole?.options[1]) teacherRole.value = teacherRole.options[1].text;
+      showStatus('success', 'تم اختيار مسار الاشتراك.');
     });
+
+    renewBtn?.addEventListener('click', () => {
+      if (teacherRole?.options[2]) teacherRole.value = teacherRole.options[2].text;
+      showStatus('success', 'تم اختيار مسار إعادة الاشتراك.');
+    });
+
+    forgotBtn?.addEventListener('click', () => {
+      helpPanel.style.display = 'block';
+      supportPanel.style.display = 'none';
+      const lang = localStorage.getItem('teacherPortalLang') || 'ar';
+      showStatus('success', (translations[lang] || translations.en).statusHelp);
+    });
+
+    sendSupportEmailBtn?.addEventListener('click', () => {
+      const lang = localStorage.getItem('teacherPortalLang') || 'ar';
+      const t = translations[lang] || translations.en;
+      const body = buildSupportMessage();
+      if (!body){
+        showSupportStatus('error', t.statusSupportMissing);
+        return;
+      }
+      window.location.href = `mailto:support@education-bank.local?subject=${encodeURIComponent(lang === 'ar' ? 'طلب دعم فني - مصرف التعليم' : 'Technical Support Request - Education Bank')}&body=${encodeURIComponent(body)}`;
+      showSupportStatus('success', t.statusEmail);
+    });
+
+    sendSupportWhatsAppBtn?.addEventListener('click', () => {
+      const lang = localStorage.getItem('teacherPortalLang') || 'ar';
+      const t = translations[lang] || translations.en;
+      const body = buildSupportMessage();
+      if (!body){
+        showSupportStatus('error', t.statusSupportMissing);
+        return;
+      }
+      window.open(`https://wa.me/966500000000?text=${encodeURIComponent(body)}`, '_blank');
+      showSupportStatus('success', t.statusWhats);
+    });
+
+    copySupportBtn?.addEventListener('click', async () => {
+      const lang = localStorage.getItem('teacherPortalLang') || 'ar';
+      const t = translations[lang] || translations.en;
+      const body = buildSupportMessage();
+      if (!body){
+        showSupportStatus('error', t.statusSupportMissing);
+        return;
+      }
+      try{
+        await navigator.clipboard.writeText(body);
+        showSupportStatus('success', t.statusCopied);
+      }catch(e){
+        showSupportStatus('error', lang === 'ar' ? 'تعذر نسخ البلاغ، يمكنك نسخه يدويًا.' : 'Copy failed. Please copy the message manually.');
+      }
+    });
+
+    languageSelect?.addEventListener('change', (e) => {
+      const lang = e.target.value;
+      localStorage.setItem('teacherPortalLang', lang);
+
+      if (lang === 'ar' || lang === 'en'){
+        applyLanguage(lang);
+      } else {
+        applyLanguage('ar');
+        setDir('rtl');
+        setTimeout(() => applyGoogleTranslation(lang), 500);
+      }
+    });
+
+    const initialLang = localStorage.getItem('teacherPortalLang') || 'ar';
+    if (languageSelect) languageSelect.value = initialLang;
+    if (initialLang === 'ar' || initialLang === 'en'){
+      applyLanguage(initialLang);
+    } else {
+      applyLanguage('ar');
+      setTimeout(() => applyGoogleTranslation(initialLang), 700);
+    }
   </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 </body>
 </html>
