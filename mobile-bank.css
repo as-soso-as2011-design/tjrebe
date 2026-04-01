@@ -1,0 +1,196 @@
+html.mobile-device, body.mobile-device{overflow-x:hidden;background:#eef8ff!important}
+body.mobile-device *{scrollbar-width:none}
+body.mobile-device *::-webkit-scrollbar{display:none}
+body.mobile-device .page,
+body.mobile-device .app{padding:0!important}
+body.mobile-device .shell,
+body.mobile-device .panel,
+body.mobile-device .login-shell>.panel{
+  border-radius:0!important;
+  box-shadow:none!important;
+  border-left:none!important;
+  border-right:none!important;
+}
+body.mobile-device .github-nav{
+  position:sticky!important;
+  top:0!important;
+  z-index:80!important;
+  display:flex!important;
+  gap:8px!important;
+  overflow:auto!important;
+  padding:10px 10px 6px!important;
+  background:rgba(255,255,255,.94)!important;
+  backdrop-filter:blur(16px)!important;
+  -webkit-backdrop-filter:blur(16px)!important;
+  border-bottom:1px solid rgba(56,189,248,.16)!important;
+}
+body.mobile-device .github-nav a{
+  flex:0 0 auto!important;
+  min-height:42px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:0 14px!important;
+  border-radius:14px!important;
+  white-space:nowrap!important;
+  font-size:13px!important;
+}
+body.mobile-device .topbar{
+  position:sticky!important;
+  top:58px!important;
+  z-index:70!important;
+  padding:12px!important;
+  background:rgba(255,255,255,.94)!important;
+  backdrop-filter:blur(16px)!important;
+  -webkit-backdrop-filter:blur(16px)!important;
+}
+body.mobile-device .brand{width:100%!important;gap:10px!important;align-items:center!important}
+body.mobile-device .brand h1{font-size:20px!important;line-height:1.2!important}
+body.mobile-device .brand p{font-size:12px!important;line-height:1.6!important}
+body.mobile-device .logo,
+body.mobile-device .logo-box,
+body.mobile-device .profile-pic,
+body.mobile-device .atm{width:50px!important;height:50px!important;border-radius:16px!important;font-size:18px!important}
+body.mobile-device .layout,
+body.mobile-device .login-grid,
+body.mobile-device .hero-grid,
+body.mobile-device .main-grid,
+body.mobile-device .report-grid,
+body.mobile-device .split,
+body.mobile-device .tasks-layout,
+body.mobile-device .files-layout,
+body.mobile-device .teacher-fixed-grid,
+body.mobile-device .shell,
+body.mobile-device .student-account-grid,
+body.mobile-device .global-honor-grid,
+body.mobile-device .hero,
+body.mobile-device .cards,
+body.mobile-device .class-grid,
+body.mobile-device .student-grid,
+body.mobile-device .stats,
+body.mobile-device .filters,
+body.mobile-device .filter-grid,
+body.mobile-device .field-grid,
+body.mobile-device .field-grid-3,
+body.mobile-device .field-grid-2x,
+body.mobile-device .thanks-grid,
+body.mobile-device .info-ribbon,
+body.mobile-device .kv,
+body.mobile-device .student-actions,
+body.mobile-device .class-ribbon,
+body.mobile-device .hero-points,
+body.mobile-device .task-card-meta,
+body.mobile-device .mini-stats{display:grid!important;grid-template-columns:1fr!important;gap:12px!important}
+body.mobile-device .layout{padding:0!important}
+body.mobile-device .sidebar{padding:12px!important;order:2!important}
+body.mobile-device .main,
+body.mobile-device .content{padding:12px!important;gap:12px!important}
+body.mobile-device .side-card,
+body.mobile-device .panel,
+body.mobile-device .hero,
+body.mobile-device .stat,
+body.mobile-device .class-card,
+body.mobile-device .student-card,
+body.mobile-device .modal-card,
+body.mobile-device .section,
+body.mobile-device .welcome-card,
+body.mobile-device .mini-card,
+body.mobile-device .report-card,
+body.mobile-device .teacher-fixed,
+body.mobile-device .sticky-filters,
+body.mobile-device .card,
+body.mobile-device .login-card,
+body.mobile-device .loaderCard,
+body.mobile-device .hero-side,
+body.mobile-device .teacher-fixed-box,
+body.mobile-device .class-ribbon-item,
+body.mobile-device .ribbon-item,
+body.mobile-device .mini-box{border-radius:20px!important;padding:14px!important}
+body.mobile-device .menu,
+body.mobile-device .toolbar,
+body.mobile-device .top-actions,
+body.mobile-device .actions,
+body.mobile-device .login-actions,
+body.mobile-device .hero-actions,
+body.mobile-device .button-strip,
+body.mobile-device .row-actions,
+body.mobile-device .tabs,
+body.mobile-device .top-tabs,
+body.mobile-device .super-tabs{
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  overflow:auto!important;
+  gap:8px!important;
+  padding-bottom:4px!important;
+}
+body.mobile-device .menu-item,
+body.mobile-device .btn,
+body.mobile-device .soft,
+body.mobile-device .ghost,
+body.mobile-device .tab-btn,
+body.mobile-device .mini-btn,
+body.mobile-device .pill-btn,
+body.mobile-device .danger-btn,
+body.mobile-device .tab,
+body.mobile-device .super-tab-btn,
+body.mobile-device .tabbtn,
+body.mobile-device .icon-btn,
+body.mobile-device .copy-btn,
+body.mobile-device .login-soft,
+body.mobile-device .bigBtn,
+body.mobile-device .toolbar-select{
+  flex:0 0 auto!important;
+  min-height:46px!important;
+  border-radius:15px!important;
+  font-size:14px!important;
+  padding:0 14px!important;
+}
+body.mobile-device .menu-item{min-width:160px!important}
+body.mobile-device input,
+body.mobile-device select,
+body.mobile-device textarea{min-height:48px!important;border-radius:15px!important;font-size:16px!important}
+body.mobile-device textarea{min-height:110px!important}
+body.mobile-device .hero{min-height:auto!important}
+body.mobile-device .hero h2,
+body.mobile-device .entryTitle h2,
+body.mobile-device .hero h1{font-size:28px!important;line-height:1.15!important}
+body.mobile-device .title{font-size:34px!important}
+body.mobile-device .subtitle{font-size:22px!important}
+body.mobile-device .section-head{align-items:flex-start!important}
+body.mobile-device .section-head h3{font-size:21px!important}
+body.mobile-device .hero p,
+body.mobile-device .lead,
+body.mobile-device .welcome-card p,
+body.mobile-device .section-head p,
+body.mobile-device .student-name p{font-size:13px!important;line-height:1.8!important}
+body.mobile-device .bank-card{min-height:190px!important;border-radius:24px!important;padding:18px!important}
+body.mobile-device .bank-number,
+body.mobile-device .bank-card .number{font-size:21px!important}
+body.mobile-device .bank-bottom,
+body.mobile-device .student-top,
+body.mobile-device .class-top,
+body.mobile-device .top,
+body.mobile-device .top-logos,
+body.mobile-device .sign-stamp{display:grid!important;grid-template-columns:1fr!important;gap:12px!important}
+body.mobile-device .student-main{align-items:flex-start!important}
+body.mobile-device .field{gap:8px!important}
+body.mobile-device .field label{min-width:auto!important;font-size:13px!important}
+body.mobile-device .stat{min-height:110px!important}
+body.mobile-device .stat .num,
+body.mobile-device .hero-side .n,
+body.mobile-device .card .n,
+body.mobile-device .hero-point span,
+body.mobile-device .teacher-fixed-box span,
+body.mobile-device .ribbon-item span,
+body.mobile-device .class-ribbon-item span{font-size:24px!important}
+body.mobile-device table{display:block!important;overflow:auto!important;white-space:nowrap!important;width:100%!important}
+body.mobile-device th,
+body.mobile-device td{font-size:13px!important;padding:10px 8px!important}
+body.mobile-device .modal{padding:8px!important}
+body.mobile-device .modal-card{max-height:92vh!important;border-radius:22px!important}
+body.mobile-device .footer{padding-bottom:calc(12px + env(safe-area-inset-bottom))!important}
+
+@media (max-width: 900px){
+  html,body{overflow-x:hidden}
+  body{background:#eef8ff!important}
+}
