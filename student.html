@@ -1,0 +1,1670 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>لوحة الطالب - بنك الرياضيات المصرفي</title>
+  <style>
+    :root{
+      --bg1:#f7fcff; --bg2:#e8f7ff; --bg3:#d9f1ff;
+      --primary:#38bdf8; --primary2:#0ea5e9; --deep:#082f49; --muted:#5f7b91;
+      --glass:rgba(255,255,255,.84); --border:rgba(56,189,248,.18);
+      --shadow:0 24px 60px rgba(14,165,233,.14); --shadow-soft:0 12px 28px rgba(14,165,233,.09);
+    }
+    *{box-sizing:border-box;font-family:"SF Pro Display","Segoe UI","Tahoma","Arial",sans-serif}
+    html,body{margin:0;min-height:100%}
+    body{
+      color:#0f172a;
+      background:
+        radial-gradient(circle at top right, rgba(125,211,252,.62), transparent 24%),
+        radial-gradient(circle at bottom left, rgba(56,189,248,.22), transparent 28%),
+        linear-gradient(145deg, var(--bg1), var(--bg2) 45%, var(--bg3));
+    }
+    .app{min-height:100vh;position:relative;overflow:hidden;padding:18px}
+    .orb{position:absolute;border-radius:50%;filter:blur(60px);opacity:.55;z-index:0}
+    .orb.one{width:280px;height:280px;background:rgba(56,189,248,.22);top:2%;right:4%}
+    .orb.two{width:220px;height:220px;background:rgba(14,165,233,.16);bottom:6%;left:4%}
+    .grid{
+      position:absolute; inset:0;
+      background-image:
+        linear-gradient(rgba(56,189,248,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56,189,248,.05) 1px, transparent 1px);
+      background-size:34px 34px;
+      mask-image:linear-gradient(to bottom, rgba(0,0,0,.24), transparent 82%);
+      z-index:0;
+    }
+    .shell{
+      position:relative; z-index:1; max-width:1180px; margin:0 auto;
+      background:var(--glass); border:1px solid rgba(255,255,255,.68);
+      border-radius:34px; box-shadow:var(--shadow);
+      backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); overflow:hidden;
+    }
+    .shell:before{
+      content:""; position:absolute; inset:0;
+      background:linear-gradient(135deg, rgba(255,255,255,.54), transparent 40%);
+      pointer-events:none;
+    }
+    .topbar{
+      display:flex;justify-content:space-between;align-items:center;gap:12px;
+      padding:18px 22px;border-bottom:1px solid rgba(56,189,248,.12);position:relative;z-index:1;
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:58px;height:58px;border-radius:18px;display:grid;place-items:center;
+      background:
+        linear-gradient(160deg, rgba(255,255,255,.95), rgba(255,255,255,.48)),
+        linear-gradient(145deg,#7dd3fc,#38bdf8 38%,#0ea5e9);
+      color:#fff;font-weight:900;font-size:22px;letter-spacing:.08em;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.96), 0 14px 34px rgba(14,165,233,.18);
+      position:relative;overflow:hidden;
+    }
+    .logo:after{
+      content:""; position:absolute; width:180%; height:56%; top:-12%; left:-35%;
+      transform:rotate(-20deg);
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.60), transparent);
+      animation:shine 4s linear infinite;
+    }
+    .brand h1{margin:0;color:var(--deep);font-size:24px}
+    .brand p{margin:2px 0 0;color:#5d7b8f;font-size:13px;font-weight:700}
+    .top-actions{display:flex;gap:10px;align-items:center}
+    .icon-btn{
+      border:none;background:rgba(255,255,255,.72);border:1px solid var(--border);
+      min-width:44px;height:44px;border-radius:14px;cursor:pointer;font-size:18px;
+      box-shadow:var(--shadow-soft);
+    }
+    .content{padding:22px;position:relative;z-index:1}
+
+    .top-tabs{display:flex;gap:10px;overflow:auto;margin-bottom:18px;padding-bottom:4px}
+    .tab{
+      padding:12px 16px;border-radius:14px;background:#f0f9ff;border:1px solid rgba(56,189,248,.18);
+      font-weight:800;color:#0369a1;white-space:nowrap;cursor:pointer;transition:.2s;
+    }
+    .tab.active{background:linear-gradient(135deg,#38bdf8,#0ea5e9);color:#fff}
+    .tab-pane{display:none}
+    .tab-pane.active{display:block}
+
+    .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}
+    .bank-card{
+      position:relative;border-radius:28px;padding:22px;color:#fff;
+      background:
+        radial-gradient(circle at 85% 15%, rgba(255,255,255,.28), transparent 24%),
+        linear-gradient(135deg, #0ea5e9, #38bdf8 45%, #0b6ea9);
+      min-height:220px; box-shadow:0 20px 36px rgba(14,165,233,.22); overflow:hidden;
+    }
+    .bank-card:after{
+      content:"";position:absolute;width:180px;height:180px;border-radius:50%;
+      background:rgba(255,255,255,.10);left:-30px;bottom:-80px;
+    }
+    .bank-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+    .bank-sub{font-size:13px;font-weight:700;opacity:.9}
+    .chip{
+      width:54px;height:40px;border-radius:12px;
+      background:linear-gradient(180deg,#f4d48a,#d7a841);
+      border:1px solid rgba(0,0,0,.18);box-shadow:0 10px 18px rgba(0,0,0,.12);
+    }
+    .bank-number{margin:28px 0 18px;font-size:28px;letter-spacing:2px;font-weight:900;direction:ltr;text-align:left}
+    .bank-bottom{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:end}
+    .bank-name{font-size:18px;font-weight:900}
+    .bank-meta{font-size:13px;font-weight:700;opacity:.95}
+    .copy-btn{
+      margin-top:12px;border:none;background:rgba(255,255,255,.18);color:#fff;border-radius:14px;
+      padding:10px 14px;font-weight:800;cursor:pointer;border:1px solid rgba(255,255,255,.18);
+    }
+
+    .welcome-card, .section, .stat, .mini-card{
+      background:linear-gradient(180deg, rgba(255,255,255,.90), rgba(255,255,255,.72));
+      border:1px solid var(--border);box-shadow:var(--shadow-soft);border-radius:24px;
+    }
+    .welcome-card{padding:18px}
+    .welcome-card h2{margin:0 0 8px;color:var(--deep);font-size:22px}
+    .welcome-card p{margin:0;color:#5d7b8f;line-height:1.9}
+    .level-pill{
+      display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:10px 14px;border-radius:999px;
+      background:#f0f9ff;color:#0369a1;border:1px solid rgba(56,189,248,.18);font-weight:800;
+    }
+
+    .stats{margin-top:18px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .stat{padding:18px;text-align:center}
+    .stat h3{margin:0;color:var(--deep);font-size:28px}
+    .stat p{margin:8px 0 0;color:#648196;font-size:14px;font-weight:700}
+
+    .main-grid{display:grid;grid-template-columns:1fr .88fr;gap:18px;margin-top:18px}
+    .section{padding:18px}
+    .section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+    .section-head h3{margin:0;color:var(--deep);font-size:22px}
+    .section-head span{color:#648196;font-size:13px;font-weight:700}
+    .tx-list{display:grid;gap:12px}
+    .tx{
+      display:flex;justify-content:space-between;align-items:center;gap:12px;
+      background:rgba(248,250,252,.9);border:1px solid rgba(56,189,248,.12);
+      padding:14px 16px;border-radius:18px;
+    }
+    .tx-main strong{display:block;color:#0f2942;font-size:16px}
+    .tx-main small{display:block;color:#68849a;margin-top:4px}
+    .tx-amount{font-weight:900;font-size:18px}
+    .plus{color:#0f766e}.minus{color:#c2410c}
+
+    .progress-wrap{margin-top:10px}
+    .progress{height:14px;background:#e0eff8;border-radius:999px;overflow:hidden;border:1px solid rgba(56,189,248,.12)}
+    .progress .bar{height:100%;width:72%;background:linear-gradient(90deg,#38bdf8,#0ea5e9);border-radius:999px}
+    .level-note{margin:12px 0 0;color:#5f7b91;line-height:1.9}
+    .mini-grid{display:grid;gap:12px;margin-top:12px}
+    .mini-card{padding:16px}
+    .mini-card h4{margin:0 0 8px;color:#0f2942;font-size:18px}
+    .mini-card p{margin:0;color:#5f7b91;line-height:1.8}
+    .rank{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;
+      padding:12px 14px;border-radius:16px;background:#f8fbfe;border:1px solid rgba(56,189,248,.12);
+    }
+    .rank strong{color:var(--deep);font-size:18px}
+
+    .statement-hero{
+      display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+      margin-bottom:18px;padding:18px;border-radius:22px;
+      background:linear-gradient(135deg, rgba(255,255,255,.92), rgba(255,255,255,.78));
+      border:1px solid rgba(56,189,248,.16);box-shadow:var(--shadow-soft);
+    }
+    .statement-hero h2{margin:0;color:var(--deep);font-size:24px}
+    .statement-hero p{margin:6px 0 0;color:#648196}
+    .back-inline{
+      border:none;background:#f0f9ff;color:#075985;border:1px solid rgba(56,189,248,.18);
+      border-radius:14px;padding:12px 16px;font-weight:800;cursor:pointer;
+    }
+    .statement-shell{display:grid;grid-template-columns:1.05fr .95fr;gap:18px}
+    .statement-card{
+      background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.78));
+      border:1px solid rgba(56,189,248,.16);box-shadow:var(--shadow-soft);border-radius:24px;padding:18px;
+    }
+    .statement-card h3{margin:0 0 14px;color:var(--deep);font-size:22px}
+    .field-grid{display:grid;gap:12px}
+    .input,.select{
+      width:100%;min-height:52px;padding:0 14px;border-radius:16px;
+      border:1px solid rgba(56,189,248,.18);background:#fff;color:#0f172a;font-size:15px;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.95);
+    }
+    .dual-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .soft-btn{
+      width:100%;padding:14px 16px;border:none;border-radius:16px;cursor:pointer;
+      background:#f0f9ff;color:#075985;border:1px solid rgba(56,189,248,.18);font-weight:800;
+    }
+    .primary-btn{
+      width:100%;padding:15px 16px;border:none;border-radius:16px;cursor:pointer;
+      background:linear-gradient(135deg,#38bdf8,#0ea5e9);color:#fff;font-weight:900;
+      box-shadow:0 14px 26px rgba(14,165,233,.16);
+    }
+    .op-status{
+      display:none;margin-top:10px;padding:12px 14px;border-radius:14px;
+      background:#ecfeff;color:#0f766e;border:1px solid rgba(20,184,166,.22);font-weight:800;
+    }
+    .op-status.show{display:block}
+    .pdf-box{margin-top:14px;padding:14px;border-radius:18px;background:#f8fbfe;border:1px solid rgba(56,189,248,.12)}
+    .muted-note{color:#648196;font-size:14px;line-height:1.8}
+    .placeholder-pane{
+      padding:18px;border-radius:24px;background:linear-gradient(180deg, rgba(255,255,255,.90), rgba(255,255,255,.76));
+      border:1px solid rgba(56,189,248,.16);box-shadow:var(--shadow-soft);color:#5f7b91;
+    }
+
+    @keyframes shine{from{transform:translateX(-80%) rotate(-20deg)}to{transform:translateX(80%) rotate(-20deg)}}
+    @media (max-width:980px){
+      .hero-grid,.main-grid,.statement-shell,.dual-grid{grid-template-columns:1fr}
+      .stats{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:640px){
+      .app{padding:12px}.topbar,.content{padding:16px}.brand h1{font-size:20px}
+      .stats{grid-template-columns:1fr}.bank-number{font-size:22px}
+    }
+  
+.rewards-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
+.reward-card{
+  background:linear-gradient(180deg, rgba(255,255,255,.94), rgba(255,255,255,.80));
+  border:1px solid rgba(56,189,248,.16);
+  box-shadow:var(--shadow-soft);
+  border-radius:22px;
+  padding:16px;
+}
+.reward-card h4{
+  margin:0 0 8px;
+  color:var(--deep);
+  font-size:18px;
+}
+.reward-card .value{
+  font-size:28px;
+  font-weight:900;
+  color:#0b6ea9;
+}
+.reward-card .hint{
+  margin-top:6px;
+  color:#648196;
+  font-size:13px;
+  line-height:1.7;
+}
+.rewards-note{
+  margin-top:16px;
+  padding:16px;
+  border-radius:20px;
+  background:linear-gradient(135deg, rgba(255,255,255,.92), rgba(255,255,255,.78));
+  border:1px solid rgba(56,189,248,.16);
+  box-shadow:var(--shadow-soft);
+  color:#5f7b91;
+  line-height:1.9;
+}
+.roulette-wrap{
+  display:grid;
+  grid-template-columns:1fr .95fr;
+  gap:18px;
+}
+.roulette-card{
+  background:linear-gradient(180deg, rgba(255,255,255,.94), rgba(255,255,255,.80));
+  border:1px solid rgba(56,189,248,.16);
+  box-shadow:var(--shadow-soft);
+  border-radius:24px;
+  padding:18px;
+}
+.roulette-wheel-shell{
+  display:grid;
+  place-items:center;
+  padding:10px 0 18px;
+}
+.roulette-wheel{
+  width:320px;
+  height:320px;
+  border-radius:50%;
+  border:10px solid rgba(255,255,255,.92);
+  box-shadow:0 20px 36px rgba(14,165,233,.18), inset 0 0 0 6px rgba(56,189,248,.14);
+  background:
+    conic-gradient(
+      #38bdf8 0deg 45deg,
+      #7dd3fc 45deg 90deg,
+      #0ea5e9 90deg 135deg,
+      #bae6fd 135deg 180deg,
+      #38bdf8 180deg 225deg,
+      #7dd3fc 225deg 270deg,
+      #0ea5e9 270deg 315deg,
+      #bae6fd 315deg 360deg
+    );
+  position:relative;
+  transition:transform 4.2s cubic-bezier(.17,.67,.14,1);
+}
+.roulette-wheel:before{
+  content:"";
+  position:absolute;
+  inset:42px;
+  border-radius:50%;
+  background:rgba(255,255,255,.92);
+  box-shadow:inset 0 0 0 1px rgba(56,189,248,.12);
+}
+.roulette-center{
+  position:absolute;
+  inset:50%;
+  transform:translate(-50%,-50%);
+  width:82px;
+  height:82px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#38bdf8,#0ea5e9);
+  color:#fff;
+  font-weight:900;
+  display:grid;
+  place-items:center;
+  box-shadow:0 12px 24px rgba(14,165,233,.22);
+  z-index:3;
+}
+.roulette-pointer{
+  width:0;
+  height:0;
+  border-left:18px solid transparent;
+  border-right:18px solid transparent;
+  border-top:34px solid #082f49;
+  margin:0 auto -6px;
+  filter:drop-shadow(0 8px 8px rgba(0,0,0,.14));
+}
+.roulette-actions{
+  display:grid;
+  gap:12px;
+  margin-top:12px;
+}
+.roulette-prizes{
+  display:grid;
+  gap:10px;
+}
+.prize-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  padding:12px 14px;
+  border-radius:16px;
+  background:#f8fbfe;
+  border:1px solid rgba(56,189,248,.12);
+}
+.prize-item strong{
+  color:var(--deep);
+}
+.win-box{
+  margin-top:12px;
+  padding:14px 16px;
+  border-radius:18px;
+  background:#ecfeff;
+  border:1px solid rgba(20,184,166,.22);
+  color:#0f766e;
+  font-weight:900;
+  display:none;
+}
+.win-box.show{display:block}
+@media (max-width:980px){
+  .rewards-grid,.roulette-wrap{grid-template-columns:1fr}
+  .roulette-wheel{width:280px;height:280px}
+}
+
+
+.upgrade-grid{
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:18px;
+}
+.upgrade-card{
+  background:linear-gradient(180deg, rgba(255,255,255,.94), rgba(255,255,255,.80));
+  border:1px solid rgba(56,189,248,.16);
+  box-shadow:var(--shadow-soft);
+  border-radius:24px;
+  padding:18px;
+}
+.upgrade-card h3{
+  margin:0 0 14px;
+  color:var(--deep);
+  font-size:22px;
+}
+.tier-list{
+  display:grid;
+  gap:10px;
+}
+.tier-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  padding:14px 16px;
+  border-radius:18px;
+  background:#f8fbfe;
+  border:1px solid rgba(56,189,248,.12);
+}
+.tier-item strong{
+  color:var(--deep);
+}
+.tier-item.active{
+  background:linear-gradient(135deg, rgba(56,189,248,.12), rgba(14,165,233,.08));
+  border-color:rgba(14,165,233,.28);
+}
+.big-progress{
+  margin-top:14px;
+}
+.big-progress .progress{
+  height:18px;
+}
+.current-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 14px;
+  border-radius:999px;
+  background:#f0f9ff;
+  border:1px solid rgba(56,189,248,.18);
+  color:#0369a1;
+  font-weight:900;
+}
+.task-grid{
+  display:grid;
+  gap:14px;
+}
+.task-card{
+  background:linear-gradient(180deg, rgba(255,255,255,.94), rgba(255,255,255,.80));
+  border:1px solid rgba(56,189,248,.16);
+  box-shadow:var(--shadow-soft);
+  border-radius:24px;
+  padding:18px;
+}
+.task-table{
+  display:grid;
+  gap:12px;
+  margin-top:12px;
+}
+.task-row{
+  padding:14px 16px;
+  border-radius:18px;
+  background:#f8fbfe;
+  border:1px solid rgba(56,189,248,.12);
+}
+.task-row strong{
+  color:var(--deep);
+  display:block;
+  margin-bottom:6px;
+}
+.task-meta{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  color:#648196;
+  font-size:14px;
+  margin-top:6px;
+}
+.teacher-note{
+  margin-top:10px;
+  padding:12px 14px;
+  border-radius:16px;
+  background:#ecfeff;
+  border:1px solid rgba(20,184,166,.18);
+  color:#0f766e;
+  line-height:1.8;
+}
+@media (max-width:980px){
+  .upgrade-grid{grid-template-columns:1fr}
+}
+
+
+/* ===== VIP upgrade ===== */
+.vip-hero{
+  position:relative;
+  overflow:hidden;
+  padding:22px;
+  border-radius:26px;
+  background:
+    radial-gradient(circle at 85% 15%, rgba(255,255,255,.35), transparent 24%),
+    linear-gradient(135deg, #0ea5e9, #38bdf8 48%, #0b6ea9);
+  color:#fff;
+  box-shadow:0 20px 36px rgba(14,165,233,.20);
+}
+.vip-hero:after{
+  content:"";
+  position:absolute;
+  width:220px;height:220px;
+  border-radius:50%;
+  background:rgba(255,255,255,.10);
+  left:-40px;bottom:-110px;
+}
+.vip-hero h2{margin:0;font-size:28px}
+.vip-hero p{margin:10px 0 0;line-height:1.9;color:rgba(255,255,255,.95)}
+.vip-badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.vip-badge{
+  background:rgba(255,255,255,.18);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:999px;
+  padding:8px 12px;
+  font-size:13px;
+  font-weight:800;
+}
+.vip-grid-2{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+.vip-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.vip-card{
+  background:linear-gradient(180deg, rgba(255,255,255,.94), rgba(255,255,255,.80));
+  border:1px solid rgba(56,189,248,.16);
+  box-shadow:var(--shadow-soft);
+  border-radius:24px;
+  padding:18px;
+}
+.vip-card h3{margin:0 0 14px;color:var(--deep);font-size:22px}
+.vip-stat{
+  background:#f8fbfe;
+  border:1px solid rgba(56,189,248,.12);
+  border-radius:18px;
+  padding:16px;
+  text-align:center;
+}
+.vip-stat .num{font-size:28px;font-weight:900;color:#0b6ea9}
+.vip-stat .lbl{margin-top:6px;color:#648196;font-size:14px;font-weight:700}
+.vip-list{display:grid;gap:12px}
+.vip-item{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  padding:14px 16px;border-radius:18px;background:#f8fbfe;border:1px solid rgba(56,189,248,.12);
+}
+.vip-item strong{color:var(--deep)}
+.vip-soft{
+  color:#648196;font-size:14px;line-height:1.8;
+}
+.section-spacer{margin-top:18px}
+.task-strip{
+  display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  padding:12px 14px;border-radius:16px;background:#f8fbfe;border:1px solid rgba(56,189,248,.12);margin-top:10px;
+}
+.task-pill{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 12px;border-radius:999px;background:#f0f9ff;border:1px solid rgba(56,189,248,.18);
+  color:#0369a1;font-size:13px;font-weight:800;
+}
+.gold-card{
+  background:
+    radial-gradient(circle at 85% 15%, rgba(255,255,255,.35), transparent 22%),
+    linear-gradient(135deg, #1d4ed8, #0ea5e9 42%, #7dd3fc);
+  color:#fff;
+  border:none;
+  box-shadow:0 20px 36px rgba(14,165,233,.22);
+}
+.gold-card h3,.gold-card .vip-soft,.gold-card .muted-note{color:#fff !important}
+.luxe-note{
+  margin-top:14px;padding:14px 16px;border-radius:18px;
+  background:linear-gradient(135deg, rgba(56,189,248,.08), rgba(14,165,233,.05));
+  border:1px solid rgba(56,189,248,.16);
+  color:#0c4a6e;font-weight:700;line-height:1.9;
+}
+.roulette-panel{
+  background:
+    radial-gradient(circle at 85% 15%, rgba(255,255,255,.25), transparent 24%),
+    linear-gradient(135deg, #0ea5e9, #38bdf8 48%, #0b6ea9);
+  color:#fff;
+}
+.roulette-panel h3,.roulette-panel .vip-soft{color:#fff !important}
+.roulette-action-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+@media (max-width:980px){
+  .vip-grid-2,.vip-grid-3,.roulette-action-row{grid-template-columns:1fr}
+}
+
+
+.honor-global{
+  background:linear-gradient(135deg,#0ea5e9,#38bdf8 48%,#0b6ea9);
+  color:#fff;
+  border:none;
+  box-shadow:0 20px 36px rgba(14,165,233,.22);
+}
+.honor-global h3,.honor-global .vip-soft,.honor-global .section-head h3,.honor-global .section-head span{color:#fff !important}
+.podium-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  margin-top:12px;
+}
+.podium-card{
+  border-radius:22px;
+  padding:18px 16px;
+  text-align:center;
+  background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.18);
+  backdrop-filter:blur(6px);
+}
+.podium-card.first{
+  background:linear-gradient(180deg, rgba(255,215,0,.28), rgba(255,255,255,.16));
+}
+.podium-card.second{
+  background:linear-gradient(180deg, rgba(192,192,192,.28), rgba(255,255,255,.16));
+}
+.podium-card.third{
+  background:linear-gradient(180deg, rgba(205,127,50,.28), rgba(255,255,255,.16));
+}
+.place-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:64px;height:64px;border-radius:50%;
+  background:rgba(255,255,255,.18);
+  font-size:30px;font-weight:900;
+  margin-bottom:10px;
+}
+.podium-card h4{margin:0;color:#fff;font-size:20px}
+.podium-card p{margin:6px 0 0;color:rgba(255,255,255,.95);line-height:1.7}
+.global-points{
+  margin-top:10px;
+  font-size:24px;
+  font-weight:900;
+}
+.honor-class-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:14px;
+  margin-top:14px;
+}
+.student-honor-card{
+  border-radius:24px;
+  padding:16px;
+  text-align:center;
+  background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.82));
+  border:1px solid rgba(56,189,248,.16);
+  box-shadow:var(--shadow-soft);
+}
+.student-photo{
+  width:86px;height:86px;border-radius:50%;
+  object-fit:cover;
+  display:block;
+  margin:0 auto 12px;
+  border:4px solid rgba(56,189,248,.18);
+  box-shadow:0 10px 20px rgba(14,165,233,.12);
+  background:#eaf7ff;
+}
+.student-honor-card.first .student-photo{border-color:rgba(255,215,0,.55)}
+.student-honor-card.second .student-photo{border-color:rgba(192,192,192,.55)}
+.student-honor-card.third .student-photo{border-color:rgba(205,127,50,.55)}
+.rank-ribbon{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:900;
+  background:#f0f9ff;
+  color:#0369a1;
+  border:1px solid rgba(56,189,248,.18);
+  margin-bottom:8px;
+}
+.student-honor-card h4{
+  margin:0;
+  color:var(--deep);
+  font-size:18px;
+}
+.student-honor-card p{
+  margin:6px 0 0;
+  color:#648196;
+  line-height:1.7;
+  font-size:13px;
+}
+.student-score{
+  margin-top:8px;
+  font-size:22px;
+  font-weight:900;
+  color:#0b6ea9;
+}
+@media (max-width:1100px){
+  .honor-class-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:980px){
+  .podium-grid{grid-template-columns:1fr}
+  .honor-class-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:640px){
+  .honor-class-grid{grid-template-columns:1fr}
+}
+
+
+.settings-grid,.survey-grid,.support-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+.lux-card{
+  background:linear-gradient(180deg, rgba(255,255,255,.94), rgba(255,255,255,.80));
+  border:1px solid rgba(56,189,248,.16);
+  box-shadow:var(--shadow-soft);
+  border-radius:24px;
+  padding:18px;
+}
+.lux-card h3{
+  margin:0 0 14px;
+  color:var(--deep);
+  font-size:22px;
+}
+.info-box{
+  margin-top:12px;
+  padding:14px 16px;
+  border-radius:18px;
+  background:#ecfeff;
+  border:1px solid rgba(20,184,166,.22);
+  color:#0f766e;
+  font-weight:800;
+  line-height:1.8;
+  display:none;
+}
+.info-box.show{display:block}
+.textarea{
+  width:100%;
+  min-height:120px;
+  padding:14px;
+  border-radius:16px;
+  border:1px solid rgba(56,189,248,.18);
+  background:#fff;
+  color:#0f172a;
+  font-size:15px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95);
+  resize:vertical;
+}
+.radio-group{
+  display:grid;
+  gap:10px;
+}
+.radio-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 14px;
+  border-radius:16px;
+  background:#f8fbfe;
+  border:1px solid rgba(56,189,248,.12);
+  color:#0c4a6e;
+  font-weight:700;
+}
+.support-list{
+  display:grid;
+  gap:12px;
+}
+.support-item{
+  padding:14px 16px;
+  border-radius:18px;
+  background:#f8fbfe;
+  border:1px solid rgba(56,189,248,.12);
+}
+.support-item strong{
+  display:block;
+  color:var(--deep);
+  margin-bottom:6px;
+}
+@media (max-width:980px){
+  .settings-grid,.survey-grid,.support-grid{grid-template-columns:1fr}
+}
+
+</style>
+
+<style id="githubNavStyle">
+.github-nav{position:sticky;top:0;z-index:9999;display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center;padding:12px 16px;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(14,165,233,.14);box-shadow:0 8px 24px rgba(14,165,233,.08)}
+.github-nav a{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 14px;border-radius:14px;text-decoration:none;font-weight:800;background:#f0f9ff;color:#0369a1;border:1px solid rgba(56,189,248,.18)}
+.github-nav a.primary{background:linear-gradient(135deg,#38bdf8,#0ea5e9);color:#fff;border:none}
+</style>
+
+
+<style id="phone-bank-ui-student">
+@media (max-width:767px){
+  .app{padding:10px 10px 92px}
+  .orb,.grid{display:none}
+  .shell{border-radius:28px;box-shadow:0 20px 44px rgba(14,165,233,.16)}
+  .topbar{padding:16px;align-items:flex-start;gap:12px;flex-direction:column}
+  .brand{width:100%}
+  .brand h1{font-size:20px}
+  .top-actions{width:100%;justify-content:flex-end}
+  .content{padding:14px}
+  .hero-grid,.main-grid,.statement-shell,.dual-grid,.stats{grid-template-columns:1fr !important}
+  .stats{gap:10px}
+  .stat,.welcome-card,.section,.mini-card{border-radius:22px}
+  .bank-card{min-height:200px;border-radius:24px;padding:18px}
+  .bank-number{font-size:24px;margin:22px 0 14px}
+  .bank-bottom{display:block}
+  .copy-btn{width:100%;margin-top:14px}
+  .top-tabs{
+    position:fixed;left:10px;right:10px;bottom:10px;z-index:9998;
+    margin:0;padding:10px;border-radius:24px;background:rgba(255,255,255,.94);
+    box-shadow:0 20px 50px rgba(8,47,73,.18);backdrop-filter:blur(18px);
+    border:1px solid rgba(56,189,248,.18);overflow:auto;gap:8px;scrollbar-width:none;
+  }
+  .top-tabs::-webkit-scrollbar{display:none}
+  .tab{min-width:108px;padding:12px 14px;border-radius:16px;text-align:center;font-size:13px}
+  .section-head{display:block}
+  .section-head span{display:block;margin-top:6px}
+  .tx{display:block;padding:14px}
+  .tx-amount{margin-top:10px;display:block;text-align:left}
+  .statement-item,.history-item,.reward-item,.support-item,.radio-item{border-radius:18px}
+  .mini-grid,.support-list,.radio-group,.tx-list{gap:10px}
+  .task-table,.statement-table,table{display:block;overflow:auto;white-space:nowrap}
+}
+</style>
+<script>
+(function(){
+  function markStudentDevice(){
+    var isPhone = window.matchMedia('(max-width: 767px)').matches;
+    document.documentElement.setAttribute('data-device', isPhone ? 'phone' : 'large');
+    document.body.classList.toggle('device-phone', isPhone);
+  }
+  window.addEventListener('resize', markStudentDevice);
+  document.addEventListener('DOMContentLoaded', markStudentDevice);
+})();
+</script>
+
+</head>
+<body>
+<div class="github-nav">
+  <a class="primary" href="index.html">الصفحة الرئيسية</a>
+  <a href="teacher.html">لوحة المعلمة</a>
+  <a href="student-report.html">تقرير الطالب</a>
+</div>
+
+  <div class="app">
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+    <div class="grid"></div>
+
+    <div class="shell">
+      <div class="topbar">
+        <div class="brand">
+          <div class="logo">BN</div>
+          <div>
+            <h1>بنك الرياضيات المصرفي</h1>
+            <p>لوحة الطالب الاحترافية</p>
+          </div>
+        </div>
+        <div class="top-actions">
+          <button class="icon-btn" title="الإشعارات" onclick="openNotifications()">🔔</button>
+          <button class="icon-btn" title="الملف الشخصي" onclick="openProfile()">👤</button>
+          <button class="icon-btn" title="تسجيل الخروج" onclick="logoutStudent()">⎋</button><button class="icon-btn" title="رجوع" onclick="goBackTop()">↩️</button>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="top-tabs" id="topTabs">
+          <div class="tab" data-tab="homePane">الرئيسية</div>
+          <div class="tab active" data-tab="statementPane">كشف الحساب</div>
+          <div class="tab" data-tab="rewardsPane">الجوائز والحوافز</div>
+          <div class="tab" data-tab="roulettePane">روليت الهدايا</div>
+          <div class="tab" data-tab="upgradePane">ترقية الحساب</div>
+          <div class="tab" data-tab="tasksPane">المهام الأدائية</div>
+          <div class="tab" data-tab="settingsPane">تغيير الرقم السري واسم المستخدم</div>
+          <div class="tab" data-tab="surveyPane">استبيان</div>
+          <div class="tab" data-tab="supportPane">الدعم الفني</div>
+        </div>
+
+        
+<div class="tab-pane active" id="statementPane">
+          <div class="vip-hero">
+            <h2>كشف الحساب</h2>
+            <p>واجهة VIP لعرض وتنفيذ العمليات وإصدار التقارير بطريقة فخمة واحترافية من داخل لوحة الطالب.</p>
+            <div class="vip-badges">
+              <div class="vip-badge">تنفيذ العمليات</div>
+              <div class="vip-badge">تقرير PDF</div>
+              <div class="vip-badge">إرسال التقرير</div>
+            </div>
+          </div>
+
+          <div class="vip-grid-2 section-spacer">
+            <div class="vip-card">
+              <h3>تنفيذ عملية</h3>
+              <div class="field-grid">
+                <select class="select" id="opType">
+                  <option value="">اختر العملية</option>
+                  <option value="إيداع">إيداع</option>
+                  <option value="تحويل">تحويل</option>
+                  <option value="سحب">سحب</option>
+                </select>
+                <input class="input" id="opReason" placeholder="السبب">
+                <input class="input" id="opAmount" type="number" placeholder="المبلغ">
+                <button class="primary-btn" onclick="runOperation()">تنفيذ العملية</button>
+                <div class="op-status" id="opStatus"></div>
+              </div>
+            </div>
+
+            <div class="vip-card">
+              <h3>إصدار تقرير PDF</h3>
+              <div class="field-grid">
+                <div class="dual-grid">
+                  <div>
+                    <label class="muted-note">من تاريخ</label>
+                    <input class="input" type="date" id="dateFrom">
+                  </div>
+                  <div>
+                    <label class="muted-note">إلى تاريخ</label>
+                    <input class="input" type="date" id="dateTo">
+                  </div>
+                </div>
+                <button class="primary-btn" onclick="generatePdfNotice()">إصدار التقرير</button>
+                <div class="pdf-box">
+                  <div class="field-grid">
+                    <select class="select" id="sendMethod">
+                      <option value="">إرسال التقرير</option>
+                      <option>واتساب</option>
+                      <option>بريد إلكتروني</option>
+                      <option>SMS</option>
+                    </select>
+                    <button class="soft-btn" onclick="sendReportNotice()">إرسال التقرير</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
+<div class="tab-pane" id="rewardsPane">
+          <div class="vip-hero">
+            <h2>الجوائز والحوافز</h2>
+            <p>يتم احتساب الجوائز حسب أسبوع المدرسة من الأحد إلى الخميس، وتتحدث تلقائيًا من سجل العمليات اليومية.</p>
+            <div class="vip-badges">
+              <div class="vip-badge">تحديث تلقائي</div>
+              <div class="vip-badge">سجل العمليات</div>
+              <div class="vip-badge">تهنئة ولي الأمر</div>
+            </div>
+          </div>
+
+          <div class="vip-grid-3 section-spacer">
+            <div class="vip-stat"><div class="num">+٢,٣٠٠</div><div class="lbl">صافي الأسبوع</div></div>
+            <div class="vip-stat"><div class="num">٨٥</div><div class="lbl">نقاط الأسبوع</div></div>
+            <div class="vip-stat"><div class="num">الثالث</div><div class="lbl">ترتيبك داخل الفصل</div></div>
+            <div class="vip-stat"><div class="num">١٢</div><div class="lbl">مشاركات الأسبوع</div></div>
+            <div class="vip-stat"><div class="num">⭐</div><div class="lbl">نجم الالتزام</div></div>
+            <div class="vip-stat"><div class="num">⭐</div><div class="lbl">نجم المشاركة</div></div>
+            <div class="vip-stat"><div class="num">⭐</div><div class="lbl">نجم التحسّن</div></div>
+            <div class="vip-stat"><div class="num">🏆</div><div class="lbl">بطل الادخار</div></div>
+            <div class="vip-stat"><div class="num">٤,٧٠٠</div><div class="lbl">إجمالي الإيداعات</div></div>
+            <div class="vip-stat"><div class="num">⭐</div><div class="lbl">نجم التعاون</div></div>
+          </div>
+
+          <div class="luxe-note">✅ يتم احتساب الجوائز تلقائيًا من العمليات اليومية • التهنئة التلقائية لولي الأمر تعمل عند تفعيلها من صفحة المعلمة.</div>
+        </div>
+
+        
+<div class="tab-pane" id="roulettePane">
+          <div class="vip-hero">
+            <h2>روليت الهدايا</h2>
+            <p>واجهة VIP فخمة للهدايا، مع دوران احترافي ورسالة فوز واضحة داخل نفس لوحة الطالب.</p>
+            <div class="vip-badges">
+              <div class="vip-badge">تدوير الآن</div>
+              <div class="vip-badge">عرض الجوائز</div>
+              <div class="vip-badge">إعلان الفوز</div>
+            </div>
+          </div>
+
+          <div class="vip-grid-2 section-spacer">
+            <div class="vip-card roulette-panel">
+              <div class="roulette-pointer"></div>
+              <div class="roulette-wheel-shell">
+                <div class="roulette-wheel" id="rouletteWheel">
+                  <div class="roulette-center">🎁</div>
+                </div>
+              </div>
+
+              <div class="roulette-action-row">
+                <button class="primary-btn" onclick="spinRoulette()">تدوير الآن</button>
+                <button class="soft-btn" onclick="showPrizes()">عرض الجوائز</button>
+              </div>
+
+              <div class="win-box" id="winBox">مبروك فزتِ بالجائزة: —</div>
+            </div>
+
+            <div class="vip-card">
+              <h3>الجوائز المتاحة</h3>
+              <div class="vip-list" id="prizesList">
+                <div class="vip-item"><span>١</span><strong>إعفاء واجب</strong></div>
+                <div class="vip-item"><span>٢</span><strong>إعفاء واجبين</strong></div>
+                <div class="vip-item"><span>٣</span><strong>زيادة درجات في الاختبار</strong></div>
+                <div class="vip-item"><span>٤</span><strong>هدية مميزة</strong></div>
+                <div class="vip-item"><span>٥</span><strong>قسيمة تحفيزية</strong></div>
+                <div class="vip-item"><span>٦</span><strong>وجبة ماكدونالدز</strong></div>
+                <div class="vip-item"><span>٧</span><strong>شهادة تميز</strong></div>
+                <div class="vip-item"><span>٨</span><strong>هدية مفاجأة</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
+<div class="tab-pane" id="upgradePane">
+          <div class="vip-hero">
+            <h2>ترقية الحساب</h2>
+            <p>الترقية تتم تلقائيًا حسب الرصيد، مع عرض المستوى الحالي وشريط التقدم بصورة VIP فخمة وواضحة.</p>
+            <div class="vip-badges">
+              <div class="vip-badge">ترقية تلقائية</div>
+              <div class="vip-badge">حسب الرصيد</div>
+              <div class="vip-badge">مستويات الحساب</div>
+            </div>
+          </div>
+
+          <div class="vip-grid-2 section-spacer">
+            <div class="vip-card">
+              <h3>سُلّم الترقية</h3>
+              <div class="vip-list">
+                <div class="vip-item"><strong>🥉 برونزي</strong><span>10,000 وأقل</span></div>
+                <div class="vip-item"><strong>🥈 فضي</strong><span>من 11,000 إلى 20,000</span></div>
+                <div class="vip-item"><strong>🥇 ذهبي</strong><span>من 21,000 إلى 30,000</span></div>
+                <div class="vip-item"><strong>🔷 الماسيّ</strong><span>أكثر من 31,000</span></div>
+              </div>
+            </div>
+
+            <div class="vip-card gold-card">
+              <h3>حالة الحساب الحالية</h3>
+              <div class="current-badge">🥇 المستوى الحالي: ذهبي</div>
+              <p class="muted-note" style="margin-top:12px">الرصيد الحالي: <strong>12,500</strong> — يتم تحديث المستوى تلقائيًا عند تغيّر الرصيد.</p>
+              <div class="big-progress">
+                <div class="progress">
+                  <div class="bar" style="width:58%"></div>
+                </div>
+              </div>
+              <div class="luxe-note" style="background:rgba(255,255,255,.16); border-color:rgba(255,255,255,.16); color:#fff;">كلما ارتفع الرصيد ينتقل الحساب تلقائيًا إلى المستوى الأعلى حسب الشرائح المحددة.</div>
+            </div>
+          </div>
+        </div>
+
+        
+<div class="tab-pane" id="tasksPane">
+          <div class="vip-hero">
+            <h2>المهام الأدائية</h2>
+            <p>واجهة VIP لمتابعة المهام الأدائية، مع الفلاتر والحالة والتسليم وتقييم المعلمة وملاحظاتها.</p>
+            <div class="vip-badges">
+              <div class="vip-badge">فلترة الحالة</div>
+              <div class="vip-badge">الفصل الدراسي</div>
+              <div class="vip-badge">تقييم المعلمة</div>
+            </div>
+          </div>
+
+          <div class="vip-grid-2 section-spacer">
+            <div class="vip-card">
+              <h3>فلترة المهام</h3>
+              <div class="field-grid">
+                <select class="select">
+                  <option>فلترة الحالة</option>
+                  <option>منتهية</option>
+                  <option>نشطة</option>
+                  <option>ملغية</option>
+                </select>
+                <select class="select">
+                  <option>الفصل الدراسي</option>
+                  <option>الفصل الدراسي الأول</option>
+                  <option>الفصل الدراسي الثاني</option>
+                </select>
+              </div>
+              <div class="luxe-note">تتحدث الحالة والتسليم تلقائيًا من حساب المعلمة عند تعديل المهمة.</div>
+            </div>
+
+            <div class="vip-card">
+              <h3>المهام الحالية</h3>
+              <div class="task-row">
+                <strong>اسم المهمة: مشروع القياس والتناسب</strong>
+                <div class="task-meta">
+                  <span class="task-pill">حالة المهمة: نشطة</span>
+                  <span class="task-pill">التسليم: تم التسليم</span>
+                  <span class="task-pill">التقييم: 9/10</span>
+                </div>
+                <div class="teacher-note">ملاحظة المعلمة: أداء جميل جدًا، ويحتاج فقط إلى مزيد من الدقة في عرض الحل النهائي.</div>
+              </div>
+
+              <div class="task-row">
+                <strong>اسم المهمة: تطبيق النسبة في الحياة اليومية</strong>
+                <div class="task-meta">
+                  <span class="task-pill">حالة المهمة: منتهية</span>
+                  <span class="task-pill">التسليم: لم يتم التسليم</span>
+                  <span class="task-pill">التقييم: —</span>
+                </div>
+                <div class="teacher-note">ملاحظة المعلمة: المهمة انتهت ولم يتم رفع التسليم حتى الآن.</div>
+              </div>
+
+              <div class="task-row">
+                <strong>اسم المهمة: نشاط المقارنة بين الكسور</strong>
+                <div class="task-meta">
+                  <span class="task-pill">حالة المهمة: ملغية</span>
+                  <span class="task-pill">التسليم: —</span>
+                  <span class="task-pill">التقييم: —</span>
+                </div>
+                <div class="teacher-note">ملاحظة المعلمة: تم إلغاء المهمة من حساب المعلمة وسيتم استبدالها بمهمة جديدة.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="tab-pane" id="settingsPane">
+          <div class="vip-hero">
+            <h2>تغيير الرقم السري واسم المستخدم</h2>
+            <p>واجهة فخمة وآمنة لتحديث اسم المستخدم والرقم السري داخل الحساب، مع رسائل تأكيد واضحة.</p>
+            <div class="vip-badges">
+              <div class="vip-badge">أمان الحساب</div>
+              <div class="vip-badge">تحديث البيانات</div>
+              <div class="vip-badge">حفظ التغييرات</div>
+            </div>
+          </div>
+
+          <div class="settings-grid section-spacer">
+            <div class="lux-card">
+              <h3>تحديث اسم المستخدم</h3>
+              <div class="field-grid">
+                <input class="input" id="currentUsername" value="اسم_المستخدم_الحالي" placeholder="اسم المستخدم الحالي">
+                <input class="input" id="newUsername" placeholder="اسم المستخدم الجديد">
+                <button class="primary-btn" onclick="saveUsername()">حفظ اسم المستخدم</button>
+                <div class="info-box" id="usernameStatus"></div>
+              </div>
+            </div>
+
+            <div class="lux-card">
+              <h3>تحديث الرقم السري</h3>
+              <div class="field-grid">
+                <input class="input" id="currentPin" type="password" placeholder="الرقم السري الحالي">
+                <input class="input" id="newPin" type="password" placeholder="الرقم السري الجديد">
+                <input class="input" id="confirmPin" type="password" placeholder="تأكيد الرقم السري الجديد">
+                <button class="primary-btn" onclick="savePin()">حفظ الرقم السري</button>
+                <div class="info-box" id="pinStatus"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane" id="surveyPane">
+          <div class="vip-hero">
+            <h2>الاستبيان</h2>
+            <p>استبيان راقٍ لقياس رضا الطالب عن التجربة التعليمية داخل بنك الرياضيات المصرفي.</p>
+            <div class="vip-badges">
+              <div class="vip-badge">رأيك يهمنا</div>
+              <div class="vip-badge">تحسين مستمر</div>
+              <div class="vip-badge">تجربة تعليمية أفضل</div>
+            </div>
+          </div>
+
+          <div class="survey-grid section-spacer">
+            <div class="lux-card">
+              <h3>تقييم التجربة</h3>
+              <div class="radio-group">
+                <label class="radio-item"><input type="radio" name="exp" value="ممتازة"> التجربة ممتازة</label>
+                <label class="radio-item"><input type="radio" name="exp" value="جيدة جدًا"> التجربة جيدة جدًا</label>
+                <label class="radio-item"><input type="radio" name="exp" value="جيدة"> التجربة جيدة</label>
+                <label class="radio-item"><input type="radio" name="exp" value="تحتاج تحسين"> التجربة تحتاج تحسين</label>
+              </div>
+            </div>
+
+            <div class="lux-card">
+              <h3>ملاحظاتك واقتراحاتك</h3>
+              <textarea class="textarea" id="surveyNotes" placeholder="اكتبي أو اكتب ملاحظاتك هنا..."></textarea>
+              <button class="primary-btn" style="margin-top:12px" onclick="submitSurvey()">إرسال الاستبيان</button>
+              <div class="info-box" id="surveyStatus"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane" id="supportPane">
+          <div class="vip-hero">
+            <h2>الدعم الفني</h2>
+            <p>محتوى فعلي ومفيد للتواصل مع الدعم الفني، ورفع المشكلات الفنية بطريقة واضحة ومنظمة.</p>
+            <div class="vip-badges">
+              <div class="vip-badge">دعم سريع</div>
+              <div class="vip-badge">بلاغات فنية</div>
+              <div class="vip-badge">حلول مقترحة</div>
+            </div>
+          </div>
+
+          <div class="support-grid section-spacer">
+            <div class="lux-card">
+              <h3>إرسال طلب دعم فني</h3>
+              <div class="field-grid">
+                <select class="select" id="supportType">
+                  <option value="">نوع الطلب</option>
+                  <option>مشكلة في الدخول</option>
+                  <option>مشكلة في الرصيد</option>
+                  <option>مشكلة في التبويبات</option>
+                  <option>مشكلة في العمليات</option>
+                  <option>اقتراح تطوير</option>
+                </select>
+                <select class="select" id="supportPriority">
+                  <option value="">مستوى الأولوية</option>
+                  <option>عادية</option>
+                  <option>مرتفعة</option>
+                  <option>عاجلة</option>
+                </select>
+                <textarea class="textarea" id="supportDesc" placeholder="اكتب وصف المشكلة أو الطلب هنا..."></textarea>
+                <button class="primary-btn" onclick="sendSupportRequest()">إرسال طلب الدعم</button>
+                <div class="info-box" id="supportStatus"></div>
+              </div>
+            </div>
+
+            <div class="lux-card">
+              <h3>إرشادات مفيدة</h3>
+              <div class="support-list">
+                <div class="support-item">
+                  <strong>عند وجود مشكلة في الدخول</strong>
+                  تأكد من صحة اسم المستخدم والرقم السري، ثم أعد المحاولة مرة أخرى.
+                </div>
+                <div class="support-item">
+                  <strong>عند عدم ظهور تحديث في التبويبات</strong>
+                  أعد فتح الصفحة أو حدّثها للتأكد من تحميل آخر إصدار.
+                </div>
+                <div class="support-item">
+                  <strong>عند وجود ملاحظة على الرصيد أو العمليات</strong>
+                  راجع كشف الحساب وسجل العمليات قبل رفع البلاغ الفني.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+<div id="mainDashboard"
+ style="display:none">
+          <div class="hero-grid">
+            <div class="bank-card">
+              <div class="bank-top">
+                <div>
+                  <div class="bank-sub">Math Bank Card</div>
+                  <strong style="font-size:18px">بنك الرياضيات المصرفي</strong>
+                </div>
+                <div class="chip"></div>
+              </div>
+
+              <div class="bank-number">4587 2214 9901</div>
+
+              <div class="bank-bottom">
+                <div>
+                  <div class="bank-name" id="studentNameDisplay">اسم الطالب / ـة</div>
+                  <div class="bank-meta" id="studentAccountDisplay">رقم الحساب: MB-24587</div>
+                </div>
+                <div>
+                  <div class="bank-meta">الصلاحية: 12 / 27</div>
+                  <div class="bank-meta" id="studentLevelDisplay">المستوى: ذهبي ✨</div>
+                </div>
+              </div>
+
+              <button class="copy-btn" onclick="copyAccount()">نسخ رقم الحساب</button>
+            </div>
+
+            <div class="welcome-card">
+            <h2>أهلًا بك في بنك الرياضيات المصرفي 👋</h2>
+            <p>من خلال هذه اللوحة يمكنك متابعة رصيدك، نقاطك الأسبوعية، إنجازاتك، وترتيبك بكل سهولة. كل عملية تقوم بها تُسجل وتؤثر على مستواك وترقيتك داخل البنك.</p>
+            <div class="level-pill">✨ اجعل مشاركتك، التزامك، وتفوقك طريقك للوصول إلى أعلى المستويات</div>
+          </div>
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <h3 id="balanceDisplay">12,500</h3>
+              <p>الرصيد الحالي</p>
+            </div>
+            <div class="stat">
+              <h3 id="weeklyPointsDisplay">85</h3>
+              <p>نقاط الأسبوع</p>
+            </div>
+            <div class="stat">
+              <h3 id="operationsCountDisplay">12</h3>
+              <p>عدد العمليات</p>
+            </div>
+            <div class="stat">
+              <h3>3</h3>
+              <p>الجوائز المستحقة</p>
+            </div>
+          </div>
+
+          <div class="main-grid">
+            
+<div class="section honor-global">
+              <div class="section-head">
+                <h3>لوحة الشرف - ٣ مراكز على مستوى جميع الفصول</h3>
+                <span>تكريم أسبوعي عام</span>
+              </div>
+
+              <div class="podium-grid">
+                <div class="podium-card second">
+                  <div class="place-badge">🥈</div>
+                  <h4>المركز الثاني</h4>
+                  <p>الطالبة / الطالب: سارة</p>
+                  <p>الفصل: سادس / ب</p>
+                  <div class="global-points">٩٤ نقطة</div>
+                </div>
+
+                <div class="podium-card first">
+                  <div class="place-badge">🥇</div>
+                  <h4>المركز الأول</h4>
+                  <p>الطالبة / الطالب: أحمد</p>
+                  <p>الفصل: أول متوسط / أ</p>
+                  <div class="global-points">٩٨ نقطة</div>
+                </div>
+
+                <div class="podium-card third">
+                  <div class="place-badge">🥉</div>
+                  <h4>المركز الثالث</h4>
+                  <p>الطالبة / الطالب: نور</p>
+                  <p id="studentClassDisplay">الفصل: سادس / أ</p>
+                  <div class="global-points">٩١ نقطة</div>
+                </div>
+              </div>
+            </div>
+
+            
+<div class="section">
+              <div class="section-head">
+                <h3>لوحة شرف ٥ مراكز على مستوى الفصل</h3>
+                <span>مع إمكانية وضع صور حقيقية</span>
+              </div>
+
+              <div class="honor-class-grid">
+                <div class="student-honor-card first">
+                  <div class="rank-ribbon">المركز الأول 🥇</div>
+                  <img class="student-photo" src="https://placehold.co/200x200/png" alt="صورة الطالب الأول">
+                  <h4>اسم الطالب / ـة</h4>
+                  <p>الفصل: سادس / أ</p>
+                  <div class="student-score">٩٨</div>
+                </div>
+
+                <div class="student-honor-card second">
+                  <div class="rank-ribbon">المركز الثاني 🥈</div>
+                  <img class="student-photo" src="https://placehold.co/200x200/png" alt="صورة الطالب الثاني">
+                  <h4>اسم الطالب / ـة</h4>
+                  <p>الفصل: سادس / أ</p>
+                  <div class="student-score">٩٥</div>
+                </div>
+
+                <div class="student-honor-card third">
+                  <div class="rank-ribbon">المركز الثالث 🥉</div>
+                  <img class="student-photo" src="https://placehold.co/200x200/png" alt="صورة الطالب الثالث">
+                  <h4>اسم الطالب / ـة</h4>
+                  <p>الفصل: سادس / أ</p>
+                  <div class="student-score">٩٢</div>
+                </div>
+
+                <div class="student-honor-card">
+                  <div class="rank-ribbon">المركز الرابع</div>
+                  <img class="student-photo" src="https://placehold.co/200x200/png" alt="صورة الطالب الرابع">
+                  <h4>اسم الطالب / ـة</h4>
+                  <p>الفصل: سادس / أ</p>
+                  <div class="student-score">٨٩</div>
+                </div>
+
+                <div class="student-honor-card">
+                  <div class="rank-ribbon">المركز الخامس</div>
+                  <img class="student-photo" src="https://placehold.co/200x200/png" alt="صورة الطالب الخامس">
+                  <h4>اسم الطالب / ـة</h4>
+                  <p>الفصل: سادس / أ</p>
+                  <div class="student-score">٨٧</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /mainDashboard -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function copyAccount(){
+      navigator.clipboard.writeText('MB-24587');
+      alert('تم نسخ رقم الحساب');
+    }
+
+    function setActiveTab(tabId){
+      document.querySelectorAll('.tab').forEach(tab=>tab.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(pane=>pane.classList.remove('active'));
+
+      const targetTab = document.querySelector(`.tab[data-tab="${tabId}"]`);
+      const targetPane = document.getElementById(tabId);
+      const dashboard = document.getElementById('mainDashboard');
+
+      if(targetTab) targetTab.classList.add('active');
+
+      if(tabId === 'homePane'){
+        if(dashboard) dashboard.style.display = 'block';
+      }else{
+        if(dashboard) dashboard.style.display = 'none';
+        if(targetPane) targetPane.classList.add('active');
+      }
+
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    document.querySelectorAll('.tab').forEach(tab=>{
+      tab.addEventListener('click', ()=> setActiveTab(tab.dataset.tab));
+    });
+
+    function backToDashboard(){
+      setActiveTab('homePane');
+    }
+
+    function runOperation(){
+      const type = document.getElementById('opType').value;
+      const status = document.getElementById('opStatus');
+      let msg = 'تم تنفيذ العملية بنجاح';
+      if(type === 'إيداع') msg = 'تم الإيداع بنجاح';
+      else if(type === 'تحويل') msg = 'تم التحويل بنجاح';
+      else if(type === 'سحب') msg = 'تم السحب بنجاح';
+      status.textContent = msg;
+      status.classList.add('show');
+    }
+
+    function generatePdfNotice(){
+      function text(id){
+        const el = document.getElementById(id);
+        return el ? el.textContent.trim() : '';
+      }
+
+      const name = text('studentNameDisplay') || 'اسم الطالب / ـة';
+      const classText = text('studentClassDisplay').replace('الفصل:','').trim() || 'سادس / أ';
+      const accountText = text('studentAccountDisplay').replace('رقم الحساب:','').trim() || 'MB-24587';
+      const levelText = text('studentLevelDisplay').replace('المستوى:','').trim() || 'ذهبي';
+      const balanceText = text('balanceDisplay') || '12,500';
+      const pointsText = text('weeklyPointsDisplay') || '85';
+      const opsCount = text('operationsCountDisplay') || '0';
+
+      const txns = Array.from(document.querySelectorAll('#mainDashboard .tx')).slice(0, 20).map((tx, idx) => {
+        const type = tx.dataset.txType || tx.querySelector('.tx-main strong')?.textContent?.trim() || '';
+        const reason = tx.dataset.txReason || tx.querySelector('.tx-main small')?.textContent?.trim() || '';
+        const amount = tx.dataset.txAmount || tx.querySelector('.tx-amount')?.textContent?.trim() || '';
+        const dateText = tx.dataset.txDate || '';
+        return {
+          dateText: dateText || ('عملية ' + (idx + 1)),
+          type,
+          reason,
+          amount,
+          balanceAfter: balanceText
+        };
+      });
+
+      const reportData = {
+        student: {
+          name: name,
+          className: classText,
+          stage: 'ابتدائي',
+          balance: balanceText,
+          bankLevel: levelText,
+          accountNo: accountText,
+          weeklyPoints: pointsText,
+          operationsCount: opsCount
+        },
+        txns: txns
+      };
+
+      localStorage.setItem('reportData', JSON.stringify(reportData));
+
+      const status = document.getElementById('opStatus');
+      if(status){
+        status.textContent = 'تم تجهيز التقرير بالبيانات الحالية من النظام وفتح صفحة التقرير بنجاح';
+        status.classList.add('show');
+      }
+
+      window.open('student-report.html', '_blank');
+    }
+
+    function sendReportNotice(){
+      const method = document.getElementById('sendMethod').value || 'الطريقة المحددة';
+      const status = document.getElementById('opStatus');
+      status.textContent = `تم تجهيز إرسال التقرير عبر ${method}`;
+      status.classList.add('show');
+    }
+  
+    const roulettePrizes = [
+      'إعفاء واجب',
+      'إعفاء واجبين',
+      'زيادة درجات في الاختبار',
+      'هدية مميزة',
+      'قسيمة تحفيزية',
+      'وجبة ماكدونالدز',
+      'شهادة تميز',
+      'هدية مفاجأة'
+    ];
+    let rouletteRotation = 0;
+
+    function spinRoulette(){
+      const wheel = document.getElementById('rouletteWheel');
+      const winBox = document.getElementById('winBox');
+      const randomIndex = Math.floor(Math.random() * roulettePrizes.length);
+      const prize = roulettePrizes[randomIndex];
+      const segment = 360 / roulettePrizes.length;
+      rouletteRotation += 360 * 6 + (360 - (randomIndex * segment + segment / 2));
+
+      if(wheel){
+        wheel.style.transform = `rotate(${rouletteRotation}deg)`;
+      }
+
+      setTimeout(() => {
+        if(winBox){
+          winBox.textContent = `مبروك فزتِ بالجائزة: ${prize}`;
+          winBox.classList.add('show');
+        }
+      }, 4300);
+    }
+
+    function showPrizes(){
+      const box = document.getElementById('winBox');
+      if(box){
+        box.textContent = 'الجوائز المتاحة ظاهرة في القائمة الجانبية 🎁';
+        box.classList.add('show');
+      }
+      const prizesList = document.getElementById('prizesList');
+      if(prizesList){
+        prizesList.scrollIntoView({behavior:'smooth', block:'center'});
+      }
+    }
+
+
+    function openNotifications(){
+      alert("🔔 لا توجد إشعارات حالياً");
+    }
+
+    function openProfile(){
+      alert("👤 بيانات الطالب\nاسم الطالب: اسم الطالب / ـة\nالفصل: سادس / أ\nالمستوى: ذهبي");
+    }
+
+    function goBackTop(){
+      setActiveTab('homePane');
+    }
+
+
+    function showBox(id, message){
+      const box = document.getElementById(id);
+      if(box){
+        box.textContent = message;
+        box.classList.add('show');
+      }
+    }
+
+    function saveUsername(){
+      const newUser = document.getElementById('newUsername').value.trim();
+      if(!newUser){
+        showBox('usernameStatus', 'يرجى كتابة اسم مستخدم جديد قبل الحفظ.');
+        return;
+      }
+      const updated = persistStudentCredentials({ username: newUser });
+      document.getElementById('currentUsername').value = newUser;
+      showBox('usernameStatus', updated ? 'تم تحديث اسم المستخدم وحفظه في النظام بنجاح.' : 'تم تحديث اسم المستخدم محليًا بنجاح.');
+    }
+
+    function savePin(){
+      const currentPin = document.getElementById('currentPin').value.trim();
+      const newPin = document.getElementById('newPin').value.trim();
+      const confirmPin = document.getElementById('confirmPin').value.trim();
+
+      if(!currentPin || !newPin || !confirmPin){
+        showBox('pinStatus', 'يرجى تعبئة جميع حقول الرقم السري.');
+        return;
+      }
+      const login = JSON.parse(sessionStorage.getItem('mathbank_student_login') || '{}');
+      const expected = String(login.pass || '').trim();
+      if(expected && currentPin !== expected){
+        showBox('pinStatus', 'الرقم السري الحالي غير صحيح.');
+        return;
+      }
+      if(newPin !== confirmPin){
+        showBox('pinStatus', 'الرقم السري الجديد وتأكيده غير متطابقين.');
+        return;
+      }
+      const updated = persistStudentCredentials({ password: newPin });
+      login.pass = newPin;
+      sessionStorage.setItem('mathbank_student_login', JSON.stringify(login));
+      showBox('pinStatus', updated ? 'تم تحديث الرقم السري وحفظه في النظام بنجاح.' : 'تم تحديث الرقم السري محليًا بنجاح.');
+    }
+
+    function submitSurvey(){
+      showBox('surveyStatus', 'تم إرسال الاستبيان بنجاح، شكرًا لمشاركتك.');
+    }
+
+    function sendSupportRequest(){
+      const type = document.getElementById('supportType').value;
+      const priority = document.getElementById('supportPriority').value;
+      const desc = document.getElementById('supportDesc').value.trim();
+      if(!type || !priority || !desc){
+        showBox('supportStatus', 'يرجى تعبئة نوع الطلب والأولوية ووصف المشكلة قبل الإرسال.');
+        return;
+      }
+      showBox('supportStatus', 'تم إرسال طلب الدعم الفني بنجاح، وسيتم مراجعته في أقرب وقت.');
+    }
+
+
+    function getStudentReportData(){
+      try{
+        return JSON.parse(localStorage.getItem('reportData') || '{}');
+      }catch(e){
+        return null;
+      }
+    }
+</script>
+<script>
+(function(){
+  const STORAGE_KEY = 'teacher_dashboard_rebuilt_v3';
+  function loadLinkedState(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }catch(e){ return {}; } }
+  function persistStudentCredentials(patch){
+    const state = loadLinkedState();
+    const saved = JSON.parse(sessionStorage.getItem('mathbank_student_login') || '{}');
+    const targetId = saved.studentId || localStorage.getItem('currentStudentId') || '';
+    if(!targetId || !(state.students || []).length) return null;
+    const student = state.students.find(s => s.id === targetId) || null;
+    if(!student) return null;
+    Object.assign(student, patch || {});
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    if(patch?.username){
+      saved.user = patch.username;
+      saved.studentId = student.id;
+      sessionStorage.setItem('mathbank_student_login', JSON.stringify(saved));
+    }
+    window.dispatchEvent(new CustomEvent('mathbank:state-updated', {detail:{source:'student-profile-save'}}));
+    try{ if(window.mathBankFirebase?.push) window.mathBankFirebase.push(state); }catch(e){}
+    return student;
+  }
+  const AR_NUMS = '٠١٢٣٤٥٦٧٨٩';
+  const defaultRewards = ['إعفاء واجب','إعفاء واجبين','زيادة درجات في الاختبار','وجبة ماكدونالدز'];
+  function toArabicDigits(value){ return String(value ?? '').replace(/\d/g, d => AR_NUMS[d]); }
+  function formatNumber(value){ try{ return Number(value || 0).toLocaleString('ar-SA'); }catch(e){ return String(value || 0); } }
+  function loadState(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }catch(e){ return {}; } }
+  function pickStudent(state){
+    const params = new URLSearchParams(location.search);
+    const id = params.get('student') || localStorage.getItem('currentStudentId') || '';
+    let student = (state.students || []).find(s => s.id === id);
+    if(!student && (state.students || []).length) student = state.students[0];
+    if(student) localStorage.setItem('currentStudentId', student.id);
+    return student || null;
+  }
+  function getClass(state, classId){ return (state.classes || []).find(c => c.id === classId) || null; }
+  function levelProgress(balance){ const b = Number(balance || 0); if(b <= 10000) return {level:'برونزي', pct: Math.min(100, Math.round((b/10000)*100))}; if(b <= 15000) return {level:'فضي', pct: Math.min(100, Math.round(((b-10000)/5000)*100))}; if(b <= 30000) return {level:'ذهبي', pct: Math.min(100, Math.round(((b-15000)/15000)*100))}; if(b <= 40000) return {level:'بلاتيني', pct: Math.min(100, Math.round(((b-30000)/10000)*100))}; return {level:'ماسي', pct: 100}; }
+  function allowedRoulette(student, state){ const level = String(student?.level || ''); const levelOk = ['ذهبي','بلاتيني','ماسي','الماسي','الماسيّ'].some(x => level.includes(x)); if(!levelOk) return false; const r = state.roulette || {}; if(!r.enabled) return false; if(r.visibleAll) return true; return !!(r.visibleStudentId && r.visibleStudentId === student.id); }
+  function computeRanks(state, student){ const all = [...(state.students || [])].sort((a,b)=>Number(b.points||0)-Number(a.points||0)); const globalRank = all.findIndex(s=>s.id===student.id) + 1; const clsList = all.filter(s=>s.classId===student.classId); const classRank = clsList.findIndex(s=>s.id===student.id) + 1; return {globalRank, classRank, clsList}; }
+  function updateText(id, txt){ const el = document.getElementById(id); if(el) el.textContent = txt; }
+  function rebuildTransactions(student, state){ const wrap = document.querySelector('#mainDashboard .tx-list'); if(!wrap) return; const ops = (state.operations || []).filter(op => op.studentName === student.name).slice(0,8); const logs = (student.logs || []).slice(0,8); const rows = ops.length ? ops.map(op => { const amt = Number(op.amount || 0); const sign = amt >= 0 ? '+' : ''; return `<div class="tx"><div class="tx-main"><strong>${op.reason || 'عملية'}</strong><small>${op.date || ''} • ${op.day || ''} • ${op.time || ''}</small></div><div class="tx-amount ${amt >= 0 ? 'plus':'minus'}">${sign}${formatNumber(amt)}</div></div>`; }) : logs.map(log => `<div class="tx"><div class="tx-main"><strong>${log.action || 'سجل'}</strong><small>${log.date || ''} • ${log.details || ''}</small></div><div class="tx-amount plus">—</div></div>`); wrap.innerHTML = rows.length ? rows.join('') : `<div class="tx"><div class="tx-main"><strong>لا توجد عمليات بعد</strong><small>ستظهر العمليات المضافة من لوحة المعلمة هنا مباشرة.</small></div><div class="tx-amount plus">٠</div></div>`; }
+  function updateRewards(student, state){ const stats = document.querySelectorAll('#rewardsPane .vip-stat'); if(stats.length >= 10){ const rank = computeRanks(state, student); const net = (state.operations || []).filter(op => op.studentName === student.name).reduce((a,op)=>a+Number(op.amount||0),0); const submitted = Number(student.submittedTasks || 0); const arr = [[(net>=0?'+':'') + toArabicDigits(formatNumber(net)), 'صافي الأسبوع'], [toArabicDigits(student.points || 0), 'نقاط الأسبوع'], [rank.classRank ? toArabicDigits(rank.classRank) : '—', 'ترتيبك داخل الفصل'], [toArabicDigits(submitted), 'المهام المسلّمة'], [student.performance || '—', 'مستوى الأداء'], [toArabicDigits((student.assignedTasks||0) - (student.unsubmittedTasks||[]).length), 'مهام مكتملة'], [toArabicDigits((student.unsubmittedTasks||[]).length), 'مهام غير مسلمة'], [student.level || '—', 'مستوى الحساب'], [toArabicDigits(formatNumber(student.balance || 0)), 'إجمالي الرصيد'], [toArabicDigits(student.absences || 0), 'عدد الغياب']]; stats.forEach((card, i) => { const num = card.querySelector('.num'); const lbl = card.querySelector('.lbl'); if(num) num.textContent = arr[i]?.[0] || '—'; if(lbl) lbl.textContent = arr[i]?.[1] || ''; }); } }
+  function updateUpgrade(student){ const prog = levelProgress(student.balance); const currentBadge = document.querySelector('#upgradePane .current-badge'); if(currentBadge) currentBadge.textContent = '🏦 المستوى الحالي: ' + (student.level || prog.level); const note = document.querySelector('#upgradePane .gold-card .muted-note'); if(note) note.innerHTML = `الرصيد الحالي: <strong>${formatNumber(student.balance || 0)}</strong> — يتم تحديث المستوى تلقائيًا عند تغيّر الرصيد.`; const bar = document.querySelector('#upgradePane .progress .bar'); if(bar) bar.style.width = `${prog.pct}%`; }
+  function updateHonor(student, state){ const rank = computeRanks(state, student); const hero = document.querySelector('.section.honor-global .section-head span'); if(hero) hero.textContent = `ترتيبك العام: ${rank.globalRank ? toArabicDigits(rank.globalRank) : '—'} • ترتيب الفصل: ${rank.classRank ? toArabicDigits(rank.classRank) : '—'}`; const cards = document.querySelectorAll('#mainDashboard .student-honor-card'); if(cards.length){ rank.clsList.slice(0,5).forEach((s,i)=>{ const card = cards[i]; if(!card) return; const h4 = card.querySelector('h4'); const p = card.querySelector('p'); const badge = card.querySelector('.student-rank-badge'); const points = card.querySelector('.student-rank-points'); if(h4) h4.textContent = s.name; if(p) p.textContent = `${s.level || '—'} • ${getClass(state,s.classId)?.name || '—'}`; if(badge) badge.textContent = toArabicDigits(i+1); if(points) points.textContent = toArabicDigits(s.points || 0); }); } }
+
+  function currentAuth(){ try{return JSON.parse(sessionStorage.getItem('mathbank_auth')||'null');}catch(e){ return null; } }
+  function ensureStudentAccess(){
+    const auth = currentAuth();
+    if(auth && auth.role === 'student') return true;
+    const saved = sessionStorage.getItem('mathbank_student_login');
+    if(saved) return true;
+    window.location.href = 'index.html';
+    return false;
+  }
+  function logoutStudent(){
+    sessionStorage.removeItem('mathbank_auth');
+    sessionStorage.removeItem('mathbank_student_login');
+    window.location.href = 'index.html';
+  }
+
+  function updateRoulette(student, state){ const rewards = (state.roulette && Array.isArray(state.roulette.rewardNames) && state.roulette.rewardNames.length ? state.roulette.rewardNames : defaultRewards); const list = document.getElementById('prizesList'); if(list){ list.innerHTML = rewards.map((name,i)=>`<div class="vip-item"><span>${toArabicDigits(i+1)}</span><strong>${name}</strong></div>`).join(''); } const note = document.getElementById('winBox'); if(note){ note.textContent = allowedRoulette(student, state) ? (state.roulette?.lastResult || 'الروليت جاهز للدوران') : 'الروليت غير متاح الآن. يجب تفعيله من لوحة المعلمة وللطلبة المستحقين فقط.'; } const buttons = document.querySelectorAll('#roulettePane .roulette-action-row button'); buttons.forEach(btn => { btn.disabled = !allowedRoulette(student, state); btn.style.opacity = allowedRoulette(student, state) ? '1' : '.6'; }); }
+  function showProfile(student, state){ const cls = getClass(state, student.classId); alert(`👤 بيانات الطالب/ة
+الاسم: ${student.name}
+الفصل: ${cls ? cls.name : '—'}
+المستوى: ${student.level || '—'}
+اسم المستخدم: ${student.username || '—'}`); }
+  function showNotifications(student, state){ const hasHonor = (state.honorWeekly?.pendingWhatsApp || []).some(x => x.studentId === student.id); alert(hasHonor ? '🎉 يوجد لك تهنئة في لوحة الشرف هذا الأسبوع.' : '🔔 لا توجد إشعارات جديدة حالياً.'); }
+  function applyLinkedData(){ if(!ensureStudentAccess()) return; const state = loadState(); if(!(state.students || []).length) return; const student = pickStudent(state); if(!student) return; const cls = getClass(state, student.classId); updateText('studentNameDisplay', student.name || 'الطالب/ة'); updateText('studentAccountDisplay', 'رقم الحساب: ' + (student.username || student.id || 'MB-0000')); updateText('studentLevelDisplay', 'المستوى: ' + (student.level || '—')); updateText('studentClassDisplay', 'الفصل: ' + (cls ? cls.name : '—')); updateText('balanceDisplay', formatNumber(student.balance || 0)); updateText('weeklyPointsDisplay', formatNumber(student.points || 0)); updateText('operationsCountDisplay', formatNumber(((state.operations || []).filter(op => op.studentName === student.name)).length)); updateRewards(student, state); updateUpgrade(student); updateHonor(student, state); updateRoulette(student, state); rebuildTransactions(student, state); const levelPill = document.querySelector('.level-pill'); if(levelPill) levelPill.textContent = `المستوى الحالي: ${student.level || '—'} • الغياب: ${toArabicDigits(student.absences || 0)}`; const welcomeH2 = document.querySelector('.welcome-card h2'); if(welcomeH2) welcomeH2.textContent = `مرحبًا ${student.name}`; const welcomeP = document.querySelector('.welcome-card p'); if(welcomeP) welcomeP.textContent = `هذه البيانات مرتبطة مباشرة بلوحة المعلمة. أي إيداع أو سحب أو تحديث نقاط سيظهر هنا تلقائيًا.`; const currentUserInput = document.getElementById('currentUsername'); if(currentUserInput) currentUserInput.value = student.username || ''; window.openProfile = function(){ showProfile(student, state); }; window.openNotifications = function(){ showNotifications(student, state); }; }
+  window.spinRoulette = function(){ const state = loadState(); const student = pickStudent(state); if(!student) return alert('لا توجد بيانات طالب مرتبطة بعد.'); if(!allowedRoulette(student, state)) return alert('الروليت غير متاح لهذا الحساب حالياً.'); if(Number(state.roulette?.chances || 0) <= 0) return alert('انتهت فرص الروليت لهذا الأسبوع.'); const rewards = (state.roulette && Array.isArray(state.roulette.rewardNames) && state.roulette.rewardNames.length ? state.roulette.rewardNames : defaultRewards); const wheel = document.getElementById('rouletteWheel'); const winBox = document.getElementById('winBox'); const randomIndex = Math.floor(Math.random() * rewards.length); const segment = 360 / rewards.length; state.roulette.rotation = Number(state.roulette.rotation || 0) + 360 * 6 + (360 - (randomIndex * segment + segment / 2)); state.roulette.chances = Math.max(0, Number(state.roulette.chances || 0) - 1); state.roulette.lastResult = 'مبروك فزتِ بالجائزة: ' + rewards[randomIndex]; localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); if(wheel) wheel.style.transform = `rotate(${state.roulette.rotation}deg)`; setTimeout(() => { if(winBox){ winBox.textContent = state.roulette.lastResult; winBox.classList.add('show'); } applyLinkedData(); }, 4300); };
+  window.addEventListener('storage', function(ev){ if(ev.key === STORAGE_KEY) applyLinkedData(); });
+  document.addEventListener('DOMContentLoaded', applyLinkedData);
+})();
+</script>
+
+<script>
+(function(){
+  function safeStudentRefresh(){
+    try{ if(typeof applyLinkedData === 'function') applyLinkedData(); }catch(e){}
+  }
+  window.addEventListener('mathbank:state-updated', safeStudentRefresh);
+})();
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/12.10.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="firebase-sync.js"></script>
+
+</body>
+</html>
