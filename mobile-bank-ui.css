@@ -1,331 +1,39 @@
+/* Mobile-only enhancements that keep the full iPad/Desktop interface intact */
+@media (max-width: 900px){
+  html,body{overflow-x:hidden !important;}
+  body{min-width:0 !important;}
+  .page,.app,.screen,.content{padding:12px !important;}
+  .panel,.loginCard,.login-card,.statement-card,.backup-card,.credential-card,.thanks-display-card,.card,.class-card,.student-card,.side-card,.hero,.welcome-card,.section,.stat,.mini-card{border-radius:22px !important;}
 
-/* Mobile-only fixes for original files. Desktop and iPad stay unchanged. */
-@media (max-width: 768px){
-  html,body{
-    width:100%;
-    max-width:100%;
-    overflow-x:hidden !important;
-    -webkit-text-size-adjust:100%;
-  }
-  body{
-    overflow-y:auto !important;
-  }
-
-  /* global cards and buttons */
-  .panel,.card,.hero,.loginCard,.section,.stat,.class-card,.student-card,.modal-card,
-  .welcome-card,.mini-card,.statement-card,.report-card,.backup-card,.credential-card,
-  .thanks-display-card,.teacher-fixed,.sticky-filters,.side-card{
-    border-radius:22px !important;
-  }
-  .btn,.soft,.ghost,.ghostBtn,.bigBtn,.tab-btn,.mini-btn,.pill-btn,.danger-btn,.icon-btn,
-  .soft-btn,.primary-btn,.back-inline,.login-soft,.tab,.tabbtn,.super-tab-btn,.settings-subbtn,
-  .mutabaa-subbtn,.contact-outline,.contact-soft-green{
-    min-height:48px !important;
-    padding-inline:14px !important;
-    font-size:15px !important;
-  }
-  input,select,textarea,.input,.select{
-    min-height:50px !important;
-    font-size:16px !important;
-  }
-
-  /* ===== index.html ===== */
-  #overlay{
-    overflow:auto !important;
-    padding-bottom:28px;
-  }
-  .screen{
-    padding:14px !important;
-    min-height:auto !important;
-  }
-  .center{
-    min-height:auto !important;
-  }
-  .panel{
-    width:100% !important;
-    padding:22px 16px 18px !important;
-  }
-  .cards{
-    grid-template-columns:1fr !important;
-    gap:12px !important;
-  }
-  .entryTitle{
-    flex-direction:column !important;
-    align-items:flex-start !important;
-    margin-bottom:16px !important;
-  }
-  .entryTitle h2,
-  h1{
-    font-size:clamp(28px,9vw,38px) !important;
-    line-height:1.2 !important;
-  }
-  .lead,.hero p,.card p{
-    font-size:14px !important;
-    line-height:1.9 !important;
-  }
-  .loaderCard{
-    width:100% !important;
-    padding:16px !important;
-  }
-  .loaderHead{
-    gap:8px !important;
-  }
-  .shell{
-    width:100% !important;
-    min-height:auto !important;
-    display:grid !important;
-    grid-template-columns:1fr !important;
-    border-radius:28px !important;
-  }
-  .hero,.formSide{
-    padding:18px 16px !important;
-  }
-  .hero{
-    border-left:none !important;
-    border-bottom:1px solid rgba(56,189,248,.14) !important;
-    gap:18px !important;
-  }
-  .hero h2{
-    font-size:clamp(24px,8vw,32px) !important;
-    margin-top:4px !important;
-  }
-  .feature{
-    padding:14px !important;
-    border-radius:20px !important;
-  }
-  .featureIcon{
-    width:46px !important;
-    height:46px !important;
-    border-radius:14px !important;
-    font-size:20px !important;
-  }
-  .loginCard{
-    width:100% !important;
-    padding:20px 14px !important;
-    gap:16px !important;
-  }
-  .badges,.chips{
-    justify-content:flex-start !important;
-  }
-  #appFrame{
-    position:relative !important;
-    inset:auto !important;
-    width:100% !important;
-    height:calc(100vh - 24px) !important;
-  }
-
-  /* ===== teacher.html ===== */
-  .page{
-    padding:12px !important;
-  }
-  .topbar{
-    min-height:auto !important;
-    padding:14px !important;
-    gap:12px !important;
-  }
-  .brand h1{
-    font-size:22px !important;
-  }
-  .toolbar{
-    width:100% !important;
-    display:grid !important;
-    grid-template-columns:1fr 1fr !important;
-    gap:8px !important;
-  }
-  .toolbar > *{
-    min-width:0 !important;
-    width:100% !important;
-  }
-  .layout{
-    grid-template-columns:1fr !important;
-    gap:14px !important;
-    padding:12px !important;
-  }
-  .sidebar{
-    order:2 !important;
-  }
-  .main{
-    order:1 !important;
-  }
-  .menu{
-    grid-template-columns:1fr 1fr !important;
-  }
-  .menu-item{
-    min-height:52px !important;
-    padding:0 12px !important;
-    font-size:14px !important;
-  }
-  .hero{
-    min-height:auto !important;
-    grid-template-columns:1fr !important;
-    padding:16px !important;
-  }
-  .hero h2{
-    font-size:30px !important;
-  }
-  .hero-side{
-    padding:14px !important;
-  }
-  .stats,
-  .cards,
-  .class-grid,
-  .student-grid,
-  .field-grid,
-  .field-grid-3,
-  .filters,
-  .student-actions,
-  .mini-stats,
-  .kv,
-  .info-ribbon,
-  .class-ribbon,
-  .support-grid,
-  .settings-grid-2,
-  .contact-stats,
-  .contact-grid,
-  .supervision-settings-layout,
-  .supervision-kv,
-  .backup-layout,
-  .honor-hero-grid,
-  .honor-kpis,
-  .honor-list,
-  .honor-archive,
-  .honor-tools,
-  .honor-upload-grid,
-  .honor-upload-slots,
-  .weekly-status-grid,
-  .honor-whatsapp-grid,
-  .global-honor-grid,
-  .student-account-grid,
-  .student-global-top3,
-  .student-account-top,
-  .weights-grid,
-  .tasks-layout,
-  .files-layout,
-  .files-layout .field-grid-2x,
-  .task-card-meta,
-  .mutabaa-stats,
-  .radio-row{
-    grid-template-columns:1fr !important;
-  }
-  .tabs,.settings-subtabs,.mutabaa-subtabs,.super-tabs{
-    flex-wrap:nowrap !important;
-    overflow-x:auto !important;
-    padding-bottom:6px !important;
-    scrollbar-width:none;
-  }
-  .tabs::-webkit-scrollbar,.settings-subtabs::-webkit-scrollbar,.mutabaa-subtabs::-webkit-scrollbar,.super-tabs::-webkit-scrollbar{
-    display:none;
-  }
-  .tab-btn,.settings-subbtn,.mutabaa-subbtn,.super-tab-btn{
-    flex:0 0 auto !important;
-    white-space:nowrap !important;
-  }
-  .section-head{
-    align-items:flex-start !important;
-  }
-  .section-head h3{
-    font-size:22px !important;
-  }
-  .table-wrap{
-    overflow:auto !important;
-  }
-  table{
-    min-width:720px;
-  }
-  .class-top,.student-top,.student-main{
-    flex-direction:column !important;
-    align-items:flex-start !important;
-  }
-  .student-actions{
-    display:grid !important;
-    grid-template-columns:1fr 1fr !important;
-    gap:8px !important;
-  }
-  .hero-actions,.row-actions,.contact-actions,.button-strip,.login-actions{
-    display:grid !important;
-    grid-template-columns:1fr !important;
-    width:100% !important;
-  }
-  .hero-actions > *, .row-actions > *, .contact-actions > *, .button-strip > *, .login-actions > *{
-    width:100% !important;
-  }
-  .profile{
-    justify-items:flex-start !important;
-    text-align:right !important;
-  }
-  .profile-pic{
-    width:72px !important;
-    height:72px !important;
-    font-size:34px !important;
-  }
-
-  /* ===== student.html ===== */
-  .app{
-    padding:12px !important;
-  }
-  .topbar{
-    padding:14px !important;
-    align-items:flex-start !important;
-  }
-  .content{
-    padding:14px !important;
-  }
-  .top-tabs{
-    flex-wrap:nowrap !important;
-    overflow-x:auto !important;
-    gap:8px !important;
-  }
-  .top-tabs .tab{
-    flex:0 0 auto !important;
-  }
-  .hero-grid,
-  .stats,
-  .main-grid,
-  .statement-shell,
-  .dual-grid{
-    grid-template-columns:1fr !important;
-  }
-  .bank-card{
-    min-height:auto !important;
-    padding:18px !important;
-  }
-  .bank-number{
-    font-size:24px !important;
-    margin:20px 0 14px !important;
-  }
-  .stat h3{
-    font-size:24px !important;
-  }
-  .tx{
-    flex-direction:column !important;
-    align-items:flex-start !important;
-  }
-
-  /* ===== supervision.html ===== */
-  .login-grid,
-  .filter-grid,
-  .cards,
-  .split,
-  .report-grid,
-  .hero-points,
-  .teacher-fixed-grid,
-  .thanks-grid{
-    grid-template-columns:1fr !important;
-  }
-  .tabs{
-    grid-template-columns:1fr !important;
-  }
-  .hero{
-    padding:18px !important;
-  }
-  .hero h1{
-    font-size:32px !important;
-  }
-  .panel{
-    padding:16px !important;
-  }
-  .teacher-fixed{
-    position:relative !important;
-    top:auto !important;
-  }
+  /* index */
+  .screen{min-height:auto !important;}
+  .center{min-height:auto !important;display:block !important;}
+  .panel{width:100% !important;padding:22px 16px !important;}
+  .cards{grid-template-columns:1fr !important;}
+  .shell{display:block !important;min-height:auto !important;}
+  .hero,.formSide{padding:20px !important;border:none !important;}
+  .featureList,.feature,.badges,.chips,.linksRow,.hero-actions,.login-actions,.button-strip,.contact-actions,.super-tabs,.settings-subtabs,.mutabaa-subtabs,.tabs,.top-tabs{display:flex !important;flex-wrap:nowrap !important;overflow-x:auto !important;gap:8px !important;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .featureList::-webkit-scrollbar,.feature::-webkit-scrollbar,.badges::-webkit-scrollbar,.chips::-webkit-scrollbar,.linksRow::-webkit-scrollbar,.hero-actions::-webkit-scrollbar,.login-actions::-webkit-scrollbar,.button-strip::-webkit-scrollbar,.contact-actions::-webkit-scrollbar,.super-tabs::-webkit-scrollbar,.settings-subtabs::-webkit-scrollbar,.mutabaa-subtabs::-webkit-scrollbar,.tabs::-webkit-scrollbar,.top-tabs::-webkit-scrollbar{display:none;}
+  .feature{min-width:260px !important;}
+  .tabs button,.tabbtn,.top-tabs .tab,.settings-subbtn,.super-tab-btn,.mutabaa-subbtn,.tab-btn,.btn,.soft,.ghost,.ghostBtn,.pill-btn,.mini-btn,.danger-btn,.contact-soft-green,.contact-outline,.login-soft,.primary-btn,.soft-btn,.back-inline{flex:0 0 auto !important;min-width:140px;}
+  .btn,.ghostBtn,.contact-soft-green,.contact-outline,.login-soft,.primary-btn,.soft-btn,.back-inline{min-height:48px !important;}
+  .entryTitle{display:block !important;text-align:center;}
+  .entryTitle .logo{margin:14px auto 0;}
+  .loaderHead,.loaderFoot,.bank-top,.bank-bottom,.section-head,.hero-side,.completion-row,.statement-hero,.topbar,.class-top,.student-top,.teacher-fixed-grid,.filter-grid,.cards,.stats,.field-grid,.field-grid-3,.class-grid,.student-grid,.hero-grid,.main-grid,.statement-shell,.support-grid,.settings-grid-2,.backup-layout,.supervision-settings-layout,.tasks-layout,.files-layout,.contact-stats,.contact-grid,.mutabaa-stats,.weights-grid,.honor-hero-grid,.honor-kpis,.honor-list,.honor-archive,.global-honor-grid,.student-account-grid,.student-account-top,.student-global-top3,.honor-upload-grid,.honor-upload-slots,.weekly-status-grid,.thanks-grid,.split,.report-grid,.login-grid,.hero-points,.task-card-meta,.filters,.info-ribbon,.kv,.student-actions,.mini-stats,.class-ribbon{grid-template-columns:1fr !important;display:grid !important;}
+  .layout{grid-template-columns:1fr !important;padding:12px !important;}
+  .sidebar{order:2 !important;}
+  .main{order:1 !important;}
+  .menu{display:flex !important;overflow-x:auto !important;gap:8px !important;padding-bottom:8px;}
+  .menu-item{flex:0 0 auto !important;min-width:180px !important;}
+  .topbar{display:block !important;}
+  .brand{justify-content:center !important;margin-bottom:10px;}
+  .toolbar{justify-content:center !important;}
+  .toolbar-select{min-width:140px !important;}
+  .hero h1,.hero h2{font-size:30px !important;}
+  h1{font-size:34px !important;}
+  .subline{font-size:16px !important;}
+  .lead{font-size:15px !important;}
+  table{display:block !important;overflow-x:auto !important;white-space:nowrap !important;}
+  .bank-number{font-size:22px !important;}
+  .logo,.logo-wrap{transform:scale(.92);}
 }

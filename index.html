@@ -161,7 +161,7 @@
             <p>الانتقال خلال <span id="cbSeconds">5</span> ثوانٍ</p>
           </div>
           <div class="track"><div class="bar" id="cbBar" style="width:20%"></div></div>
-          <div class="loaderFoot"><span>بنك الرياضيات المصرفي</span><span>دخول المعلمة</span><span>دخول الطالب/ة</span></div>
+          <div class="loaderFoot"><span>بنك الرياضيات المصرفي</span><span>دخول المعلمة</span><span>دخول الطالب/ة</span><span>دخول الإشراف</span></div>
         </div>
 
         
@@ -182,14 +182,21 @@
             <div class="cardIcon">👩🏻‍🏫</div>
             <h3>دخول المعلمة</h3>
             <p>الدخول إلى صفحة المعلمة داخل بنك الرياضيات المصرفي بطريقة مرتبة وواضحة.</p>
-            <button class="btn" type="button" onclick="cbShowScreen('cbTeacher')">دخول المعلمة</button>
+            <button class="btn" type="button" onclick="window.location.href='teacher.html'">دخول المعلمة</button>
           </article>
 
           <article class="card">
             <div class="cardIcon">👨🏻‍🎓👩🏻‍🎓</div>
             <h3>دخول الطالب</h3>
             <p>الدخول إلى حساب الطالب واستعراض البيانات التعليمية بطريقة واضحة وسهلة.</p>
-            <button class="btn" type="button" onclick="cbShowScreen('cbStudent')">دخول الطالب</button>
+            <button class="btn" type="button" onclick="window.location.href='student.html'">دخول الطالب</button>
+          </article>
+
+          <article class="card">
+            <div class="cardIcon">🏫</div>
+            <h3>دخول الإشراف</h3>
+            <p>الدخول إلى صفحة التقييم والإشراف المدرسي وعرض التحليل والرقابة.</p>
+            <button class="btn" type="button" onclick="window.location.href='supervision.html'">دخول الإشراف</button>
           </article>
         </div>
 
@@ -433,29 +440,15 @@
         setStatus('cbTeacherStatus','error','يرجى تعبئة اسم المستخدم وكلمة المرور قبل المتابعة.');
         return;
       }
-      const d = frameDoc(); const w = frameWin();
-      if (!d || !w) {
-        setStatus('cbTeacherStatus','error','تعذر فتح النظام الداخلي.');
-        return;
-      }
-      const tu = d.getElementById('tu');
-      const tp = d.getElementById('tp');
-      if (tu) tu.value = user;
-      if (tp) tp.value = pass;
-
-      try {
-        if (typeof w.teacherLogin === 'function') {
-          w.teacherLogin();
-          setTimeout(() => {
-            if (!showFrameAppIfOpened()) {
-              setStatus('cbTeacherStatus','error','تعذر تسجيل الدخول. تحققي من البيانات ثم أعيدي المحاولة.');
-            }
-          }, 900);
-        } else {
-          setStatus('cbTeacherStatus','error','تعذر الوصول إلى نظام الدخول الأصلي.');
-        }
-      } catch(err) {
-        setStatus('cbTeacherStatus','error','حدث خطأ أثناء محاولة الدخول.');
+      const saved = JSON.parse(localStorage.getItem('teacher_dashboard_rebuilt_v3') || '{}');
+      const principalUser = saved?.supervisionSettingsData?.principal?.username || 'principal';
+      const principalPass = saved?.supervisionSettingsData?.principal?.password || '1234';
+      const supervisorUser = saved?.supervisionSettingsData?.supervisor?.username || 'supervisor';
+      const supervisorPass = saved?.supervisionSettingsData?.supervisor?.password || '1234';
+      if ((user === 'teacher' && pass === '1234') || (user === principalUser && pass === principalPass) || (user === supervisorUser && pass === supervisorPass)) {
+        window.location.href = 'teacher.html';
+      } else {
+        setStatus('cbTeacherStatus','error','البيانات غير صحيحة.');
       }
     }
     function cbStudentSubmit(e) {
@@ -466,29 +459,25 @@
         setStatus('cbStudentStatus','error','يرجى تعبئة اسم الطالب/ـة وكلمة المرور قبل المتابعة.');
         return;
       }
-      const d = frameDoc(); const w = frameWin();
-      if (!d || !w) {
-        setStatus('cbStudentStatus','error','تعذر فتح النظام الداخلي.');
-        return;
-      }
-      const su = d.getElementById('stuName');
-      const sp = d.getElementById('stuPin');
-      if (su) su.value = user;
-      if (sp) sp.value = pass;
-
+      let valid = false;
       try {
-        if (typeof w.studentLogin === 'function') {
-          w.studentLogin();
-          setTimeout(() => {
-            if (!showFrameAppIfOpened()) {
-              setStatus('cbStudentStatus','error','تعذر تسجيل الدخول. تحققي أو تحقق من البيانات ثم أعد المحاولة.');
-            }
-          }, 900);
-        } else {
-          setStatus('cbStudentStatus','error','تعذر الوصول إلى نظام الدخول الأصلي.');
-        }
-      } catch(err) {
-        setStatus('cbStudentStatus','error','حدث خطأ أثناء محاولة الدخول.');
+        const saved = JSON.parse(localStorage.getItem('teacher_dashboard_rebuilt_v3') || '{}');
+        const students = Array.isArray(saved?.students) ? saved.students : [];
+        valid = students.some(s => (s.username === user || s.name === user) && String(s.password || '') === pass);
+      } catch (e) {}
+      if (!valid) {
+        const defaults = [
+          {username:'abz01',password:'1234'},
+          {username:'mfd02',password:'4321'},
+          {username:'lyn03',password:'5678'}
+        ];
+        valid = defaults.some(s => s.username === user && s.password === pass);
+      }
+      if (valid) {
+        localStorage.setItem('activeStudentUser', user);
+        window.location.href = 'student.html';
+      } else {
+        setStatus('cbStudentStatus','error','البيانات غير صحيحة.');
       }
     }
 
