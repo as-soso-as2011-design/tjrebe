@@ -1,39 +1,212 @@
-/* Mobile-only enhancements that keep the full iPad/Desktop interface intact */
+/* بنك الرياضيات - واجهة جوال احترافية مستقلة مع الحفاظ على نسخة الآيباد والكمبيوتر */
+html.mobile-device-ui, html.mobile-device-ui body{overflow-x:hidden !important;}
+
 @media (max-width: 900px){
-  html,body{overflow-x:hidden !important;}
-  body{min-width:0 !important;}
-  .page,.app,.screen,.content{padding:12px !important;}
-  .panel,.loginCard,.login-card,.statement-card,.backup-card,.credential-card,.thanks-display-card,.card,.class-card,.student-card,.side-card,.hero,.welcome-card,.section,.stat,.mini-card{border-radius:22px !important;}
+  html.mobile-device-ui body{overflow:auto !important;}
+  html.mobile-device-ui *{scrollbar-width:thin;}
+  html.mobile-device-ui{
+    --m-gap:12px;
+    --m-radius:22px;
+    --m-shadow:0 10px 28px rgba(14,165,233,.10);
+  }
+
+  /* عام */
+  html.mobile-device-ui .page,
+  html.mobile-device-ui .app{padding:10px !important; max-width:none !important;}
+  html.mobile-device-ui .shell,
+  html.mobile-device-ui .panel,
+  html.mobile-device-ui .card,
+  html.mobile-device-ui .class-card,
+  html.mobile-device-ui .student-card,
+  html.mobile-device-ui .stat,
+  html.mobile-device-ui .modal-card,
+  html.mobile-device-ui .report-card,
+  html.mobile-device-ui .statement-card,
+  html.mobile-device-ui .login-card,
+  html.mobile-device-ui .hero,
+  html.mobile-device-ui .welcome-card,
+  html.mobile-device-ui .section,
+  html.mobile-device-ui .mini-card,
+  html.mobile-device-ui .backup-card,
+  html.mobile-device-ui .credential-card,
+  html.mobile-device-ui .thanks-display-card{
+    border-radius: var(--m-radius) !important;
+    box-shadow: var(--m-shadow) !important;
+  }
+  html.mobile-device-ui .btn,
+  html.mobile-device-ui .soft,
+  html.mobile-device-ui .ghost,
+  html.mobile-device-ui .danger-btn,
+  html.mobile-device-ui .mini-btn,
+  html.mobile-device-ui .pill-btn,
+  html.mobile-device-ui .tab-btn,
+  html.mobile-device-ui .back-inline,
+  html.mobile-device-ui .primary-btn,
+  html.mobile-device-ui .soft-btn,
+  html.mobile-device-ui .bigBtn,
+  html.mobile-device-ui .ghostBtn{
+    min-height:48px !important;
+    border-radius:16px !important;
+    font-size:15px !important;
+  }
+  html.mobile-device-ui input,
+  html.mobile-device-ui select,
+  html.mobile-device-ui textarea,
+  html.mobile-device-ui .input,
+  html.mobile-device-ui .select{
+    min-height:48px !important;
+    border-radius:16px !important;
+    font-size:15px !important;
+  }
+  html.mobile-device-ui table{display:block !important; overflow-x:auto !important; white-space:nowrap !important;}
+  html.mobile-device-ui .table-wrap{overflow:auto !important; -webkit-overflow-scrolling:touch;}
 
   /* index */
-  .screen{min-height:auto !important;}
-  .center{min-height:auto !important;display:block !important;}
-  .panel{width:100% !important;padding:22px 16px !important;}
-  .cards{grid-template-columns:1fr !important;}
-  .shell{display:block !important;min-height:auto !important;}
-  .hero,.formSide{padding:20px !important;border:none !important;}
-  .featureList,.feature,.badges,.chips,.linksRow,.hero-actions,.login-actions,.button-strip,.contact-actions,.super-tabs,.settings-subtabs,.mutabaa-subtabs,.tabs,.top-tabs{display:flex !important;flex-wrap:nowrap !important;overflow-x:auto !important;gap:8px !important;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
-  .featureList::-webkit-scrollbar,.feature::-webkit-scrollbar,.badges::-webkit-scrollbar,.chips::-webkit-scrollbar,.linksRow::-webkit-scrollbar,.hero-actions::-webkit-scrollbar,.login-actions::-webkit-scrollbar,.button-strip::-webkit-scrollbar,.contact-actions::-webkit-scrollbar,.super-tabs::-webkit-scrollbar,.settings-subtabs::-webkit-scrollbar,.mutabaa-subtabs::-webkit-scrollbar,.tabs::-webkit-scrollbar,.top-tabs::-webkit-scrollbar{display:none;}
-  .feature{min-width:260px !important;}
-  .tabs button,.tabbtn,.top-tabs .tab,.settings-subbtn,.super-tab-btn,.mutabaa-subbtn,.tab-btn,.btn,.soft,.ghost,.ghostBtn,.pill-btn,.mini-btn,.danger-btn,.contact-soft-green,.contact-outline,.login-soft,.primary-btn,.soft-btn,.back-inline{flex:0 0 auto !important;min-width:140px;}
-  .btn,.ghostBtn,.contact-soft-green,.contact-outline,.login-soft,.primary-btn,.soft-btn,.back-inline{min-height:48px !important;}
-  .entryTitle{display:block !important;text-align:center;}
-  .entryTitle .logo{margin:14px auto 0;}
-  .loaderHead,.loaderFoot,.bank-top,.bank-bottom,.section-head,.hero-side,.completion-row,.statement-hero,.topbar,.class-top,.student-top,.teacher-fixed-grid,.filter-grid,.cards,.stats,.field-grid,.field-grid-3,.class-grid,.student-grid,.hero-grid,.main-grid,.statement-shell,.support-grid,.settings-grid-2,.backup-layout,.supervision-settings-layout,.tasks-layout,.files-layout,.contact-stats,.contact-grid,.mutabaa-stats,.weights-grid,.honor-hero-grid,.honor-kpis,.honor-list,.honor-archive,.global-honor-grid,.student-account-grid,.student-account-top,.student-global-top3,.honor-upload-grid,.honor-upload-slots,.weekly-status-grid,.thanks-grid,.split,.report-grid,.login-grid,.hero-points,.task-card-meta,.filters,.info-ribbon,.kv,.student-actions,.mini-stats,.class-ribbon{grid-template-columns:1fr !important;display:grid !important;}
-  .layout{grid-template-columns:1fr !important;padding:12px !important;}
-  .sidebar{order:2 !important;}
-  .main{order:1 !important;}
-  .menu{display:flex !important;overflow-x:auto !important;gap:8px !important;padding-bottom:8px;}
-  .menu-item{flex:0 0 auto !important;min-width:180px !important;}
-  .topbar{display:block !important;}
-  .brand{justify-content:center !important;margin-bottom:10px;}
-  .toolbar{justify-content:center !important;}
-  .toolbar-select{min-width:140px !important;}
-  .hero h1,.hero h2{font-size:30px !important;}
-  h1{font-size:34px !important;}
-  .subline{font-size:16px !important;}
-  .lead{font-size:15px !important;}
-  table{display:block !important;overflow-x:auto !important;white-space:nowrap !important;}
-  .bank-number{font-size:22px !important;}
-  .logo,.logo-wrap{transform:scale(.92);}
+  html.mobile-device-ui body.index-mobile{overflow:auto !important;}
+  html.mobile-device-ui .index-mobile #overlay{position:relative !important; inset:auto !important; min-height:100vh !important; overflow:visible !important;}
+  html.mobile-device-ui .index-mobile #appFrame{display:none !important;}
+  html.mobile-device-ui .index-mobile .screen{padding:12px !important; min-height:auto !important;}
+  html.mobile-device-ui .index-mobile .center{min-height:auto !important; display:block !important;}
+  html.mobile-device-ui .index-mobile .panel,
+  html.mobile-device-ui .index-mobile .shell{width:100% !important; min-height:auto !important; border-radius:28px !important;}
+  html.mobile-device-ui .index-mobile .entryTitle,
+  html.mobile-device-ui .index-mobile .loaderHead,
+  html.mobile-device-ui .index-mobile .loaderFoot{display:block !important; text-align:center !important;}
+  html.mobile-device-ui .index-mobile .cards{grid-template-columns:1fr !important; gap:14px !important;}
+  html.mobile-device-ui .index-mobile .card{padding:20px !important;}
+  html.mobile-device-ui .index-mobile .shell{display:block !important;}
+  html.mobile-device-ui .index-mobile .hero,
+  html.mobile-device-ui .index-mobile .formSide{padding:18px !important; border:none !important;}
+  html.mobile-device-ui .index-mobile .featureList{grid-template-columns:1fr !important;}
+  html.mobile-device-ui .index-mobile .feature{padding:14px !important;}
+  html.mobile-device-ui .index-mobile .loginCard{padding:18px !important; width:100% !important;}
+  html.mobile-device-ui .index-mobile h1{font-size:34px !important;}
+  html.mobile-device-ui .index-mobile .entryTitle h2,
+  html.mobile-device-ui .index-mobile .hero h2{font-size:30px !important;}
+  html.mobile-device-ui .index-mobile .bigBtn{width:100% !important;}
+  html.mobile-device-ui .index-mobile .mobile-bank-entry{display:block !important;}
+
+  /* teacher */
+  html.mobile-device-ui .topbar{padding:14px !important; gap:10px !important;}
+  html.mobile-device-ui .topbar .brand{width:100% !important; justify-content:flex-start !important;}
+  html.mobile-device-ui .topbar .toolbar{width:100% !important; display:grid !important; grid-template-columns:1fr 1fr !important; gap:8px !important;}
+  html.mobile-device-ui .toolbar-select{min-width:0 !important; width:100% !important;}
+  html.mobile-device-ui .layout{grid-template-columns:1fr !important; padding:10px !important; gap:12px !important;}
+  html.mobile-device-ui .sidebar{position:sticky !important; top:8px !important; z-index:30 !important; gap:10px !important;}
+  html.mobile-device-ui .profile{grid-template-columns:auto 1fr !important; justify-items:start !important; text-align:right !important; align-items:center !important;}
+  html.mobile-device-ui .profile-pic{width:72px !important; height:72px !important; font-size:32px !important;}
+  html.mobile-device-ui .side-card{padding:14px !important;}
+  html.mobile-device-ui .menu{display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:8px !important; max-height:42vh !important; overflow:auto !important;}
+  html.mobile-device-ui .menu-item{min-height:52px !important; padding:10px 12px !important; border-radius:16px !important; font-size:13px !important; line-height:1.5 !important;}
+  html.mobile-device-ui .hero{grid-template-columns:1fr !important; min-height:auto !important; padding:18px !important;}
+  html.mobile-device-ui .hero h2{font-size:30px !important;}
+  html.mobile-device-ui .hero-side{grid-template-columns:1fr 1fr !important; display:grid !important; gap:10px !important;}
+  html.mobile-device-ui .hero-side .n{font-size:24px !important; min-height:auto !important;}
+  html.mobile-device-ui .stats,
+  html.mobile-device-ui .cards,
+  html.mobile-device-ui .class-grid,
+  html.mobile-device-ui .student-grid,
+  html.mobile-device-ui .honor-list,
+  html.mobile-device-ui .honor-archive,
+  html.mobile-device-ui .honor-kpis,
+  html.mobile-device-ui .honor-tools,
+  html.mobile-device-ui .contact-stats,
+  html.mobile-device-ui .contact-grid,
+  html.mobile-device-ui .weights-grid,
+  html.mobile-device-ui .support-grid,
+  html.mobile-device-ui .settings-grid-2,
+  html.mobile-device-ui .backup-layout,
+  html.mobile-device-ui .supervision-settings-layout,
+  html.mobile-device-ui .supervision-kv,
+  html.mobile-device-ui .global-honor-grid,
+  html.mobile-device-ui .student-account-top,
+  html.mobile-device-ui .student-account-grid,
+  html.mobile-device-ui .student-global-top3,
+  html.mobile-device-ui .honor-upload-slots,
+  html.mobile-device-ui .weekly-status-grid,
+  html.mobile-device-ui .honor-whatsapp-grid,
+  html.mobile-device-ui .podium,
+  html.mobile-device-ui .honor-hero-grid,
+  html.mobile-device-ui .mutabaa-stats,
+  html.mobile-device-ui .teacher-fixed-grid,
+  html.mobile-device-ui .thanks-grid,
+  html.mobile-device-ui .filter-grid,
+  html.mobile-device-ui .split,
+  html.mobile-device-ui .report-grid,
+  html.mobile-device-ui .hero-points,
+  html.mobile-device-ui .statement-shell,
+  html.mobile-device-ui .hero-grid,
+  html.mobile-device-ui .main-grid,
+  html.mobile-device-ui .dual-grid,
+  html.mobile-device-ui .field-grid,
+  html.mobile-device-ui .field-grid-3,
+  html.mobile-device-ui .filters,
+  html.mobile-device-ui .info-ribbon,
+  html.mobile-device-ui .kv,
+  html.mobile-device-ui .mini-stats,
+  html.mobile-device-ui .student-actions,
+  html.mobile-device-ui .class-ribbon,
+  html.mobile-device-ui .task-card-meta,
+  html.mobile-device-ui .files-layout,
+  html.mobile-device-ui .files-layout .field-grid-2x,
+  html.mobile-device-ui .tasks-layout,
+  html.mobile-device-ui .statement-shell,
+  html.mobile-device-ui .tasks-layout,
+  html.mobile-device-ui .files-layout,
+  html.mobile-device-ui .backup-layout,
+  html.mobile-device-ui .mutabaa-stats,
+  html.mobile-device-ui .supervision-settings-layout,
+  html.mobile-device-ui .contact-grid,
+  html.mobile-device-ui .contact-stats,
+  html.mobile-device-ui .settings-subtabs,
+  html.mobile-device-ui .mutabaa-subtabs,
+  html.mobile-device-ui .settings-view.active,
+  html.mobile-device-ui .mutabaa-view.active{grid-template-columns:1fr !important;}
+  html.mobile-device-ui .tabs,
+  html.mobile-device-ui .settings-subtabs,
+  html.mobile-device-ui .mutabaa-subtabs,
+  html.mobile-device-ui .super-tabs,
+  html.mobile-device-ui .top-tabs,
+  html.mobile-device-ui .github-nav,
+  html.mobile-device-ui .button-strip,
+  html.mobile-device-ui .hero-actions,
+  html.mobile-device-ui .contact-actions,
+  html.mobile-device-ui .row-actions{display:flex !important; flex-wrap:nowrap !important; overflow:auto !important; gap:8px !important; padding-bottom:4px !important; -webkit-overflow-scrolling:touch;}
+  html.mobile-device-ui .tabs > *,
+  html.mobile-device-ui .settings-subtabs > *,
+  html.mobile-device-ui .mutabaa-subtabs > *,
+  html.mobile-device-ui .super-tabs > *,
+  html.mobile-device-ui .top-tabs > *,
+  html.mobile-device-ui .button-strip > *,
+  html.mobile-device-ui .hero-actions > *,
+  html.mobile-device-ui .contact-actions > *,
+  html.mobile-device-ui .row-actions > *,
+  html.mobile-device-ui .github-nav > *{flex:0 0 auto !important; width:auto !important; min-width:max-content !important;}
+  html.mobile-device-ui .github-nav{position:sticky !important; top:0 !important;}
+
+  /* student */
+  html.mobile-device-ui .app{padding:10px !important;}
+  html.mobile-device-ui .shell{border-radius:26px !important;}
+  html.mobile-device-ui .topbar{display:grid !important; grid-template-columns:1fr !important; align-items:start !important;}
+  html.mobile-device-ui .top-actions{justify-content:flex-start !important; flex-wrap:wrap !important;}
+  html.mobile-device-ui .top-tabs{position:sticky !important; top:0 !important; background:rgba(255,255,255,.9) !important; z-index:20 !important; padding:8px 0 10px !important; margin-bottom:14px !important;}
+  html.mobile-device-ui .tab{padding:11px 14px !important; border-radius:14px !important; font-size:14px !important;}
+  html.mobile-device-ui .bank-card{min-height:auto !important; padding:18px !important;}
+  html.mobile-device-ui .bank-number{font-size:23px !important; margin:20px 0 14px !important;}
+  html.mobile-device-ui .stats{grid-template-columns:1fr 1fr !important; gap:10px !important;}
+  html.mobile-device-ui .stat{padding:14px !important;}
+  html.mobile-device-ui .statement-hero{padding:14px !important;}
+
+  /* supervision */
+  html.mobile-device-ui .login-shell{min-height:auto !important; padding:0 !important;}
+  html.mobile-device-ui .login-grid{grid-template-columns:1fr !important; gap:12px !important;}
+  html.mobile-device-ui .hero{padding:18px !important;}
+  html.mobile-device-ui .hero h1{font-size:32px !important;}
+  html.mobile-device-ui .teacher-fixed{position:sticky !important; top:8px !important; z-index:20 !important; padding:14px !important;}
+  html.mobile-device-ui .teacher-fixed-box span{font-size:18px !important;}
+
+  /* تحسينات نصية */
+  html.mobile-device-ui h1{font-size:28px !important;}
+  html.mobile-device-ui h2{font-size:24px !important;}
+  html.mobile-device-ui h3{font-size:20px !important;}
 }
