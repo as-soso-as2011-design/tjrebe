@@ -766,33 +766,9 @@
 }
 
 </style>
-
-<style id="githubNavStyle">
-.github-nav{position:sticky;top:0;z-index:9999;display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center;padding:12px 16px;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(14,165,233,.14);box-shadow:0 8px 24px rgba(14,165,233,.08)}
-.github-nav a{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 14px;border-radius:14px;text-decoration:none;font-weight:800;background:#f0f9ff;color:#0369a1;border:1px solid rgba(56,189,248,.18)}
-.github-nav a.primary{background:linear-gradient(135deg,#38bdf8,#0ea5e9);color:#fff;border:none}
-</style>
 <link rel="stylesheet" href="mobile-bank-ui.css">
-
-<script>
-(function () {
-  function applyMobileMode() {
-    var isMobile = window.innerWidth <= 900;
-    document.documentElement.classList.toggle('mobile-mode', isMobile);
-  }
-  applyMobileMode();
-  window.addEventListener('resize', applyMobileMode);
-})();
-</script>
 </head>
 <body>
-<div class="github-nav">
-  <a class="primary" href="index.html">الصفحة الرئيسية</a>
-  <a href="student.html">لوحة الطالب</a>
-  <a href="teacher-report.html">تقرير المعلمة</a>
-  <a href="student-report.html">تقرير الطالب</a>
-</div>
-
 <div class="page">
   <div class="shell">
     <div class="topbar">
@@ -869,7 +845,7 @@
         </select>
         <button class="soft" onclick="seedDemo()">بيانات تجريبية</button>
         <button class="soft" onclick="saveState(); alert('تم حفظ البيانات محليًا')">حفظ</button>
-        <button class="btn" onclick="logoutTeacher()">تسجيل الخروج</button>
+        <button class="btn">تسجيل الخروج</button>
       </div>
     </div>
 
@@ -2164,21 +2140,6 @@ let state = loadState();
 let currentClassId = null;
 let currentStudentId = null;
 
-function currentAuth(){ try{return JSON.parse(sessionStorage.getItem('mathbank_auth')||'null');}catch(e){ return null; } }
-function ensureTeacherAccess(){
-  const auth = currentAuth();
-  if(auth && auth.role === 'teacher') return true;
-  const saved = sessionStorage.getItem('mathbank_teacher_login');
-  if(saved) return true;
-  window.location.href = 'index.html';
-  return false;
-}
-function logoutTeacher(){
-  sessionStorage.removeItem('mathbank_auth');
-  sessionStorage.removeItem('mathbank_teacher_login');
-  window.location.href = 'index.html';
-}
-
 function defaultState(){
   return {
     classes: [
@@ -2206,11 +2167,6 @@ function defaultState(){
       chances: 1,
       rotation: 0,
       lastResult: ''
-    },
-    auth: {
-      teacher: {username:'teacher', password:'1234', name:'أ. سارة'},
-      principal: {username:'principal', password:'1234', name:'المدير/ة'},
-      supervisor: {username:'supervisor', password:'1234', name:'المشرف/ة'}
     }
   };
 }
@@ -2223,7 +2179,6 @@ function loadState(){
     if(!parsed.honorWeekly) parsed.honorWeekly = {lastProcessedStamp:'', lastArchiveLabel:'', pendingWhatsApp:[]};
     if(!Array.isArray(parsed.honorWeekly.pendingWhatsApp)) parsed.honorWeekly.pendingWhatsApp = [];
     if(!parsed.roulette) parsed.roulette = {enabled:false, visibleAll:false, visibleStudentId:'', chances:1, rotation:0, lastResult:''};
-    if(!parsed.auth) parsed.auth = {teacher:{username:'teacher', password:'1234', name:'أ. سارة'}, principal:{username:'principal', password:'1234', name:'المدير/ة'}, supervisor:{username:'supervisor', password:'1234', name:'المشرف/ة'}};
     return parsed;
   }
   return defaultState();
@@ -2683,23 +2638,6 @@ function runOperation(){
   saveState();
   renderAll();
   showNotice('opNotice','success','تم التنفيذ بنجاح.');
-  tryOpenOperationWhatsApp(student, type, amount, reason);
-}
-function normalizeSaudiPhone(phone){
-  const digits = String(phone || '').replace(/\D/g,'');
-  if(!digits) return '';
-  if(digits.startsWith('966')) return digits;
-  if(digits.startsWith('05')) return '966' + digits.slice(1);
-  if(digits.startsWith('5')) return '966' + digits;
-  return digits;
-}
-function tryOpenOperationWhatsApp(student, type, amount, reason){
-  if(!student || !student.phone) return;
-  const ch = String(student.channel || '');
-  if(!(ch.includes('WhatsApp') || ch.includes('whatsapp'))) return;
-  const text = `📢 إشعار من بنك الرياضيات\nالطالب/ة: ${student.name}\nالعملية: ${type}\nالقيمة: ${amount}\nالسبب: ${reason}`;
-  const url = 'https://wa.me/' + normalizeSaudiPhone(student.phone) + '?text=' + encodeURIComponent(text);
-  setTimeout(()=>window.open(url, '_blank'), 250);
 }
 function cancelOperation(){
   opAmount.value = '';
@@ -3418,7 +3356,6 @@ function renderTasksTable(){
 
 function renderAll(){
   try{ hydrateSupervisionSettings(); }catch(e){}
-  try{ hydrateProfileSettings(); }catch(e){}
   updateTopStats();
   populateClassSelect();
   syncOperationSelectors();
@@ -3630,25 +3567,6 @@ function switchSettingsView(viewId, btn){
   document.getElementById(viewId)?.classList.add('active');
   if(btn) btn.classList.add('active');
 }
-
-function hydrateProfileSettings(){
-  const bucket = getSettingsBucket();
-  const profile = bucket.profile || {};
-  const teacherAuth = (state.auth && state.auth.teacher) || {};
-  const setVal = (id, value) => { const el = document.getElementById(id); if(el) el.value = value || ''; };
-  setVal('profileTeacherName', profile.teacherName || teacherAuth.name || state.auth?.teacher?.name || '');
-  setVal('profileSchoolName', profile.schoolName || '');
-  setVal('profileSpecialty', profile.specialty || '');
-  setVal('profileRank', profile.rank || '');
-  setVal('profileExperience', profile.experience || '');
-  setVal('profilePhone', profile.phone || '');
-  setVal('profileEmail', profile.email || '');
-  setVal('profilePassword', teacherAuth.password || profile.password || '');
-  setVal('profileUsername', teacherAuth.username || profile.username || '');
-  setVal('profileStartDate', profile.startDate || '');
-  setVal('profileEndDate', profile.endDate || '');
-}
-
 function updateCompletionMeter(){
   const bucket = getSettingsBucket();
   const profile = bucket.profile || {};
@@ -3664,33 +3582,22 @@ function updateCompletionMeter(){
 }
 function saveProfileSettings(){
   const bucket = getSettingsBucket();
-  const teacherName = document.getElementById('profileTeacherName')?.value || '';
-  const username = document.getElementById('profileUsername')?.value || '';
-  const password = document.getElementById('profilePassword')?.value || '';
   bucket.profile = {
-    teacherName,
+    teacherName: document.getElementById('profileTeacherName')?.value || '',
     schoolName: document.getElementById('profileSchoolName')?.value || '',
     specialty: document.getElementById('profileSpecialty')?.value || '',
     rank: document.getElementById('profileRank')?.value || '',
     experience: document.getElementById('profileExperience')?.value || '',
     phone: document.getElementById('profilePhone')?.value || '',
     email: document.getElementById('profileEmail')?.value || '',
-    password,
-    username,
+    password: document.getElementById('profilePassword')?.value || '',
+    username: document.getElementById('profileUsername')?.value || '',
     startDate: document.getElementById('profileStartDate')?.value || '',
     endDate: document.getElementById('profileEndDate')?.value || ''
   };
-  if(!state.auth) state.auth = {};
-  state.auth.teacher = {
-    ...(state.auth.teacher || {}),
-    name: teacherName || state.auth.teacher?.name || 'أ. سارة',
-    username: username || state.auth.teacher?.username || 'teacher',
-    password: password || state.auth.teacher?.password || '1234'
-  };
   saveState();
-  hydrateProfileSettings();
   updateCompletionMeter();
-  showNotice('profileSettingsNotice','success','تم حفظ بيانات دخول المعلمة والبيانات الشخصية بنجاح.');
+  showNotice('profileSettingsNotice','success','تم حفظ البيانات الشخصية بنجاح.');
 }
 function sendSupportRequest(){
   const bucket = getSettingsBucket();
@@ -3924,24 +3831,14 @@ function toggleSupervisionMessageEdit(id){
 }
 function savePrincipalCredentials(){
   const bucket = getSupervisionSettingsBucket();
-  const username = document.getElementById('principalNewUsername')?.value || '';
-  const password = document.getElementById('principalNewPassword')?.value || '';
   bucket.principal = {
     method: document.getElementById('principalSendMethod')?.value || 'واتساب',
-    password,
-    username,
+    password: document.getElementById('principalNewPassword')?.value || '',
+    username: document.getElementById('principalNewUsername')?.value || '',
     message: document.getElementById('principalMessage')?.value || ''
   };
-  if(!state.auth) state.auth = {};
-  state.auth.principal = {
-    ...(state.auth.principal || {}),
-    username: username || state.auth.principal?.username || 'principal',
-    password: password || state.auth.principal?.password || '1234',
-    name: state.auth.principal?.name || 'المدير/ة'
-  };
   saveState();
-  hydrateSupervisionSettings();
-  showNotice('principalCredentialsNotice','success','تم حفظ بيانات المدير/ة وتحديث تسجيل الدخول بنجاح.');
+  showNotice('principalCredentialsNotice','success','تم حفظ بيانات المدير/ة بنجاح.');
 }
 function sendPrincipalCredentials(){
   savePrincipalCredentials();
@@ -3949,24 +3846,14 @@ function sendPrincipalCredentials(){
 }
 function saveSupervisorCredentials(){
   const bucket = getSupervisionSettingsBucket();
-  const username = document.getElementById('supervisorNewUsername')?.value || '';
-  const password = document.getElementById('supervisorNewPassword')?.value || '';
   bucket.supervisor = {
     method: document.getElementById('supervisorSendMethod')?.value || 'واتساب',
-    password,
-    username,
+    password: document.getElementById('supervisorNewPassword')?.value || '',
+    username: document.getElementById('supervisorNewUsername')?.value || '',
     message: document.getElementById('supervisorMessage')?.value || ''
   };
-  if(!state.auth) state.auth = {};
-  state.auth.supervisor = {
-    ...(state.auth.supervisor || {}),
-    username: username || state.auth.supervisor?.username || 'supervisor',
-    password: password || state.auth.supervisor?.password || '1234',
-    name: state.auth.supervisor?.name || 'المشرف/ة'
-  };
   saveState();
-  hydrateSupervisionSettings();
-  showNotice('supervisorCredentialsNotice','success','تم حفظ بيانات المشرف/ة وتحديث تسجيل الدخول بنجاح.');
+  showNotice('supervisorCredentialsNotice','success','تم حفظ بيانات المشرف/ة بنجاح.');
 }
 function sendSupervisorCredentials(){
   saveSupervisorCredentials();
@@ -3986,17 +3873,15 @@ function saveSupervisionTeacherData(){
 }
 function hydrateSupervisionSettings(){
   const bucket = getSupervisionSettingsBucket();
-  const principalAuth = (state.auth && state.auth.principal) || {};
-  const supervisorAuth = (state.auth && state.auth.supervisor) || {};
   if(document.getElementById('principalSendMethod')) document.getElementById('principalSendMethod').value = bucket.principal?.method || 'واتساب';
-  if(document.getElementById('principalNewPassword')) document.getElementById('principalNewPassword').value = bucket.principal?.password || principalAuth.password || '';
-  if(document.getElementById('principalNewUsername')) document.getElementById('principalNewUsername').value = bucket.principal?.username || principalAuth.username || '';
+  if(document.getElementById('principalNewPassword')) document.getElementById('principalNewPassword').value = bucket.principal?.password || '';
+  if(document.getElementById('principalNewUsername')) document.getElementById('principalNewUsername').value = bucket.principal?.username || '';
   if(document.getElementById('principalMessage')) document.getElementById('principalMessage').value = bucket.principal?.message || 'السلام عليكم، هذه بيانات دخول المدير/ة إلى صفحة التقييم والإشراف المدرسي. نأمل الحفاظ على سرية البيانات.';
   if(document.getElementById('supervisorSendMethod')) document.getElementById('supervisorSendMethod').value = bucket.supervisor?.method || 'واتساب';
-  if(document.getElementById('supervisorNewPassword')) document.getElementById('supervisorNewPassword').value = bucket.supervisor?.password || supervisorAuth.password || '';
-  if(document.getElementById('supervisorNewUsername')) document.getElementById('supervisorNewUsername').value = bucket.supervisor?.username || supervisorAuth.username || '';
+  if(document.getElementById('supervisorNewPassword')) document.getElementById('supervisorNewPassword').value = bucket.supervisor?.password || '';
+  if(document.getElementById('supervisorNewUsername')) document.getElementById('supervisorNewUsername').value = bucket.supervisor?.username || '';
   if(document.getElementById('supervisorMessage')) document.getElementById('supervisorMessage').value = bucket.supervisor?.message || 'السلام عليكم، هذه بيانات دخول المشرف/ة إلى صفحة التقييم والإشراف المدرسي. نأمل الحفاظ على سرية البيانات.';
-  if(document.getElementById('supTeacherName')) document.getElementById('supTeacherName').value = bucket.teacherInfo?.name || state.auth?.teacher?.name || '';
+  if(document.getElementById('supTeacherName')) document.getElementById('supTeacherName').value = bucket.teacherInfo?.name || '';
   if(document.getElementById('supTeacherSpecialty')) document.getElementById('supTeacherSpecialty').value = bucket.teacherInfo?.specialty || '';
   if(document.getElementById('supTeacherExperience')) document.getElementById('supTeacherExperience').value = bucket.teacherInfo?.experience || '';
   if(document.getElementById('supTeacherLoad')) document.getElementById('supTeacherLoad').value = bucket.teacherInfo?.load || '';
@@ -4078,8 +3963,6 @@ function changeLanguage(){
 
 document.addEventListener('DOMContentLoaded', function(){
   applySavedToolbarSettings();
-  try{ hydrateProfileSettings(); }catch(e){}
-  try{ hydrateSupervisionSettings(); }catch(e){}
   setTimeout(() => {
     const lang = localStorage.getItem('teacherDashboardLang') || 'ar';
     if(lang !== 'ar') changeLanguage();
@@ -4094,76 +3977,5 @@ window.googleTranslateElementInit = initGoogleTranslate;
 </script>
 <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-<script>
-(function(){
-  const TEACHER_KEY = 'teacher_dashboard_rebuilt_v3';
-  function safeRenderAll(){
-    try{ if(typeof renderAll === 'function') renderAll(); }catch(e){}
-    try{ if(typeof renderClassStudents === 'function') renderClassStudents(); }catch(e){}
-  }
-  window.addEventListener('storage', function(ev){
-    if(ev.key === TEACHER_KEY){ safeRenderAll(); }
-  });
-  function captureRewardNames(){
-    try{
-      if(!window.state) return;
-      if(!state.roulette) state.roulette = {enabled:false, visibleAll:false, visibleStudentId:'', chances:1, rotation:0, lastResult:''};
-      state.roulette.rewardNames = [
-        document.getElementById('rewardName1')?.value?.trim() || 'إعفاء واجب',
-        document.getElementById('rewardName2')?.value?.trim() || 'إعفاء واجبين',
-        document.getElementById('rewardName3')?.value?.trim() || 'زيادة درجات في الاختبار',
-        document.getElementById('rewardName4')?.value?.trim() || 'وجبة ماكدونالدز'
-      ];
-    }catch(e){}
-  }
-  const _saveRouletteSettings = window.saveRouletteSettings;
-  if(typeof _saveRouletteSettings === 'function'){
-    window.saveRouletteSettings = function(){
-      captureRewardNames();
-      return _saveRouletteSettings.apply(this, arguments);
-    };
-  }
-  const _spinRoulette = window.spinRoulette;
-  if(typeof _spinRoulette === 'function'){
-    window.spinRoulette = function(){
-      captureRewardNames();
-      return _spinRoulette.apply(this, arguments);
-    };
-  }
-  const _sendHonorWhatsApp = window.sendHonorWhatsApp;
-  if(typeof _sendHonorWhatsApp === 'function'){
-    window.sendHonorWhatsApp = function(index){
-      const item = state?.honorWeekly?.pendingWhatsApp?.[index];
-      if(item?.studentId) localStorage.setItem('currentStudentId', item.studentId);
-      return _sendHonorWhatsApp.apply(this, arguments);
-    };
-  }
-})();
-</script>
-
-<script>
-(function(){
-  function safeTeacherRefresh(){
-    try{ if(typeof renderAll === 'function') renderAll(); }catch(e){}
-    try{ if(typeof renderClassStudents === 'function') renderClassStudents(); }catch(e){}
-  }
-  window.addEventListener('mathbank:state-updated', safeTeacherRefresh);
-  const originalSaveState = window.saveState;
-  if(typeof originalSaveState === 'function'){
-    window.saveState = function(){
-      const result = originalSaveState.apply(this, arguments);
-      try{ if(window.mathBankFirebase?.push) window.mathBankFirebase.push(window.state); }catch(e){}
-      return result;
-    };
-  }
-})();
-</script>
-
-<script src="https://www.gstatic.com/firebasejs/12.10.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore-compat.js"></script>
-<script src="firebase-config.js"></script>
-<script src="firebase-sync.js"></script>
-
-<script src="mobile-teacher-ui.js"></script>
 </body>
 </html>

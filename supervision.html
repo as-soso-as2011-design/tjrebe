@@ -156,17 +156,6 @@ th{background:#f0f9ff;color:#075985}
 
 </style>
 <link rel="stylesheet" href="mobile-bank-ui.css">
-
-<script>
-(function () {
-  function applyMobileMode() {
-    var isMobile = window.innerWidth <= 900;
-    document.documentElement.classList.toggle('mobile-mode', isMobile);
-  }
-  applyMobileMode();
-  window.addEventListener('resize', applyMobileMode);
-})();
-</script>
 </head>
 <body>
 <div class="page">
@@ -221,10 +210,7 @@ th{background:#f0f9ff;color:#075985}
         <p style="margin:6px 0 0;color:var(--muted)">داخل التقييم والإشراف المدرسي</p>
       </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="soft" onclick="window.location.href='index.html'">الصفحة الرئيسية</button>
-        <button class="soft" onclick="window.location.href='teacher.html'">لوحة المعلمة</button>
-        <button class="soft" onclick="window.location.href='student.html'">لوحة الطالب</button>
-        <button class="soft" onclick="window.location.href='teacher.html'">العودة للنظام</button>
+        <button class="soft" onclick="window.location.href='project_with_settings_backup_supervision.html'">العودة للنظام</button>
         <button class="btn" onclick="logoutSupervision()">تسجيل الخروج</button>
       </div>
     </div>
@@ -296,18 +282,18 @@ th{background:#f0f9ff;color:#075985}
         <table>
           <thead>
             <tr>
-              <th>التاريخ</th><th>اليوم</th><th>الطالب</th><th>الفصل</th><th>نوع العملية</th><th>السبب</th><th>المبلغ</th><th>الرصيد بعد العملية</th><th>المنفذ</th><th>فتح الحساب</th>
+              <th>التاريخ</th><th>اليوم</th><th>الطالب</th><th>الفصل</th><th>نوع العملية</th><th>السبب</th><th>المبلغ</th><th>الرصيد بعد العملية</th><th>المنفذ</th>
             </tr>
           </thead>
           <tbody>
             <tr title="تفاصيل الإيداع">
-              <td>2026-03-27</td><td>الخميس</td><td>سارة أحمد</td><td>سادس / أ</td><td><span class="badge b-green">إيداع</span></td><td>مشاركة مميزة</td><td>+200</td><td>4,250</td><td>أ. سارة</td><td><button class="soft" onclick="window.location.href='student.html'">فتح الحساب</button></td>
+              <td>2026-03-27</td><td>الخميس</td><td>سارة أحمد</td><td>سادس / أ</td><td><span class="badge b-green">إيداع</span></td><td>مشاركة مميزة</td><td>+200</td><td>4,250</td><td>أ. سارة</td>
             </tr>
             <tr title="تفاصيل السحب">
-              <td>2026-03-27</td><td>الخميس</td><td>نورة خالد</td><td>سادس / أ</td><td><span class="badge b-red">سحب</span></td><td>تأخر عن التسليم</td><td>-50</td><td>2,820</td><td>أ. سارة</td><td><button class="soft" onclick="window.location.href='student.html'">فتح الحساب</button></td>
+              <td>2026-03-27</td><td>الخميس</td><td>نورة خالد</td><td>سادس / أ</td><td><span class="badge b-red">سحب</span></td><td>تأخر عن التسليم</td><td>-50</td><td>2,820</td><td>أ. سارة</td>
             </tr>
             <tr title="تفاصيل الجائزة">
-              <td>2026-03-26</td><td>الأربعاء</td><td>أحمد علي</td><td>أول متوسط / أ</td><td><span class="badge b-gold">جائزة</span></td><td>روليت</td><td>+300</td><td>5,100</td><td>النظام</td><td><button class="soft" onclick="window.location.href='student.html'">فتح الحساب</button></td>
+              <td>2026-03-26</td><td>الأربعاء</td><td>أحمد علي</td><td>أول متوسط / أ</td><td><span class="badge b-gold">جائزة</span></td><td>روليت</td><td>+300</td><td>5,100</td><td>النظام</td>
             </tr>
           </tbody>
         </table>
@@ -583,17 +569,6 @@ function showNotice(id, type, msg){
   el.className = 'notice show ' + type;
 }
 
-function getSavedState(){ try{return JSON.parse(localStorage.getItem('teacher_dashboard_rebuilt_v3') || '{}');}catch(e){ return {}; } }
-function currentAuth(){ try{return JSON.parse(sessionStorage.getItem('mathbank_auth')||'null');}catch(e){ return null; } }
-function ensureSupervisionAccess(){
-  const auth = currentAuth();
-  if(auth && (auth.role === 'principal' || auth.role === 'supervisor')) {
-    document.getElementById('loginShell').style.display = 'none';
-    document.getElementById('supervisionDashboard').classList.add('show');
-    return true;
-  }
-  return false;
-}
 function loginSupervision(role){
   const user = role === 'مدير/ة'
     ? (document.getElementById('principalUser')?.value || '').trim()
@@ -607,20 +582,12 @@ function loginSupervision(role){
     showNotice('loginNotice', 'error', 'أكملي اسم المستخدم وكلمة المرور.');
     return;
   }
-  const state = getSavedState();
-  const accounts = state.auth || {principal:{username:'principal', password:'1234'}, supervisor:{username:'supervisor', password:'1234'}};
-  const target = role === 'مدير/ة' ? accounts.principal : accounts.supervisor;
-  if(String(user).trim().toLowerCase() !== String(target?.username || '').trim().toLowerCase() || String(pass) !== String(target?.password || '')){
-    showNotice('loginNotice', 'error', 'بيانات الدخول الرقابية غير صحيحة.');
-    return;
-  }
-  sessionStorage.setItem('mathbank_auth', JSON.stringify({role: role === 'مدير/ة' ? 'principal' : 'supervisor', user}));
+
   document.getElementById('loginShell').style.display = 'none';
   document.getElementById('supervisionDashboard').classList.add('show');
 }
 
 function logoutSupervision(){
-  sessionStorage.removeItem('mathbank_auth');
   document.getElementById('supervisionDashboard').classList.remove('show');
   document.getElementById('loginShell').style.display = 'grid';
   const notice = document.getElementById('loginNotice');
@@ -662,44 +629,5 @@ function sendThanksEvaluation(){
 
 </script>
 
-<script>
-(function(){
-  const STORAGE_KEY = 'teacher_dashboard_rebuilt_v3';
-  const AR_NUMS = '٠١٢٣٤٥٦٧٨٩';
-  function toArabicDigits(value){ return String(value ?? '').replace(/\d/g, d => AR_NUMS[d]); }
-  function loadState(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }catch(e){ return {}; } }
-  function fmt(n){ try{return Number(n||0).toLocaleString('ar-SA');}catch(e){return String(n||0);} }
-  function getClass(state, classId){ return (state.classes||[]).find(c=>c.id===classId) || null; }
-  function getStudentByName(state, name){ return (state.students||[]).find(s => s.name === name) || null; }
-  function topTeacherName(state){ const c = (state.classes || [])[0]; return c?.teacher || 'أ. سارة'; }
-  function renderTopBoxes(state){ const boxes = document.querySelectorAll('.teacher-fixed-box span'); if(boxes.length < 5) return; boxes[0].textContent = topTeacherName(state); boxes[1].textContent = [...new Set((state.classes||[]).map(c=>c.subject).filter(Boolean))].join(' • ') || 'الرياضيات'; boxes[2].textContent = toArabicDigits((state.classes||[]).length * 6 || 24); boxes[3].textContent = [...new Set((state.students||[]).map(s=>s.stage).filter(Boolean))].join(' • ') || 'ابتدائي • متوسط'; boxes[4].textContent = '٧+'; }
-  function renderCards(state){ const cards = document.querySelectorAll('#bankView .cards .card .n'); if(cards.length < 6) return; const students = state.students || []; const ops = state.operations || []; cards[0].textContent = fmt(students.reduce((a,s)=>a+Number(s.balance||0),0)); cards[1].textContent = fmt(ops.filter(o=>Number(o.amount||0) >= 0).reduce((a,o)=>a+Number(o.amount||0),0)); cards[2].textContent = fmt(Math.abs(ops.filter(o=>Number(o.amount||0) < 0).reduce((a,o)=>a+Number(o.amount||0),0))); cards[3].textContent = toArabicDigits(ops.length); cards[4].textContent = toArabicDigits(students.filter(s=>String(s.status||'').includes('مفعل')).length); cards[5].textContent = toArabicDigits(students.filter(s=>(s.logs||[]).length <= 1).length); }
-  function renderMainTable(state){ const tbody = document.querySelector('#bankView .panel table tbody'); if(!tbody) return; const rows = (state.operations || []).slice(0,30).map(op=>{ const st = getStudentByName(state, op.studentName); const cls = st ? getClass(state, st.classId) : null; const after = st ? fmt(st.balance || 0) : '—'; return `<tr><td>${op.date || ''}</td><td>${op.day || ''}</td><td>${op.studentName || ''}</td><td>${op.className || cls?.name || ''}</td><td><span class="badge ${Number(op.amount||0) >= 0 ? 'b-green':'b-red'}">${Number(op.amount||0) >= 0 ? 'إيداع' : 'سحب'}</span></td><td>${op.reason || ''}</td><td>${fmt(op.amount || 0)}</td><td>${after}</td><td><a href="student.html?student=${encodeURIComponent(st?.id || '')}" onclick="localStorage.setItem('currentStudentId','${(st?.id || '')}')">فتح الحساب</a></td></tr>`; }).join(''); tbody.innerHTML = rows || `<tr><td colspan="9">لا توجد عمليات مرتبطة بعد.</td></tr>`; }
-  function renderDetailCards(state){ const firstOp = (state.operations || [])[0]; const panels = document.querySelectorAll('#bankView .split .panel'); if(panels.length < 2) return; const detailCards = panels[0].querySelectorAll('.card div:last-child'); const st = firstOp ? getStudentByName(state, firstOp.studentName) : null; const vals = [firstOp?.studentName || '—', firstOp?.date || '—', Number(firstOp?.amount||0) >= 0 ? 'إيداع' : (firstOp ? 'سحب':'—'), fmt(firstOp?.amount || 0), st ? fmt(st.balance || 0) : '—', firstOp?.reason || '—', topTeacherName(state)]; detailCards.forEach((el,i)=>{ if(vals[i] !== undefined) el.textContent = vals[i]; }); const students = state.students || []; const analysisCards = panels[1].querySelectorAll('.card div:last-child'); if(analysisCards.length >= 5){ const mostDeposit = [...students].sort((a,b)=>Number(b.balance||0)-Number(a.balance||0))[0]; const mostWithdraw = [...students].sort((a,b)=>Number(b.withdrawals||0)-Number(a.withdrawals||0))[0]; const near = students.filter(s => { const b = Number(s.balance||0); return (b >= 14000 && b < 15000) || (b >= 29000 && b < 30000) || (b >= 39000 && b < 41000); }).length; analysisCards[0].textContent = mostDeposit?.name || '—'; analysisCards[1].textContent = mostWithdraw?.name || '—'; analysisCards[2].textContent = toArabicDigits(near); analysisCards[3].textContent = toArabicDigits(students.filter(s=>Number(s.withdrawals||0) >= 3).length); analysisCards[4].textContent = (state.operations || [])[0]?.day || '—'; } }
-  function renderMessaging(state){ const countCards = document.querySelectorAll('#bankView .split:nth-of-type(2) .card .n'); if(countCards.length >= 2){ countCards[0].textContent = toArabicDigits((state.operations||[]).length); countCards[1].textContent = toArabicDigits((state.honorWeekly?.pendingWhatsApp || []).length); } const lastMsg = document.querySelector('#bankView .split:nth-of-type(2) .card:last-child div:last-child'); if(lastMsg){ const last = (state.honorWeekly?.pendingWhatsApp || [])[0]; lastMsg.textContent = last ? ('تهنئة ' + last.studentName) : 'لا توجد رسائل حالياً'; } const table = document.querySelectorAll('#bankView .split')[2]?.querySelector('tbody'); if(table){ const msgs = (state.honorWeekly?.pendingWhatsApp || []).slice(0,10); table.innerHTML = msgs.length ? msgs.map(m=>`<tr><td>تهنئة واتساب</td><td>${m.studentName}</td><td>${m.scopeLabel || ''}</td><td>جاهزة</td><td>${m.phone ? `<a href="https://wa.me/${String(m.phone).replace(/^0/,'966')}" target="_blank">فتح</a>` : 'بدون رقم'}</td></tr>`).join('') : `<tr><td colspan="5">لا توجد رسائل مرتبطة حالياً.</td></tr>`; } }
-  function renderThanks(state){ const count = document.getElementById('thanksCount'); const last = document.getElementById('thanksLastAction'); if(count) count.textContent = toArabicDigits((state.honorArchive || []).length); if(last && (!last.textContent.trim() || last.textContent.trim() === '—')) last.textContent = state.honorArchive?.[0]?.summary || '—'; }
-  function renderDashboard(){ const state = loadState(); renderTopBoxes(state); renderCards(state); renderMainTable(state); renderDetailCards(state); renderMessaging(state); renderThanks(state); }
-  const originalLogin = window.loginSupervision;
-  window.loginSupervision = function(role){ if(typeof originalLogin === 'function') originalLogin(role); renderDashboard(); };
-  window.addEventListener('storage', function(ev){ if(ev.key === STORAGE_KEY) renderDashboard(); });
-  document.addEventListener('DOMContentLoaded', renderDashboard);
-})();
-</script>
-
-<script>
-(function(){
-  function safeSupervisionRefresh(){
-    try{ if(typeof renderDashboard === 'function') renderDashboard(); }catch(e){}
-  }
-  window.addEventListener('mathbank:state-updated', safeSupervisionRefresh);
-})();
-</script>
-
-<script src="https://www.gstatic.com/firebasejs/12.10.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore-compat.js"></script>
-<script src="firebase-config.js"></script>
-<script src="firebase-sync.js"></script>
-
-<script src="mobile-supervision-ui.js"></script>
 </body>
 </html>

@@ -86,7 +86,7 @@
     .ghostBtn{background:#f0f9ff;color:#075985;border:1px solid rgba(56,189,248,.16)}
     .entryTitle{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:22px}
     .entryTitle h2{margin:0;color:var(--deep);font-size:clamp(34px,4.2vw,58px);line-height:1.08;font-weight:900}
-    .cards{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+    .cards{position:relative;z-index:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
     .card{border-radius:30px;padding:28px;background:linear-gradient(180deg, rgba(255,255,255,.90), rgba(255,255,255,.72));border:1px solid rgba(56,189,248,.16);box-shadow:var(--shadow-soft);display:grid;gap:16px}
     .cardIcon{width:78px;height:78px;border-radius:24px;display:grid;place-items:center;font-size:34px;background:linear-gradient(145deg, rgba(224,242,254,.96), rgba(186,230,253,.92));border:1px solid rgba(56,189,248,.16);box-shadow:inset 0 1px 0 rgba(255,255,255,.96);color:#075985}
     .card h3{margin:0;color:var(--deep);font-size:clamp(24px,3vw,34px);font-weight:900}
@@ -132,27 +132,14 @@
     @keyframes shine{from{transform:translateX(-80%) rotate(-20deg)}to{transform:translateX(80%) rotate(-20deg)}}
     @keyframes glide{from{transform:translateX(-120%)}to{transform:translateX(120%)}}
 
-    @media (max-width:1200px){.cards{grid-template-columns:repeat(2,minmax(0,1fr));}}
     @media (max-width:1060px){.shell{grid-template-columns:1fr}.hero{border-left:none;border-bottom:1px solid rgba(56,189,248,.14)}}
     @media (max-width:900px){.cards{grid-template-columns:1fr}.panel,.shell{border-radius:28px}}
     @media (max-width:680px){.screen{padding:12px}.panel{padding:24px 22px}.hero,.formSide{padding:22px}.loginCard{padding:22px;border-radius:26px}.row{grid-template-columns:1fr}}
   </style>
-<script src="firebase-config.js"></script>
 <link rel="stylesheet" href="mobile-bank-ui.css">
-
-<script>
-(function () {
-  function applyMobileMode() {
-    var isMobile = window.innerWidth <= 900;
-    document.documentElement.classList.toggle('mobile-mode', isMobile);
-  }
-  applyMobileMode();
-  window.addEventListener('resize', applyMobileMode);
-})();
-</script>
 </head>
 <body>
-  <iframe id="appFrame" src="teacher.html" style="display:none;"></iframe>
+  <iframe id="appFrame" src="app.html" style="display:none;"></iframe>
 
   
 <div id="cleanBankOverlay" dir="rtl" lang="ar">
@@ -203,13 +190,6 @@
             <h3>دخول الطالب</h3>
             <p>الدخول إلى حساب الطالب واستعراض البيانات التعليمية بطريقة واضحة وسهلة.</p>
             <button class="btn" type="button" onclick="cbShowScreen('cbStudent')">دخول الطالب</button>
-          </article>
-
-          <article class="card">
-            <div class="cardIcon">🎓</div>
-            <h3>التقييم والإشراف المدرسي</h3>
-            <p>الدخول إلى لوحة التقييم والإشراف المدرسي المرتبطة بالمشروع داخل GitHub مباشرة.</p>
-            <button class="btn" type="button" onclick="window.location.href='supervision.html'">دخول التقييم والإشراف</button>
           </article>
         </div>
 
@@ -445,23 +425,6 @@
       if (link && typeof link.click === 'function') link.click();
       else setStatus('cbStudentStatus','success','يمكن ربط هذا الخيار لاحقًا بتغيير كلمة المرور.');
     }
-
-    const LINKED_STATE_KEY = 'teacher_dashboard_rebuilt_v3';
-    function loadLinkedState() {
-      try { return JSON.parse(localStorage.getItem(LINKED_STATE_KEY) || '{}'); } catch(e){ return {}; }
-    }
-    function normalizeText(v){ return String(v || '').trim().toLowerCase(); }
-    function validateTeacherLogin(user, pass){
-      const state = loadLinkedState();
-      const teacher = state?.auth?.teacher || {username:'teacher', password:'1234', name:'أ. سارة'};
-      return normalizeText(user) === normalizeText(teacher.username) && String(pass) === String(teacher.password);
-    }
-    function validateStudentLogin(user, pass){
-      const state = loadLinkedState();
-      const students = Array.isArray(state?.students) ? state.students : [];
-      return students.find(s => (normalizeText(user) === normalizeText(s.username) || normalizeText(user) === normalizeText(s.name)) && String(pass) === String(s.password));
-    }
-
     function cbTeacherSubmit(e) {
       e.preventDefault();
       const user = document.getElementById('cbTeacherUser').value.trim();
@@ -470,13 +433,30 @@
         setStatus('cbTeacherStatus','error','يرجى تعبئة اسم المستخدم وكلمة المرور قبل المتابعة.');
         return;
       }
-      if (!validateTeacherLogin(user, pass)) {
-        setStatus('cbTeacherStatus','error','بيانات دخول المعلمة غير صحيحة.');
+      const d = frameDoc(); const w = frameWin();
+      if (!d || !w) {
+        setStatus('cbTeacherStatus','error','تعذر فتح النظام الداخلي.');
         return;
       }
-      sessionStorage.setItem('mathbank_teacher_login', JSON.stringify({user, pass}));
-      sessionStorage.setItem('mathbank_auth', JSON.stringify({role:'teacher', user}));
-      window.location.href = 'teacher.html?from=index';
+      const tu = d.getElementById('tu');
+      const tp = d.getElementById('tp');
+      if (tu) tu.value = user;
+      if (tp) tp.value = pass;
+
+      try {
+        if (typeof w.teacherLogin === 'function') {
+          w.teacherLogin();
+          setTimeout(() => {
+            if (!showFrameAppIfOpened()) {
+              setStatus('cbTeacherStatus','error','تعذر تسجيل الدخول. تحققي من البيانات ثم أعيدي المحاولة.');
+            }
+          }, 900);
+        } else {
+          setStatus('cbTeacherStatus','error','تعذر الوصول إلى نظام الدخول الأصلي.');
+        }
+      } catch(err) {
+        setStatus('cbTeacherStatus','error','حدث خطأ أثناء محاولة الدخول.');
+      }
     }
     function cbStudentSubmit(e) {
       e.preventDefault();
@@ -486,14 +466,30 @@
         setStatus('cbStudentStatus','error','يرجى تعبئة اسم الطالب/ـة وكلمة المرور قبل المتابعة.');
         return;
       }
-      const student = validateStudentLogin(user, pass);
-      if (!student) {
-        setStatus('cbStudentStatus','error','بيانات دخول الطالب/ة غير صحيحة.');
+      const d = frameDoc(); const w = frameWin();
+      if (!d || !w) {
+        setStatus('cbStudentStatus','error','تعذر فتح النظام الداخلي.');
         return;
       }
-      sessionStorage.setItem('mathbank_student_login', JSON.stringify({user, pass, studentId: student.id}));
-      sessionStorage.setItem('mathbank_auth', JSON.stringify({role:'student', user, studentId: student.id}));
-      window.location.href = 'student.html?from=index';
+      const su = d.getElementById('stuName');
+      const sp = d.getElementById('stuPin');
+      if (su) su.value = user;
+      if (sp) sp.value = pass;
+
+      try {
+        if (typeof w.studentLogin === 'function') {
+          w.studentLogin();
+          setTimeout(() => {
+            if (!showFrameAppIfOpened()) {
+              setStatus('cbStudentStatus','error','تعذر تسجيل الدخول. تحققي أو تحقق من البيانات ثم أعد المحاولة.');
+            }
+          }, 900);
+        } else {
+          setStatus('cbStudentStatus','error','تعذر الوصول إلى نظام الدخول الأصلي.');
+        }
+      } catch(err) {
+        setStatus('cbStudentStatus','error','حدث خطأ أثناء محاولة الدخول.');
+      }
     }
 
     frame.addEventListener('load', () => {
@@ -548,10 +544,5 @@ document.addEventListener('click', function(e){
   if(txt.includes('ابدأ')) startApp();
 });
 </script>
-
-<script>
-// نسخة مهيأة للربط على GitHub Pages
-</script>
-<script src="mobile-index-ui.js"></script>
 </body>
 </html>

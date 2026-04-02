@@ -750,32 +750,9 @@
 }
 
 </style>
-
-<style id="githubNavStyle">
-.github-nav{position:sticky;top:0;z-index:9999;display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center;padding:12px 16px;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(14,165,233,.14);box-shadow:0 8px 24px rgba(14,165,233,.08)}
-.github-nav a{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 14px;border-radius:14px;text-decoration:none;font-weight:800;background:#f0f9ff;color:#0369a1;border:1px solid rgba(56,189,248,.18)}
-.github-nav a.primary{background:linear-gradient(135deg,#38bdf8,#0ea5e9);color:#fff;border:none}
-</style>
 <link rel="stylesheet" href="mobile-bank-ui.css">
-
-<script>
-(function () {
-  function applyMobileMode() {
-    var isMobile = window.innerWidth <= 900;
-    document.documentElement.classList.toggle('mobile-mode', isMobile);
-  }
-  applyMobileMode();
-  window.addEventListener('resize', applyMobileMode);
-})();
-</script>
 </head>
 <body>
-<div class="github-nav">
-  <a class="primary" href="index.html">الصفحة الرئيسية</a>
-  <a href="teacher.html">لوحة المعلمة</a>
-  <a href="student-report.html">تقرير الطالب</a>
-</div>
-
   <div class="app">
     <div class="orb one"></div>
     <div class="orb two"></div>
@@ -793,7 +770,7 @@
         <div class="top-actions">
           <button class="icon-btn" title="الإشعارات" onclick="openNotifications()">🔔</button>
           <button class="icon-btn" title="الملف الشخصي" onclick="openProfile()">👤</button>
-          <button class="icon-btn" title="تسجيل الخروج" onclick="logoutStudent()">⎋</button><button class="icon-btn" title="رجوع" onclick="goBackTop()">↩️</button>
+          <button class="icon-btn" title="رجوع" onclick="goBackTop()">↩️</button>
         </div>
       </div>
 
@@ -1406,7 +1383,7 @@
         status.classList.add('show');
       }
 
-      window.open('student-report.html', '_blank');
+      window.open('math_bank_report_direct_binding_template_REAL.html', '_blank');
     }
 
     function sendReportNotice(){
@@ -1488,9 +1465,8 @@
         showBox('usernameStatus', 'يرجى كتابة اسم مستخدم جديد قبل الحفظ.');
         return;
       }
-      const updated = persistStudentCredentials({ username: newUser });
       document.getElementById('currentUsername').value = newUser;
-      showBox('usernameStatus', updated ? 'تم تحديث اسم المستخدم وحفظه في النظام بنجاح.' : 'تم تحديث اسم المستخدم محليًا بنجاح.');
+      showBox('usernameStatus', 'تم تحديث اسم المستخدم بنجاح.');
     }
 
     function savePin(){
@@ -1502,20 +1478,11 @@
         showBox('pinStatus', 'يرجى تعبئة جميع حقول الرقم السري.');
         return;
       }
-      const login = JSON.parse(sessionStorage.getItem('mathbank_student_login') || '{}');
-      const expected = String(login.pass || '').trim();
-      if(expected && currentPin !== expected){
-        showBox('pinStatus', 'الرقم السري الحالي غير صحيح.');
-        return;
-      }
       if(newPin !== confirmPin){
         showBox('pinStatus', 'الرقم السري الجديد وتأكيده غير متطابقين.');
         return;
       }
-      const updated = persistStudentCredentials({ password: newPin });
-      login.pass = newPin;
-      sessionStorage.setItem('mathbank_student_login', JSON.stringify(login));
-      showBox('pinStatus', updated ? 'تم تحديث الرقم السري وحفظه في النظام بنجاح.' : 'تم تحديث الرقم السري محليًا بنجاح.');
+      showBox('pinStatus', 'تم تحديث الرقم السري بنجاح.');
     }
 
     function submitSurvey(){
@@ -1542,94 +1509,5 @@
       }
     }
 </script>
-<script>
-(function(){
-  const STORAGE_KEY = 'teacher_dashboard_rebuilt_v3';
-  function loadLinkedState(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }catch(e){ return {}; } }
-  function persistStudentCredentials(patch){
-    const state = loadLinkedState();
-    const saved = JSON.parse(sessionStorage.getItem('mathbank_student_login') || '{}');
-    const targetId = saved.studentId || localStorage.getItem('currentStudentId') || '';
-    if(!targetId || !(state.students || []).length) return null;
-    const student = state.students.find(s => s.id === targetId) || null;
-    if(!student) return null;
-    Object.assign(student, patch || {});
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    if(patch?.username){
-      saved.user = patch.username;
-      saved.studentId = student.id;
-      sessionStorage.setItem('mathbank_student_login', JSON.stringify(saved));
-    }
-    window.dispatchEvent(new CustomEvent('mathbank:state-updated', {detail:{source:'student-profile-save'}}));
-    try{ if(window.mathBankFirebase?.push) window.mathBankFirebase.push(state); }catch(e){}
-    return student;
-  }
-  const AR_NUMS = '٠١٢٣٤٥٦٧٨٩';
-  const defaultRewards = ['إعفاء واجب','إعفاء واجبين','زيادة درجات في الاختبار','وجبة ماكدونالدز'];
-  function toArabicDigits(value){ return String(value ?? '').replace(/\d/g, d => AR_NUMS[d]); }
-  function formatNumber(value){ try{ return Number(value || 0).toLocaleString('ar-SA'); }catch(e){ return String(value || 0); } }
-  function loadState(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }catch(e){ return {}; } }
-  function pickStudent(state){
-    const params = new URLSearchParams(location.search);
-    const id = params.get('student') || localStorage.getItem('currentStudentId') || '';
-    let student = (state.students || []).find(s => s.id === id);
-    if(!student && (state.students || []).length) student = state.students[0];
-    if(student) localStorage.setItem('currentStudentId', student.id);
-    return student || null;
-  }
-  function getClass(state, classId){ return (state.classes || []).find(c => c.id === classId) || null; }
-  function levelProgress(balance){ const b = Number(balance || 0); if(b <= 10000) return {level:'برونزي', pct: Math.min(100, Math.round((b/10000)*100))}; if(b <= 15000) return {level:'فضي', pct: Math.min(100, Math.round(((b-10000)/5000)*100))}; if(b <= 30000) return {level:'ذهبي', pct: Math.min(100, Math.round(((b-15000)/15000)*100))}; if(b <= 40000) return {level:'بلاتيني', pct: Math.min(100, Math.round(((b-30000)/10000)*100))}; return {level:'ماسي', pct: 100}; }
-  function allowedRoulette(student, state){ const level = String(student?.level || ''); const levelOk = ['ذهبي','بلاتيني','ماسي','الماسي','الماسيّ'].some(x => level.includes(x)); if(!levelOk) return false; const r = state.roulette || {}; if(!r.enabled) return false; if(r.visibleAll) return true; return !!(r.visibleStudentId && r.visibleStudentId === student.id); }
-  function computeRanks(state, student){ const all = [...(state.students || [])].sort((a,b)=>Number(b.points||0)-Number(a.points||0)); const globalRank = all.findIndex(s=>s.id===student.id) + 1; const clsList = all.filter(s=>s.classId===student.classId); const classRank = clsList.findIndex(s=>s.id===student.id) + 1; return {globalRank, classRank, clsList}; }
-  function updateText(id, txt){ const el = document.getElementById(id); if(el) el.textContent = txt; }
-  function rebuildTransactions(student, state){ const wrap = document.querySelector('#mainDashboard .tx-list'); if(!wrap) return; const ops = (state.operations || []).filter(op => op.studentName === student.name).slice(0,8); const logs = (student.logs || []).slice(0,8); const rows = ops.length ? ops.map(op => { const amt = Number(op.amount || 0); const sign = amt >= 0 ? '+' : ''; return `<div class="tx"><div class="tx-main"><strong>${op.reason || 'عملية'}</strong><small>${op.date || ''} • ${op.day || ''} • ${op.time || ''}</small></div><div class="tx-amount ${amt >= 0 ? 'plus':'minus'}">${sign}${formatNumber(amt)}</div></div>`; }) : logs.map(log => `<div class="tx"><div class="tx-main"><strong>${log.action || 'سجل'}</strong><small>${log.date || ''} • ${log.details || ''}</small></div><div class="tx-amount plus">—</div></div>`); wrap.innerHTML = rows.length ? rows.join('') : `<div class="tx"><div class="tx-main"><strong>لا توجد عمليات بعد</strong><small>ستظهر العمليات المضافة من لوحة المعلمة هنا مباشرة.</small></div><div class="tx-amount plus">٠</div></div>`; }
-  function updateRewards(student, state){ const stats = document.querySelectorAll('#rewardsPane .vip-stat'); if(stats.length >= 10){ const rank = computeRanks(state, student); const net = (state.operations || []).filter(op => op.studentName === student.name).reduce((a,op)=>a+Number(op.amount||0),0); const submitted = Number(student.submittedTasks || 0); const arr = [[(net>=0?'+':'') + toArabicDigits(formatNumber(net)), 'صافي الأسبوع'], [toArabicDigits(student.points || 0), 'نقاط الأسبوع'], [rank.classRank ? toArabicDigits(rank.classRank) : '—', 'ترتيبك داخل الفصل'], [toArabicDigits(submitted), 'المهام المسلّمة'], [student.performance || '—', 'مستوى الأداء'], [toArabicDigits((student.assignedTasks||0) - (student.unsubmittedTasks||[]).length), 'مهام مكتملة'], [toArabicDigits((student.unsubmittedTasks||[]).length), 'مهام غير مسلمة'], [student.level || '—', 'مستوى الحساب'], [toArabicDigits(formatNumber(student.balance || 0)), 'إجمالي الرصيد'], [toArabicDigits(student.absences || 0), 'عدد الغياب']]; stats.forEach((card, i) => { const num = card.querySelector('.num'); const lbl = card.querySelector('.lbl'); if(num) num.textContent = arr[i]?.[0] || '—'; if(lbl) lbl.textContent = arr[i]?.[1] || ''; }); } }
-  function updateUpgrade(student){ const prog = levelProgress(student.balance); const currentBadge = document.querySelector('#upgradePane .current-badge'); if(currentBadge) currentBadge.textContent = '🏦 المستوى الحالي: ' + (student.level || prog.level); const note = document.querySelector('#upgradePane .gold-card .muted-note'); if(note) note.innerHTML = `الرصيد الحالي: <strong>${formatNumber(student.balance || 0)}</strong> — يتم تحديث المستوى تلقائيًا عند تغيّر الرصيد.`; const bar = document.querySelector('#upgradePane .progress .bar'); if(bar) bar.style.width = `${prog.pct}%`; }
-  function updateHonor(student, state){ const rank = computeRanks(state, student); const hero = document.querySelector('.section.honor-global .section-head span'); if(hero) hero.textContent = `ترتيبك العام: ${rank.globalRank ? toArabicDigits(rank.globalRank) : '—'} • ترتيب الفصل: ${rank.classRank ? toArabicDigits(rank.classRank) : '—'}`; const cards = document.querySelectorAll('#mainDashboard .student-honor-card'); if(cards.length){ rank.clsList.slice(0,5).forEach((s,i)=>{ const card = cards[i]; if(!card) return; const h4 = card.querySelector('h4'); const p = card.querySelector('p'); const badge = card.querySelector('.student-rank-badge'); const points = card.querySelector('.student-rank-points'); if(h4) h4.textContent = s.name; if(p) p.textContent = `${s.level || '—'} • ${getClass(state,s.classId)?.name || '—'}`; if(badge) badge.textContent = toArabicDigits(i+1); if(points) points.textContent = toArabicDigits(s.points || 0); }); } }
-
-  function currentAuth(){ try{return JSON.parse(sessionStorage.getItem('mathbank_auth')||'null');}catch(e){ return null; } }
-  function ensureStudentAccess(){
-    const auth = currentAuth();
-    if(auth && auth.role === 'student') return true;
-    const saved = sessionStorage.getItem('mathbank_student_login');
-    if(saved) return true;
-    window.location.href = 'index.html';
-    return false;
-  }
-  function logoutStudent(){
-    sessionStorage.removeItem('mathbank_auth');
-    sessionStorage.removeItem('mathbank_student_login');
-    window.location.href = 'index.html';
-  }
-
-  function updateRoulette(student, state){ const rewards = (state.roulette && Array.isArray(state.roulette.rewardNames) && state.roulette.rewardNames.length ? state.roulette.rewardNames : defaultRewards); const list = document.getElementById('prizesList'); if(list){ list.innerHTML = rewards.map((name,i)=>`<div class="vip-item"><span>${toArabicDigits(i+1)}</span><strong>${name}</strong></div>`).join(''); } const note = document.getElementById('winBox'); if(note){ note.textContent = allowedRoulette(student, state) ? (state.roulette?.lastResult || 'الروليت جاهز للدوران') : 'الروليت غير متاح الآن. يجب تفعيله من لوحة المعلمة وللطلبة المستحقين فقط.'; } const buttons = document.querySelectorAll('#roulettePane .roulette-action-row button'); buttons.forEach(btn => { btn.disabled = !allowedRoulette(student, state); btn.style.opacity = allowedRoulette(student, state) ? '1' : '.6'; }); }
-  function showProfile(student, state){ const cls = getClass(state, student.classId); alert(`👤 بيانات الطالب/ة
-الاسم: ${student.name}
-الفصل: ${cls ? cls.name : '—'}
-المستوى: ${student.level || '—'}
-اسم المستخدم: ${student.username || '—'}`); }
-  function showNotifications(student, state){ const hasHonor = (state.honorWeekly?.pendingWhatsApp || []).some(x => x.studentId === student.id); alert(hasHonor ? '🎉 يوجد لك تهنئة في لوحة الشرف هذا الأسبوع.' : '🔔 لا توجد إشعارات جديدة حالياً.'); }
-  function applyLinkedData(){ if(!ensureStudentAccess()) return; const state = loadState(); if(!(state.students || []).length) return; const student = pickStudent(state); if(!student) return; const cls = getClass(state, student.classId); updateText('studentNameDisplay', student.name || 'الطالب/ة'); updateText('studentAccountDisplay', 'رقم الحساب: ' + (student.username || student.id || 'MB-0000')); updateText('studentLevelDisplay', 'المستوى: ' + (student.level || '—')); updateText('studentClassDisplay', 'الفصل: ' + (cls ? cls.name : '—')); updateText('balanceDisplay', formatNumber(student.balance || 0)); updateText('weeklyPointsDisplay', formatNumber(student.points || 0)); updateText('operationsCountDisplay', formatNumber(((state.operations || []).filter(op => op.studentName === student.name)).length)); updateRewards(student, state); updateUpgrade(student); updateHonor(student, state); updateRoulette(student, state); rebuildTransactions(student, state); const levelPill = document.querySelector('.level-pill'); if(levelPill) levelPill.textContent = `المستوى الحالي: ${student.level || '—'} • الغياب: ${toArabicDigits(student.absences || 0)}`; const welcomeH2 = document.querySelector('.welcome-card h2'); if(welcomeH2) welcomeH2.textContent = `مرحبًا ${student.name}`; const welcomeP = document.querySelector('.welcome-card p'); if(welcomeP) welcomeP.textContent = `هذه البيانات مرتبطة مباشرة بلوحة المعلمة. أي إيداع أو سحب أو تحديث نقاط سيظهر هنا تلقائيًا.`; const currentUserInput = document.getElementById('currentUsername'); if(currentUserInput) currentUserInput.value = student.username || ''; window.openProfile = function(){ showProfile(student, state); }; window.openNotifications = function(){ showNotifications(student, state); }; }
-  window.spinRoulette = function(){ const state = loadState(); const student = pickStudent(state); if(!student) return alert('لا توجد بيانات طالب مرتبطة بعد.'); if(!allowedRoulette(student, state)) return alert('الروليت غير متاح لهذا الحساب حالياً.'); if(Number(state.roulette?.chances || 0) <= 0) return alert('انتهت فرص الروليت لهذا الأسبوع.'); const rewards = (state.roulette && Array.isArray(state.roulette.rewardNames) && state.roulette.rewardNames.length ? state.roulette.rewardNames : defaultRewards); const wheel = document.getElementById('rouletteWheel'); const winBox = document.getElementById('winBox'); const randomIndex = Math.floor(Math.random() * rewards.length); const segment = 360 / rewards.length; state.roulette.rotation = Number(state.roulette.rotation || 0) + 360 * 6 + (360 - (randomIndex * segment + segment / 2)); state.roulette.chances = Math.max(0, Number(state.roulette.chances || 0) - 1); state.roulette.lastResult = 'مبروك فزتِ بالجائزة: ' + rewards[randomIndex]; localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); if(wheel) wheel.style.transform = `rotate(${state.roulette.rotation}deg)`; setTimeout(() => { if(winBox){ winBox.textContent = state.roulette.lastResult; winBox.classList.add('show'); } applyLinkedData(); }, 4300); };
-  window.addEventListener('storage', function(ev){ if(ev.key === STORAGE_KEY) applyLinkedData(); });
-  document.addEventListener('DOMContentLoaded', applyLinkedData);
-})();
-</script>
-
-<script>
-(function(){
-  function safeStudentRefresh(){
-    try{ if(typeof applyLinkedData === 'function') applyLinkedData(); }catch(e){}
-  }
-  window.addEventListener('mathbank:state-updated', safeStudentRefresh);
-})();
-</script>
-
-<script src="https://www.gstatic.com/firebasejs/12.10.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore-compat.js"></script>
-<script src="firebase-config.js"></script>
-<script src="firebase-sync.js"></script>
-
-<script src="mobile-student-ui.js"></script>
 </body>
 </html>

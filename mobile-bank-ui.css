@@ -1,259 +1,331 @@
-/* Mobile layer only - keeps tablet/desktop intact */
-html.mobile-mode, .mobile-mode body{
-  overflow-x:hidden !important;
-}
-.mobile-mode body{
-  overflow-y:auto !important;
-  -webkit-text-size-adjust:100%;
-}
 
-/* general spacing */
-.mobile-mode .page,
-.mobile-mode .app,
-.mobile-mode .content,
-.mobile-mode .screen,
-.mobile-mode .panel,
-.mobile-mode .shell,
-.mobile-mode .login-card,
-.mobile-mode .statement-card,
-.mobile-mode .section,
-.mobile-mode .card,
-.mobile-mode .hero,
-.mobile-mode .side-card,
-.mobile-mode .class-card,
-.mobile-mode .student-card,
-.mobile-mode .modal-card{
-  border-radius:22px !important;
-}
-
-@media (max-width: 900px){
-  html.mobile-mode body{
-    overflow:auto !important;
+/* Mobile-only fixes for original files. Desktop and iPad stay unchanged. */
+@media (max-width: 768px){
+  html,body{
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden !important;
+    -webkit-text-size-adjust:100%;
+  }
+  body{
+    overflow-y:auto !important;
   }
 
-  .mobile-mode .page,
-  .mobile-mode .app,
-  .mobile-mode .content,
-  .mobile-mode .screen{
-    padding:12px !important;
+  /* global cards and buttons */
+  .panel,.card,.hero,.loginCard,.section,.stat,.class-card,.student-card,.modal-card,
+  .welcome-card,.mini-card,.statement-card,.report-card,.backup-card,.credential-card,
+  .thanks-display-card,.teacher-fixed,.sticky-filters,.side-card{
+    border-radius:22px !important;
   }
-
-  /* desktop multi-column layouts -> stacked on phone */
-  .mobile-mode .layout,
-  .mobile-mode .hero,
-  .mobile-mode .stats,
-  .mobile-mode .cards,
-  .mobile-mode .class-grid,
-  .mobile-mode .student-grid,
-  .mobile-mode .main-grid,
-  .mobile-mode .hero-grid,
-  .mobile-mode .statement-shell,
-  .mobile-mode .dual-grid,
-  .mobile-mode .field-grid,
-  .mobile-mode .field-grid-3,
-  .mobile-mode .filters,
-  .mobile-mode .info-ribbon,
-  .mobile-mode .kv,
-  .mobile-mode .mini-stats,
-  .mobile-mode .student-actions,
-  .mobile-mode .class-ribbon,
-  .mobile-mode .teacher-fixed-grid,
-  .mobile-mode .thanks-grid,
-  .mobile-mode .filter-grid,
-  .mobile-mode .split,
-  .mobile-mode .report-grid,
-  .mobile-mode .hero-points,
-  .mobile-mode .global-honor-grid,
-  .mobile-mode .student-account-grid,
-  .mobile-mode .weekly-status-grid,
-  .mobile-mode .honor-upload-grid,
-  .mobile-mode .honor-kpis,
-  .mobile-mode .honor-list,
-  .mobile-mode .honor-archive,
-  .mobile-mode .honor-tools,
-  .mobile-mode .contact-stats,
-  .mobile-mode .contact-grid,
-  .mobile-mode .support-grid,
-  .mobile-mode .settings-grid-2,
-  .mobile-mode .backup-layout,
-  .mobile-mode .supervision-settings-layout,
-  .mobile-mode .supervision-kv,
-  .mobile-mode .mutabaa-stats,
-  .mobile-mode .weights-grid,
-  .mobile-mode .podium,
-  .mobile-mode .student-global-top3,
-  .mobile-mode .tasks-layout,
-  .mobile-mode .files-layout,
-  .mobile-mode .task-card-meta,
-  .mobile-mode .files-layout .field-grid-2x{
-    display:grid !important;
-    grid-template-columns:1fr !important;
-  }
-
-  .mobile-mode .layout{
-    gap:12px !important;
-    padding:12px !important;
-  }
-
-  .mobile-mode .sidebar{
-    order:2;
-  }
-  .mobile-mode .main{
-    order:1;
-  }
-
-  .mobile-mode .topbar,
-  .mobile-mode .toolbar,
-  .mobile-mode .top-actions,
-  .mobile-mode .hero-actions,
-  .mobile-mode .row-actions,
-  .mobile-mode .contact-actions,
-  .mobile-mode .button-strip,
-  .mobile-mode .login-actions{
-    display:flex !important;
-    flex-wrap:wrap !important;
-    gap:10px !important;
-  }
-
-  /* buttons full-width but keep tab chips scrollable */
-  .mobile-mode .btn,
-  .mobile-mode .soft,
-  .mobile-mode .ghost,
-  .mobile-mode .danger-btn,
-  .mobile-mode .bigBtn,
-  .mobile-mode .soft-btn,
-  .mobile-mode .primary-btn,
-  .mobile-mode .contact-soft-green,
-  .mobile-mode .contact-outline,
-  .mobile-mode .login-soft,
-  .mobile-mode .back-inline,
-  .mobile-mode .mini-btn{
-    width:100% !important;
+  .btn,.soft,.ghost,.ghostBtn,.bigBtn,.tab-btn,.mini-btn,.pill-btn,.danger-btn,.icon-btn,
+  .soft-btn,.primary-btn,.back-inline,.login-soft,.tab,.tabbtn,.super-tab-btn,.settings-subbtn,
+  .mutabaa-subbtn,.contact-outline,.contact-soft-green{
     min-height:48px !important;
-    justify-content:center !important;
+    padding-inline:14px !important;
+    font-size:15px !important;
   }
-
-  .mobile-mode .tabs,
-  .mobile-mode .top-tabs,
-  .mobile-mode .super-tabs,
-  .mobile-mode .settings-subtabs,
-  .mobile-mode .mutabaa-subtabs,
-  .mobile-mode .github-nav{
-    display:flex !important;
-    flex-wrap:nowrap !important;
-    overflow-x:auto !important;
-    -webkit-overflow-scrolling:touch;
-    gap:8px !important;
-    padding-bottom:6px !important;
-    scrollbar-width:none;
-  }
-  .mobile-mode .tabs::-webkit-scrollbar,
-  .mobile-mode .top-tabs::-webkit-scrollbar,
-  .mobile-mode .super-tabs::-webkit-scrollbar,
-  .mobile-mode .settings-subtabs::-webkit-scrollbar,
-  .mobile-mode .mutabaa-subtabs::-webkit-scrollbar,
-  .mobile-mode .github-nav::-webkit-scrollbar{
-    display:none;
-  }
-
-  .mobile-mode .tab,
-  .mobile-mode .tab-btn,
-  .mobile-mode .super-tab-btn,
-  .mobile-mode .settings-subbtn,
-  .mobile-mode .mutabaa-subbtn,
-  .mobile-mode .menu-item,
-  .mobile-mode .github-nav a{
-    flex:0 0 auto !important;
-    min-width:130px !important;
-    white-space:nowrap !important;
-  }
-
-  .mobile-mode .menu{
-    display:grid !important;
-    grid-template-columns:1fr !important;
-  }
-
-  .mobile-mode .shell{
-    min-height:auto !important;
-    border-radius:26px !important;
-  }
-
-  .mobile-mode .hero h2,
-  .mobile-mode .entryTitle h2,
-  .mobile-mode h1{
-    font-size:clamp(24px, 7vw, 34px) !important;
-    line-height:1.3 !important;
-  }
-
-  .mobile-mode h2{font-size:24px !important;}
-  .mobile-mode h3{font-size:20px !important;}
-  .mobile-mode .section-head h3{font-size:22px !important;}
-  .mobile-mode .brand h1{font-size:22px !important;}
-  .mobile-mode .card h3,
-  .mobile-mode .class-title-wrap h4,
-  .mobile-mode .student-name h4{font-size:20px !important;}
-
-  .mobile-mode p,
-  .mobile-mode .lead,
-  .mobile-mode .hero p{
-    font-size:14px !important;
-    line-height:1.9 !important;
-  }
-
-  .mobile-mode input,
-  .mobile-mode select,
-  .mobile-mode textarea,
-  .mobile-mode .input,
-  .mobile-mode .select{
+  input,select,textarea,.input,.select{
     min-height:50px !important;
     font-size:16px !important;
   }
 
-  .mobile-mode table{
-    display:block !important;
+  /* ===== index.html ===== */
+  #overlay{
+    overflow:auto !important;
+    padding-bottom:28px;
+  }
+  .screen{
+    padding:14px !important;
+    min-height:auto !important;
+  }
+  .center{
+    min-height:auto !important;
+  }
+  .panel{
     width:100% !important;
+    padding:22px 16px 18px !important;
+  }
+  .cards{
+    grid-template-columns:1fr !important;
+    gap:12px !important;
+  }
+  .entryTitle{
+    flex-direction:column !important;
+    align-items:flex-start !important;
+    margin-bottom:16px !important;
+  }
+  .entryTitle h2,
+  h1{
+    font-size:clamp(28px,9vw,38px) !important;
+    line-height:1.2 !important;
+  }
+  .lead,.hero p,.card p{
+    font-size:14px !important;
+    line-height:1.9 !important;
+  }
+  .loaderCard{
+    width:100% !important;
+    padding:16px !important;
+  }
+  .loaderHead{
+    gap:8px !important;
+  }
+  .shell{
+    width:100% !important;
+    min-height:auto !important;
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    border-radius:28px !important;
+  }
+  .hero,.formSide{
+    padding:18px 16px !important;
+  }
+  .hero{
+    border-left:none !important;
+    border-bottom:1px solid rgba(56,189,248,.14) !important;
+    gap:18px !important;
+  }
+  .hero h2{
+    font-size:clamp(24px,8vw,32px) !important;
+    margin-top:4px !important;
+  }
+  .feature{
+    padding:14px !important;
+    border-radius:20px !important;
+  }
+  .featureIcon{
+    width:46px !important;
+    height:46px !important;
+    border-radius:14px !important;
+    font-size:20px !important;
+  }
+  .loginCard{
+    width:100% !important;
+    padding:20px 14px !important;
+    gap:16px !important;
+  }
+  .badges,.chips{
+    justify-content:flex-start !important;
+  }
+  #appFrame{
+    position:relative !important;
+    inset:auto !important;
+    width:100% !important;
+    height:calc(100vh - 24px) !important;
+  }
+
+  /* ===== teacher.html ===== */
+  .page{
+    padding:12px !important;
+  }
+  .topbar{
+    min-height:auto !important;
+    padding:14px !important;
+    gap:12px !important;
+  }
+  .brand h1{
+    font-size:22px !important;
+  }
+  .toolbar{
+    width:100% !important;
+    display:grid !important;
+    grid-template-columns:1fr 1fr !important;
+    gap:8px !important;
+  }
+  .toolbar > *{
+    min-width:0 !important;
+    width:100% !important;
+  }
+  .layout{
+    grid-template-columns:1fr !important;
+    gap:14px !important;
+    padding:12px !important;
+  }
+  .sidebar{
+    order:2 !important;
+  }
+  .main{
+    order:1 !important;
+  }
+  .menu{
+    grid-template-columns:1fr 1fr !important;
+  }
+  .menu-item{
+    min-height:52px !important;
+    padding:0 12px !important;
+    font-size:14px !important;
+  }
+  .hero{
+    min-height:auto !important;
+    grid-template-columns:1fr !important;
+    padding:16px !important;
+  }
+  .hero h2{
+    font-size:30px !important;
+  }
+  .hero-side{
+    padding:14px !important;
+  }
+  .stats,
+  .cards,
+  .class-grid,
+  .student-grid,
+  .field-grid,
+  .field-grid-3,
+  .filters,
+  .student-actions,
+  .mini-stats,
+  .kv,
+  .info-ribbon,
+  .class-ribbon,
+  .support-grid,
+  .settings-grid-2,
+  .contact-stats,
+  .contact-grid,
+  .supervision-settings-layout,
+  .supervision-kv,
+  .backup-layout,
+  .honor-hero-grid,
+  .honor-kpis,
+  .honor-list,
+  .honor-archive,
+  .honor-tools,
+  .honor-upload-grid,
+  .honor-upload-slots,
+  .weekly-status-grid,
+  .honor-whatsapp-grid,
+  .global-honor-grid,
+  .student-account-grid,
+  .student-global-top3,
+  .student-account-top,
+  .weights-grid,
+  .tasks-layout,
+  .files-layout,
+  .files-layout .field-grid-2x,
+  .task-card-meta,
+  .mutabaa-stats,
+  .radio-row{
+    grid-template-columns:1fr !important;
+  }
+  .tabs,.settings-subtabs,.mutabaa-subtabs,.super-tabs{
+    flex-wrap:nowrap !important;
     overflow-x:auto !important;
+    padding-bottom:6px !important;
+    scrollbar-width:none;
+  }
+  .tabs::-webkit-scrollbar,.settings-subtabs::-webkit-scrollbar,.mutabaa-subtabs::-webkit-scrollbar,.super-tabs::-webkit-scrollbar{
+    display:none;
+  }
+  .tab-btn,.settings-subbtn,.mutabaa-subbtn,.super-tab-btn{
+    flex:0 0 auto !important;
     white-space:nowrap !important;
   }
-
-  .mobile-mode .table-wrap{
+  .section-head{
+    align-items:flex-start !important;
+  }
+  .section-head h3{
+    font-size:22px !important;
+  }
+  .table-wrap{
     overflow:auto !important;
   }
-
-  .mobile-mode .logo,
-  .mobile-mode .profile-pic,
-  .mobile-mode .atm,
-  .mobile-mode .cardIcon{
-    transform:scale(.92);
-    transform-origin:center;
+  table{
+    min-width:720px;
+  }
+  .class-top,.student-top,.student-main{
+    flex-direction:column !important;
+    align-items:flex-start !important;
+  }
+  .student-actions{
+    display:grid !important;
+    grid-template-columns:1fr 1fr !important;
+    gap:8px !important;
+  }
+  .hero-actions,.row-actions,.contact-actions,.button-strip,.login-actions{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    width:100% !important;
+  }
+  .hero-actions > *, .row-actions > *, .contact-actions > *, .button-strip > *, .login-actions > *{
+    width:100% !important;
+  }
+  .profile{
+    justify-items:flex-start !important;
+    text-align:right !important;
+  }
+  .profile-pic{
+    width:72px !important;
+    height:72px !important;
+    font-size:34px !important;
   }
 
-  .mobile-mode .bank-card{
-    min-height:190px !important;
+  /* ===== student.html ===== */
+  .app{
+    padding:12px !important;
+  }
+  .topbar{
+    padding:14px !important;
+    align-items:flex-start !important;
+  }
+  .content{
+    padding:14px !important;
+  }
+  .top-tabs{
+    flex-wrap:nowrap !important;
+    overflow-x:auto !important;
+    gap:8px !important;
+  }
+  .top-tabs .tab{
+    flex:0 0 auto !important;
+  }
+  .hero-grid,
+  .stats,
+  .main-grid,
+  .statement-shell,
+  .dual-grid{
+    grid-template-columns:1fr !important;
+  }
+  .bank-card{
+    min-height:auto !important;
     padding:18px !important;
   }
-
-  .mobile-mode .bank-number{font-size:22px !important;}
-  .mobile-mode .stat .num,
-  .mobile-mode .card .n,
-  .mobile-mode .hero-side .n,
-  .mobile-mode .backup-stat span,
-  .mobile-mode .honor-kpi span{
-    font-size:28px !important;
+  .bank-number{
+    font-size:24px !important;
+    margin:20px 0 14px !important;
+  }
+  .stat h3{
+    font-size:24px !important;
+  }
+  .tx{
+    flex-direction:column !important;
+    align-items:flex-start !important;
   }
 
-  .mobile-mode .student-actions{
-    gap:10px !important;
+  /* ===== supervision.html ===== */
+  .login-grid,
+  .filter-grid,
+  .cards,
+  .split,
+  .report-grid,
+  .hero-points,
+  .teacher-fixed-grid,
+  .thanks-grid{
+    grid-template-columns:1fr !important;
   }
-
-  .mobile-mode .modal-card{
-    width:min(100%, 100%) !important;
-    max-height:92vh !important;
+  .tabs{
+    grid-template-columns:1fr !important;
   }
-
-  .mobile-mode .github-nav{
-    position:sticky !important;
-    top:0 !important;
-    justify-content:flex-start !important;
+  .hero{
+    padding:18px !important;
+  }
+  .hero h1{
+    font-size:32px !important;
+  }
+  .panel{
+    padding:16px !important;
+  }
+  .teacher-fixed{
+    position:relative !important;
+    top:auto !important;
   }
 }
