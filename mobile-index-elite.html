@@ -7,10 +7,11 @@
 <title>بنك الرياضيات</title>
 
 <style>
+
 body{
 margin:0;
-font-family:tahoma;
-background:linear-gradient(160deg,#071a2f,#0b2745);
+font-family:system-ui;
+background:#071a2f;
 color:#fff;
 display:flex;
 justify-content:center;
@@ -24,47 +25,50 @@ width:90%;
 max-width:420px;
 }
 
-/* الشعار */
-.logo{
-background:rgba(255,255,255,0.08);
-padding:20px;
-border-radius:20px;
+/* الهيدر */
+.header{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:20px;
+margin-bottom:25px;
+opacity:0.9;
 }
 
-.logo span{
-font-size:22px;
-font-weight:bold;
+.header span{
+font-size:20px;
+font-weight:600;
 }
 
-/* البطاقة */
-.card{
-background:linear-gradient(135deg,#0ea5e9,#0b3f6e);
-border-radius:25px;
-padding:25px;
-margin-bottom:20px;
-box-shadow:0 10px 25px rgba(0,0,0,0.3);
+/* بطاقة البنك */
+.bank-card{
+background:linear-gradient(135deg,#0b2745,#0f3e6d);
+border-radius:22px;
+padding:22px;
+margin-bottom:30px;
+box-shadow:0 10px 30px rgba(0,0,0,0.4);
 }
 
-.card-number{
-font-size:24px;
-letter-spacing:2px;
-margin-top:15px;
+.bank-title{
+font-size:16px;
+opacity:0.7;
+margin-bottom:8px;
+}
+
+.bank-name{
+font-size:20px;
+font-weight:600;
 }
 
 /* العنوان */
 .title{
-font-size:28px;
-font-weight:bold;
-margin-bottom:10px;
+font-size:26px;
+font-weight:600;
+margin-bottom:8px;
 }
 
 .subtitle{
-color:#cfe0ee;
 font-size:14px;
+opacity:0.6;
 margin-bottom:25px;
 }
 
@@ -74,60 +78,54 @@ width:100%;
 padding:18px;
 margin-bottom:12px;
 border:none;
-border-radius:18px;
-font-size:18px;
-font-weight:bold;
+border-radius:16px;
+font-size:16px;
+font-weight:600;
 cursor:pointer;
-}
-
-.btn-teacher{
-background:#0ea5e9;
+background:#0f3e6d;
 color:#fff;
-}
-
-.btn-student{
-background:#1e3a8a;
-color:#fff;
-}
-
-.btn-super{
-background:#caa24d;
-color:#000;
+transition:0.2s;
 }
 
 .btn:hover{
-opacity:0.9;
+background:#14558f;
+}
+
+/* زر مميز بسيط */
+.btn.primary{
+background:#0ea5e9;
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-<div class="logo">
+<div class="header">
 <span>بنك الرياضيات</span>
-<div>MB</div>
+<span>MB</span>
 </div>
 
-<div class="card">
-<div>Math Bank</div>
-<div class="card-number">6012 2026 0001 7788</div>
+<div class="bank-card">
+<div class="bank-title">Math Bank</div>
+<div class="bank-name">Bank Riyad Math</div>
 </div>
 
 <div class="title">بوابة الدخول</div>
-<div class="subtitle">اختر نوع الحساب للدخول للنظام</div>
+<div class="subtitle">اختر نوع الحساب</div>
 
-<button class="btn btn-teacher" onclick="location.href='mobile-teacher-login.html'">
+<button class="btn primary" onclick="location.href='mobile-teacher-login.html'">
 دخول المعلمة
 </button>
 
-<button class="btn btn-student" onclick="location.href='mobile-student-login.html'">
+<button class="btn" onclick="location.href='mobile-student-login.html'">
 دخول الطالب
 </button>
 
-<button class="btn btn-super" onclick="location.href='mobile-supervision-login.html'">
+<button class="btn" onclick="location.href='mobile-supervision-login.html'">
 دخول الإشراف
 </button>
 
