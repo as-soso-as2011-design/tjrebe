@@ -767,17 +767,19 @@
 
 </style>
 
+<link rel="stylesheet" href="mobile-separated.css">
+<script src="mobile-separated.js"></script>
 <script>
 (function(){
-  if (window.innerWidth <= 900 && !location.search.includes('desktop=1')) {
-    location.replace('mobile-teacher.html' + location.search + location.hash);
+  if (window.innerWidth > 900 && !location.search.includes('mobile=1')) {
+    location.replace('teacher.html' + location.search + location.hash);
   }
 })();
 </script>
 
 </head>
 <body>
-<!-- desktop original with auto-redirect to mobile -->
+<!-- separate mobile banking page -->
 <div class="page">
   <div class="shell">
     <div class="topbar">
@@ -3985,6 +3987,15 @@ document.addEventListener('DOMContentLoaded', function(){
 window.googleTranslateElementInit = initGoogleTranslate;
 </script>
 <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  if (window.__setupMathBankMobilePage) {
+    window.__setupMathBankMobilePage('mobile-teacher.html');
+  }
+});
+</script>
 
 </body>
 </html>

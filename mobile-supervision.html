@@ -156,17 +156,19 @@ th{background:#f0f9ff;color:#075985}
 
 </style>
 
+<link rel="stylesheet" href="mobile-separated.css">
+<script src="mobile-separated.js"></script>
 <script>
 (function(){
-  if (window.innerWidth <= 900 && !location.search.includes('desktop=1')) {
-    location.replace('mobile-supervision.html' + location.search + location.hash);
+  if (window.innerWidth > 900 && !location.search.includes('mobile=1')) {
+    location.replace('supervision.html' + location.search + location.hash);
   }
 })();
 </script>
 
 </head>
 <body>
-<!-- desktop original with auto-redirect to mobile -->
+<!-- separate mobile banking page -->
 <div class="page">
   <section class="login-shell" id="loginShell">
     <div class="panel login-grid">
@@ -636,6 +638,15 @@ function sendThanksEvaluation(){
   showNotice('thanksEvalNotice','success','تم إرسال أسئلة التقييم بنجاح.');
 }
 
+</script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  if (window.__setupMathBankMobilePage) {
+    window.__setupMathBankMobilePage('mobile-supervision.html');
+  }
+});
 </script>
 
 </body>
