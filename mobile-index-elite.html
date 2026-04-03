@@ -1,28 +1,137 @@
-<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>بنك الرياضيات - دخول الجوال</title><link rel="stylesheet" href="elite-mobile.css"><script src="elite-mobile.js"></script></head><body><div class="app">
-<div class="top-chip"><div><b>بنك الرياضيات</b><span>بوابة دخول نخبة</span></div><div class="icon">MB</div></div>
-<div class="hero-card"><h1>بوابة الجوال</h1><p>واجهة دخول فاخرة ومعتمدة للجوال مع ربط فعلي بتسجيل الدخول الموجود في النظام.</p><div class="gold-line"></div></div>
-<div class="bank-card"><div class="bank-head"><div><b>Math Bank</b><span>Bank Riyad Math</span></div><div class="metal"></div></div><div class="num">6012 2026 0001 7788</div><div class="meta"><div>نسخة جوال مستقلة</div><div>هوية بنكية تعليمية</div></div></div>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<div class="section"><div class="section-head"><h3>دخول المعلمة</h3><small>فعلي</small></div>
-<div class="field"><label>اسم المستخدم</label><input id="teacherUser" placeholder="teacher أو الاسم المحفوظ"></div>
-<div class="field"><label>كلمة المرور</label><input id="teacherPass" type="password" placeholder="1234 أو الرقم المحفوظ"></div>
-<div class="btn-row"><button class="btn primary" onclick="loginTeacher()">دخول المعلمة</button><button class="btn soft" onclick="location.href='mobile-teacher-elite.html'">معاينة اللوحة</button></div>
-<div id="teacherMsg" class="message"></div></div>
+<title>بنك الرياضيات</title>
 
-<div class="section"><div class="section-head"><h3>دخول الطالب/ة</h3><small>فعلي</small></div>
-<div class="field"><label>اسم الطالب/ـة أو اسم المستخدم</label><input id="studentUser" placeholder="اسم الطالب أو username"></div>
-<div class="field"><label>كلمة المرور</label><input id="studentPass" type="password" placeholder="الرقم السري للطالب"></div>
-<div class="btn-row"><button class="btn primary" onclick="loginStudent()">دخول الطالب</button><button class="btn soft" onclick="location.href='mobile-student-elite.html'">معاينة اللوحة</button></div>
-<div id="studentMsg" class="message"></div></div>
+<style>
+body{
+margin:0;
+font-family:tahoma;
+background:linear-gradient(160deg,#071a2f,#0b2745);
+color:#fff;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
 
-<div class="section"><div class="section-head"><h3>دخول الإشراف</h3><small>فعلي</small></div>
-<div class="field"><label>اسم مستخدم المدير/ة</label><input id="principalUser" placeholder="principal"></div>
-<div class="field"><label>كلمة مرور المدير/ة</label><input id="principalPass" type="password" placeholder="1234"></div>
-<div class="btn-row"><button class="btn primary" onclick="loginPrincipal()">دخول المدير/ة</button><button class="btn soft" onclick="location.href='mobile-supervision-elite.html'">معاينة الإشراف</button></div>
-<div class="field" style="margin-top:12px"><label>اسم مستخدم المشرف/ة</label><input id="supervisorUser" placeholder="supervisor"></div>
-<div class="field"><label>كلمة مرور المشرف/ة</label><input id="supervisorPass" type="password" placeholder="1234"></div>
-<div class="btn-row"><button class="btn primary" onclick="loginSupervisor()">دخول المشرف/ة</button><button class="btn soft" onclick="location.href='teacher.html'">فتح نسخة الآيباد</button></div>
-<div id="superMsg" class="message"></div></div>
+/* الحاوية */
+.container{
+width:90%;
+max-width:420px;
+}
+
+/* الشعار */
+.logo{
+background:rgba(255,255,255,0.08);
+padding:20px;
+border-radius:20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.logo span{
+font-size:22px;
+font-weight:bold;
+}
+
+/* البطاقة */
+.card{
+background:linear-gradient(135deg,#0ea5e9,#0b3f6e);
+border-radius:25px;
+padding:25px;
+margin-bottom:20px;
+box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
+
+.card-number{
+font-size:24px;
+letter-spacing:2px;
+margin-top:15px;
+}
+
+/* العنوان */
+.title{
+font-size:28px;
+font-weight:bold;
+margin-bottom:10px;
+}
+
+.subtitle{
+color:#cfe0ee;
+font-size:14px;
+margin-bottom:25px;
+}
+
+/* الأزرار */
+.btn{
+width:100%;
+padding:18px;
+margin-bottom:12px;
+border:none;
+border-radius:18px;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.btn-teacher{
+background:#0ea5e9;
+color:#fff;
+}
+
+.btn-student{
+background:#1e3a8a;
+color:#fff;
+}
+
+.btn-super{
+background:#caa24d;
+color:#000;
+}
+
+.btn:hover{
+opacity:0.9;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="logo">
+<span>بنك الرياضيات</span>
+<div>MB</div>
 </div>
-<div class="bottom-nav"><a class="active" href="mobile-index-elite.html">الرئيسية</a><a href="mobile-teacher-elite.html">المعلمة</a><a href="mobile-student-elite.html">الطالب</a><a href="mobile-supervision-elite.html">الإشراف</a></div>
-</body></html>
+
+<div class="card">
+<div>Math Bank</div>
+<div class="card-number">6012 2026 0001 7788</div>
+</div>
+
+<div class="title">بوابة الدخول</div>
+<div class="subtitle">اختر نوع الحساب للدخول للنظام</div>
+
+<button class="btn btn-teacher" onclick="location.href='mobile-teacher-login.html'">
+دخول المعلمة
+</button>
+
+<button class="btn btn-student" onclick="location.href='mobile-student-login.html'">
+دخول الطالب
+</button>
+
+<button class="btn btn-super" onclick="location.href='mobile-supervision-login.html'">
+دخول الإشراف
+</button>
+
+</div>
+
+</body>
+</html>
