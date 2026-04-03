@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>دخول الطالب</title>
+<style>
+:root{
+  --bg:#041327;
+  --blue:#53b7ff;
+  --blue2:#0ea5e9;
+  --cyan:#15d7ff;
+  --gold:#d6aa4d;
+  --gold2:#f0cf7a;
+  --text:#f8fbff;
+  --muted:#c8d7e6;
+  --shadow:0 18px 45px rgba(0,0,0,.38);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{
+  font-family:"SF Pro Display","Segoe UI","Tahoma","Arial",sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 50% 10%, rgba(26,99,199,.22), transparent 22%),
+    radial-gradient(circle at 85% 55%, rgba(28,208,255,.08), transparent 20%),
+    radial-gradient(circle at 15% 55%, rgba(214,170,77,.08), transparent 20%),
+    linear-gradient(180deg, #031222 0%, #041a31 40%, #051427 100%);
+  overflow-x:hidden;
+}
+.scene{max-width:980px;margin:0 auto;min-height:100vh;padding:18px 18px 34px;position:relative}
+.scene:before,.scene:after{
+  content:"";position:absolute;top:0;bottom:0;width:120px;opacity:.18;
+  background:linear-gradient(180deg, transparent 0%, rgba(97,165,255,.42) 12%, rgba(255,255,255,.05) 16%, rgba(97,165,255,.28) 80%, transparent 100%);
+}
+.scene:before{left:56px}.scene:after{right:56px}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.icon-btn,.lang{
+  border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#fff;
+  box-shadow:var(--shadow)
+}
+.icon-btn{width:48px;height:48px;display:grid;place-items:center;font-size:22px;border-radius:14px}
+.lang{min-width:130px;height:48px;padding:0 12px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:800;border-radius:14px}
+.logo-wrap{
+  width:94px;height:94px;margin:8px auto 12px;border:2px solid rgba(244,202,107,.95);
+  border-radius:24px 24px 14px 14px;display:grid;place-items:center;color:var(--gold2);
+  box-shadow:0 10px 25px rgba(0,0,0,.28);background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+}
+.logo-mark .bank{font-size:34px;display:block;line-height:1}
+.logo-mark .mb{font-size:22px;display:block;margin-top:6px;font-weight:900}
+.brand{text-align:center;margin-bottom:14px}
+h1{margin:0;font-size:34px;font-weight:800;letter-spacing:-0.3px}
+.en{margin-top:4px;font-size:12px;letter-spacing:2px;color:#f2f5f9}
+.tagline{margin:10px auto 0;display:flex;align-items:center;justify-content:center;gap:12px;color:#f0f5fb;font-size:14px;max-width:680px}
+.tagline:before,.tagline:after{content:"";height:2px;flex:1;background:linear-gradient(90deg, transparent, var(--gold), transparent)}
+.panel{
+  margin:18px auto 0;max-width:560px;border-radius:28px;padding:22px;border:1px solid rgba(131,183,255,.28);
+  background:radial-gradient(circle at 70% 52%, rgba(214,170,77,.12), transparent 24%),linear-gradient(145deg, rgba(17,55,104,.88), rgba(5,28,58,.94));
+  box-shadow:0 20px 45px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.03);
+}
+.panel h2{margin:0 0 8px;font-size:22px;font-weight:800}
+.panel p{margin:0 0 18px;color:#d2dfeb;font-size:13px;line-height:1.8}
+.field{display:grid;gap:8px;margin-bottom:12px}
+.field label{font-size:13px;color:#e8f1f8;font-weight:700}
+.field input{
+  width:100%;height:50px;border-radius:14px;border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.06);color:#fff;padding:0 14px;font-size:15px;outline:none
+}
+.field input::placeholder{color:#adc0d1}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{
+  height:50px;border:none;border-radius:16px;font-size:15px;font-weight:800;cursor:pointer
+}
+.btn.primary{background:linear-gradient(135deg,#0ea5e9,#1178b8 50%,#0b3f6e);color:#fff}
+.btn.soft{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.10)}
+.msg{display:none;margin-top:12px;padding:12px 14px;border-radius:14px;font-size:13px;line-height:1.7}
+.msg.show{display:block}.msg.err{background:rgba(220,38,38,.14);border:1px solid rgba(239,68,68,.22)}.msg.ok{background:rgba(14,165,233,.16);border:1px solid rgba(56,189,248,.22)}
+.links{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:8px}
+.links a{color:#d6e6f5;text-decoration:none;font-size:12px}
+@media (max-width:640px){.scene:before,.scene:after{display:none}.row{grid-template-columns:1fr}}
+</style>
+<script>
+const MB_KEY='teacher_dashboard_rebuilt_v3';
+function mbState(){ try{return JSON.parse(localStorage.getItem(MB_KEY)||'{}')}catch(e){return {}} }
+function t(v){return String(v||'').trim().toLowerCase()}
+function teacherAuth(user,pass){
+  const s=mbState(); const a=(s.auth&&s.auth.teacher)||{username:'teacher',password:'1234'};
+  return t(user)===t(a.username) && String(pass)===String(a.password);
+}
+function studentAuth(user,pass){
+  const s=mbState(); const arr=Array.isArray(s.students)?s.students:[];
+  return arr.find(st=>(t(user)===t(st.username)||t(user)===t(st.name)) && String(pass)===String(st.password));
+}
+function roleAuth(role,user,pass){
+  const s=mbState(); const auth=(s.auth&&s.auth[role]) || {username: role==='principal'?'principal':'supervisor', password:'1234'};
+  return t(user)===t(auth.username) && String(pass)===String(auth.password);
+}
+function showMsg(id, kind, txt){
+  const el=document.getElementById(id);
+  el.className='msg show '+kind;
+  el.textContent=txt;
+}
+function loginTeacher(){
+  const u=document.getElementById('user').value, p=document.getElementById('pass').value;
+  if(!teacherAuth(u,p)) return showMsg('msg','err','بيانات الدخول غير صحيحة.');
+  sessionStorage.setItem('mathbank_auth', JSON.stringify({role:'teacher',user:u,mobile:true}));
+  location.href='teacher.html?from=mobile';
+}
+function loginStudent(){
+  const u=document.getElementById('user').value, p=document.getElementById('pass').value;
+  const st=studentAuth(u,p);
+  if(!st) return showMsg('msg','err','بيانات الدخول غير صحيحة.');
+  sessionStorage.setItem('mathbank_auth', JSON.stringify({role:'student',user:u,studentId:st.id,mobile:true}));
+  location.href='student.html?from=mobile';
+}
+function loginPrincipal(){
+  const u=document.getElementById('principalUser').value, p=document.getElementById('principalPass').value;
+  if(!roleAuth('principal',u,p)) return showMsg('msg','err','بيانات المدير/ة غير صحيحة.');
+  sessionStorage.setItem('mathbank_auth', JSON.stringify({role:'principal',user:u,mobile:true}));
+  location.href='supervision.html?from=mobile';
+}
+function loginSupervisor(){
+  const u=document.getElementById('supervisorUser').value, p=document.getElementById('supervisorPass').value;
+  if(!roleAuth('supervisor',u,p)) return showMsg('msg','err','بيانات المشرف/ة غير صحيحة.');
+  sessionStorage.setItem('mathbank_auth', JSON.stringify({role:'supervisor',user:u,mobile:true}));
+  location.href='supervision.html?from=mobile';
+}
+</script>
+</head>
+<body>
+<main class="scene">
+  <div class="topbar">
+    <a class="lang" href="mobile-index-elite.html" style="text-decoration:none">← الرئيسية</a>
+    <div class="icon-btn">☰</div>
+  </div>
+
+  <section class="brand">
+    <div class="logo-wrap">
+      <div class="logo-mark"><span class="bank">🏛</span><span class="mb">MB</span></div>
+    </div>
+    <h1>بنك الرياضيات</h1>
+    <div class="en">MATH BANK</div>
+    <div class="tagline">بوابة الطالب الفاخرة</div>
+  </section>
+
+  <section class="panel">
+    
+<h2>دخول الطالب</h2>
+<p>أدخل اسم الطالب/ـة أو اسم المستخدم والرقم السري.</p>
+<div class="field"><label>اسم الطالب/ـة أو اسم المستخدم</label><input id="user" placeholder="اسم الطالب أو username"></div>
+<div class="field"><label>كلمة المرور</label><input id="pass" type="password" placeholder="الرقم السري للطالب"></div>
+<div class="row">
+  <button class="btn primary" onclick="loginStudent()">دخول الطالب</button>
+  <button class="btn soft" onclick="location.href='mobile-index-elite.html'">رجوع</button>
+</div>
+<div class="links"><a href="#">نسيت كلمة المرور</a><a href="#">تعليمات الدخول</a></div>
+<div id="msg" class="msg"></div>
+
+  </section>
+</main>
+</body>
+</html>
